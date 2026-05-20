@@ -110,7 +110,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
     if (isMobile && !mobileVideoInView) return
     const timer = setInterval(() => {
       setCarouselStart((s) => (s >= maxStart ? 0 : s + 1))
-    }, 3000)
+    }, isMobile ? 4000 : 3000)
     return () => clearInterval(timer)
   }, [maxStart, isMobile, mobileVideoInView])
   const activeCard = activeVideo !== null ? cards[activeVideo] : undefined

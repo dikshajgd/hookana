@@ -15,7 +15,7 @@ export function cldImage(url: string, width = 800): string {
 }
 
 export function cldVideo(url: string, width = 720): string {
-  return insertTransform(url, `f_auto,q_auto,c_limit,w_${width}`)
+  return insertTransform(url, `f_auto,q_auto:eco,vc_auto,c_limit,w_${width}`)
 }
 
 export function cldPoster(url: string, width = 720): string {
