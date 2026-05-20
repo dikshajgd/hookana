@@ -13,7 +13,7 @@ const FALLBACK: Pick<ContactContent, "heading" | "subtext" | "footerText"> = {
     "We'll review your brand, build 2 sample concepts, and walk you through them on a quick call.",
 }
 
-const TARGET_EMAIL = "info.hookana@gmail.com"
+const TARGET_EMAIL = "dikshajgd@gmail.com"
 
 type FormState = {
   name: string
@@ -150,9 +150,10 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                 />
               </Field>
 
-              <Field label="Email">
+              <Field label="Email" required>
                 <Input
                   type="email"
+                  required
                   value={values.email}
                   onChange={update("email")}
                   placeholder="you@brand.com"
