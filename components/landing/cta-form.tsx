@@ -13,8 +13,6 @@ const FALLBACK: Pick<ContactContent, "heading" | "subtext" | "footerText"> = {
     "We'll review your brand, build 2 sample concepts, and walk you through them on a quick call.",
 }
 
-const TARGET_EMAIL = "dikshajgd@gmail.com"
-
 type FormState = {
   name: string
   brandName: string
@@ -43,36 +41,42 @@ const INITIAL: FormState = {
   deliveryEmail: "",
 }
 
+type Status = "idle" | "submitting" | "success" | "error"
+
 export function CtaForm({ content }: { content: ContactContent | null }) {
   const c = content ?? FALLBACK
   const headingLines = c.heading.split("\n")
   const [values, setValues] = useState<FormState>(INITIAL)
+  const [status, setStatus] = useState<Status>("idle")
+  const [errorMsg, setErrorMsg] = useState("")
 
   const update =
     (key: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       setValues((v) => ({ ...v, [key]: e.target.value }))
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const subject = `New Concept Request — ${values.brandName || values.name}`
-    const body = [
-      `Name: ${values.name}`,
-      `Brand name: ${values.brandName}`,
-      `Website / Landing Page: ${values.website}`,
-      `Email: ${values.email}`,
-      `Looking for ongoing creative support: ${values.ongoingSupport}`,
-      `Budget Per Creative (Design/Editing Only): ${values.budget}`,
-      `Product Description: ${values.productDescription}`,
-      `Brief/Concept (links): ${values.brief}`,
-      `Brand Assets (links): ${values.brandAssets}`,
-      `Current Monthly Ad Spend: ${values.adSpend}`,
-      `Where to send concepts: ${values.deliveryEmail}`,
-    ].join("\n")
-    const href = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`
-    window.location.href = href
+    setStatus("submitting")
+    setErrorMsg("")
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setErrorMsg(body.error || "Something went wrong. Please try again.")
+        setStatus("error")
+        return
+      }
+      setValues(INITIAL)
+      setStatus("success")
+    } catch {
+      setErrorMsg("Network error. Please try again.")
+      setStatus("error")
+    }
   }
 
   return (
@@ -119,6 +123,14 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
               </p>
             </div>
 
+            {status === "success" ? (
+              <div className="rounded-md border border-neutral-200 bg-white p-8 text-center">
+                <p className="type-heading-3 text-foreground">Thanks — we got it.</p>
+                <p className="mt-3 font-mono text-xs text-blue-500">
+                  We&apos;ll review your brand and be in touch within 1&ndash;2 business days.
+                </p>
+              </div>
+            ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <Field label="Name" required>
                 <Input
@@ -252,12 +264,22 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                 </p>
               </Field>
 
+              {status === "error" && (
+                <p className="font-mono text-xs text-red-600">{errorMsg}</p>
+              )}
+
               <div className="mt-2">
-                <Button type="submit" size="lg" className="w-full sm:w-auto">
-                  Send request
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  disabled={status === "submitting"}
+                >
+                  {status === "submitting" ? "Sending..." : "Send request"}
                 </Button>
               </div>
             </form>
+            )}
           </div>
 
           <div className="mt-12 border-t border-dotted border-neutral-950 2xl:mt-24" />
