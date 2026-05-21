@@ -33,12 +33,12 @@ export function DiagnosticSection({ content }: { content: DiagnosticContent | nu
   const stats = data.stats?.length > 0 ? data.stats : FALLBACK.stats
 
   return (
-    <div className="grid w-full gap-16 px-5 pt-8 pb-12 2xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] 2xl:gap-10 2xl:px-20 2xl:pt-0 2xl:py-0">
-      <div className="flex max-w-93 flex-col gap-8 2xl:mt-60 2xl:gap-15 text-center 2xl:text-left mx-auto 2xl:mx-0">
-        <p className="font-sans text-4xl sm:text-5xl 2xl:text-[64px] leading-none 2xl:leading-16 font-black tracking-tight text-white uppercase">
+    <div className="grid w-full gap-3 px-5 pt-2 pb-12 sm:gap-14 sm:pt-8 2xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] 2xl:gap-10 2xl:px-20 2xl:pt-0 2xl:py-0">
+      <div className="flex max-w-93 flex-col gap-3 sm:gap-8 2xl:mt-60 2xl:gap-15 text-center 2xl:text-left mx-auto 2xl:mx-0">
+        <p className="font-sans text-3xl sm:text-4xl 2xl:text-[64px] leading-tight 2xl:leading-16 font-black tracking-tight text-white uppercase">
           {data.headingLine1}
         </p>
-        <p className="font-sans text-4xl sm:text-5xl 2xl:text-[64px] leading-none 2xl:leading-16 font-semibold tracking-tight text-primary uppercase">
+        <p className="font-sans text-3xl sm:text-4xl 2xl:text-[64px] leading-tight 2xl:leading-16 font-semibold tracking-tight text-primary uppercase">
           {data.headingLine2}
         </p>
       </div>
@@ -47,7 +47,7 @@ export function DiagnosticSection({ content }: { content: DiagnosticContent | nu
         <Diagnostic content={data} />
       </div>
 
-      <div className="flex max-w-116 flex-col gap-8 2xl:mt-60 2xl:gap-9 2xl:justify-self-end text-center 2xl:text-left mx-auto 2xl:mx-0 items-center 2xl:items-start">
+      <div className="mt-8 flex max-w-116 flex-col gap-8 2xl:mt-60 2xl:gap-9 2xl:justify-self-end text-center 2xl:text-left mx-auto 2xl:mx-0 items-center 2xl:items-start">
         <p className="type-heading-4 text-white">{data.descriptionText}</p>
         <div className="flex w-full flex-wrap justify-center 2xl:justify-start gap-4">
           {stats.map((stat) => (

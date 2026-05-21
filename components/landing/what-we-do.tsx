@@ -159,7 +159,7 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
 
   return (
     <div className="mx-auto w-full px-5 sm:px-6">
-      <div className="flex flex-col gap-4 lg:px-30">
+      <div className="flex flex-col gap-2 sm:gap-4 lg:px-30">
         <p className="font-mono text-2xl font-semibold tracking-tight text-pink-500 sm:text-3xl 2xl:text-4xl">
           {label}
         </p>
@@ -169,12 +169,12 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
       </div>
 
       {/* Mobile/Tablet Sticky Stack */}
-      <div className="relative mt-16 mb-10 block lg:hidden">
+      <div className="relative mt-8 mb-6 block lg:hidden">
         {displayTabs.map((tab, idx) => (
           <div
             key={tab.value}
             className="sticky w-full rounded-t-[2rem] rounded-b-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-t-[3rem] sm:rounded-b-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
-            style={{ top: `calc(80px + ${idx * 24}px)` }}
+            style={{ top: `calc(64px + ${idx * 8}px)` }}
           >
             <div className="mb-6 w-fit rounded-full bg-lime-50 px-5 py-2 font-sans text-xs font-bold tracking-widest text-lime-950 uppercase shadow-sm sm:px-6 sm:py-2.5 sm:text-sm">
               {tab.label}

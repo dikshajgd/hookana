@@ -148,8 +148,8 @@ export function Roles({ content }: { content: RolesContent | null }) {
   const active: RoleItem = displayRoles[activeIndex] ?? displayRoles[0]
 
   return (
-    <section className="mt-20 flex w-full flex-col items-center justify-center px-6 2xl:mt-40 2xl:px-0 2xl:pl-6">
-      <div className="flex w-full flex-col items-center justify-center gap-4 text-center 2xl:gap-10">
+    <section className="mt-10 flex w-full flex-col items-center justify-center px-6 sm:mt-20 2xl:mt-40 2xl:px-0 2xl:pl-6">
+      <div className="flex w-full flex-col items-center justify-center gap-2 text-center sm:gap-4 2xl:gap-10">
         <p className="font-sans text-5xl leading-tight font-black text-foreground uppercase sm:text-7xl 2xl:text-[128px] 2xl:leading-12">
           {heading}
         </p>
@@ -158,7 +158,7 @@ export function Roles({ content }: { content: RolesContent | null }) {
         </p>
       </div>
 
-      <div className="mt-16 w-full 2xl:mt-30">
+      <div className="mt-8 w-full sm:mt-16 2xl:mt-30">
         <div className="flex w-full flex-col justify-between gap-12 2xl:flex-row 2xl:gap-0">
           {/* Mobile tab selector */}
           <div className="flex w-full gap-2 pb-4 sm:gap-3 2xl:hidden">
@@ -170,7 +170,7 @@ export function Roles({ content }: { content: RolesContent | null }) {
                   type="button"
                   onClick={() => setActiveIndex(i)}
                   className={cn(
-                    "flex h-17 flex-1 shrink items-center justify-center px-2 text-center font-mono text-[9px] leading-tight whitespace-normal uppercase transition-all sm:h-20 sm:px-4 sm:text-xs",
+                    "flex min-h-17 flex-1 shrink items-center justify-center px-2 py-2 text-center font-mono text-[11px] leading-tight whitespace-normal uppercase transition-all sm:min-h-20 sm:px-4 sm:text-xs",
                     isActive
                       ? "bg-secondary font-bold text-secondary-foreground [clip-path:polygon(0_0,100%_0,100%_calc(100%-0.75rem),50%_100%,0_calc(100%-0.75rem))]"
                       : "rounded-md bg-secondary/40 text-secondary-foreground/60 hover:bg-secondary/60"

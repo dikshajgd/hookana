@@ -43,19 +43,19 @@ export function DiagnosticIntro({
   const spendOptions = f.spendOptions?.length > 0 ? f.spendOptions : FALLBACK.spendOptions
 
   return (
-    <form onSubmit={onSubmit} className="flex h-full flex-col gap-12">
+    <form onSubmit={onSubmit} className="flex h-full flex-col gap-4 sm:gap-5">
       <FormField label={f.brandNameLabel} help={f.brandNameHelp}>
-        <div className="flex h-9 w-full sm:w-80 items-center gap-2 rounded-md border border-neutral-950 bg-popover px-3 shadow-xs">
-          <Globe className="size-4 shrink-0 text-primary-foreground/70" />
+        <div className="flex h-10 w-full sm:w-80 items-center gap-2 rounded-md border border-neutral-300 bg-white px-3 shadow-xs">
+          <Globe className="size-4 shrink-0 text-neutral-500" />
           <Input value={brandName} onChange={(e) => onBrandNameChange(e.target.value)}
-            className="h-auto flex-1 rounded-none border-none bg-transparent px-0 py-0 text-sm text-primary-foreground shadow-none placeholder:text-primary-foreground/60 focus-visible:border-none focus-visible:ring-0"
+            className="h-auto flex-1 rounded-none border-none bg-transparent px-0 py-0 text-sm text-neutral-900 shadow-none placeholder:text-neutral-400 focus-visible:border-none focus-visible:ring-0"
             placeholder={f.brandNamePlaceholder} />
         </div>
       </FormField>
 
       <FormField label={f.industryLabel} help={f.industryHelp}>
         <Select value={industry || undefined} onValueChange={onIndustryChange}>
-          <SelectTrigger className="h-9 w-full sm:w-80 rounded-md border-neutral-950 bg-popover text-primary-foreground shadow-xs data-placeholder:text-primary-foreground/60 [&_svg]:text-primary-foreground!">
+          <SelectTrigger className="h-10 w-full sm:w-80 rounded-md border-neutral-300 bg-white text-neutral-900 shadow-xs data-placeholder:text-neutral-400 [&_svg]:text-neutral-500!">
             <SelectValue placeholder="Select..." />
           </SelectTrigger>
           <SelectContent>
@@ -70,7 +70,7 @@ export function DiagnosticIntro({
 
       <FormField label={f.spendLabel} help={f.spendHelp}>
         <Select value={monthlyAdSpend || undefined} onValueChange={onMonthlyAdSpendChange}>
-          <SelectTrigger className="h-9 w-full sm:w-80 rounded-md border-neutral-950 bg-popover text-primary-foreground shadow-xs data-placeholder:text-primary-foreground/60 [&_svg]:text-primary-foreground!">
+          <SelectTrigger className="h-10 w-full sm:w-80 rounded-md border-neutral-300 bg-white text-neutral-900 shadow-xs data-placeholder:text-neutral-400 [&_svg]:text-neutral-500!">
             <DollarSign className="size-4 shrink-0" />
             <SelectValue placeholder="Select..." />
           </SelectTrigger>
@@ -84,7 +84,7 @@ export function DiagnosticIntro({
         </Select>
       </FormField>
 
-      <div className="mt-auto flex w-full sm:w-80 flex-col gap-3">
+      <div className="mt-4 flex w-full sm:w-80 flex-col gap-3">
         <Button type="submit" variant="default" size="lg" className="rounded-md px-6">
           {f.startButtonText}
           <ArrowRight className="size-4" />

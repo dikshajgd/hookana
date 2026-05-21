@@ -8,10 +8,10 @@ export function FormField({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-1.5">
       <p className="type-monospaced text-foreground uppercase">{label}</p>
       {children}
-      <p className="font-mono text-xs leading-3.5 text-foreground">{help}</p>
+      <p className="font-mono text-[11px] leading-snug text-foreground/55 sm:text-xs sm:leading-tight sm:text-foreground/70">{help}</p>
     </div>
   )
 }

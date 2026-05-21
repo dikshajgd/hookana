@@ -29,7 +29,7 @@ export function StatsMarquee({ items }: { items: string[] }) {
               <span className="type-monospaced text-[16px] whitespace-nowrap text-secondary-foreground">
                 ✦ {stat}
               </span>
-              <div className="w-40 shrink-0" />
+              <div className="w-12 shrink-0 sm:w-24 lg:w-40" />
             </div>
           ))}
         </div>

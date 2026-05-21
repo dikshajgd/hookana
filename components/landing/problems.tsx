@@ -97,7 +97,7 @@ const FALLBACK_TABS: ProblemTab[] = [
 function DiagnosticReceipt({ receipt }: { receipt: ProblemTab["receipt"] }) {
   return (
     <div className="relative w-full self-start rounded-sm bg-card px-5 pt-6 pb-8 sm:px-8 sm:pt-10 sm:pb-18 md:px-11">
-      <div className="pointer-events-none absolute top-[25%] right-1 -translate-y-1/2 -rotate-12 rounded-[10px] border-2 border-primary px-2 py-1 font-sans text-sm font-black tracking-wide text-primary uppercase opacity-90 sm:right-2 sm:border-3 sm:px-4 sm:py-2.5 sm:text-xl">
+      <div className="pointer-events-none absolute -top-3 right-2 -rotate-12 rounded-[10px] border-2 border-primary bg-card px-2 py-1 font-sans text-xs font-black tracking-wide text-primary uppercase opacity-90 sm:top-[25%] sm:right-2 sm:-translate-y-1/2 sm:border-3 sm:px-4 sm:py-2.5 sm:text-xl">
         SOUND FAMILIAR?
       </div>
       <div className="mb-3 flex items-start justify-between gap-4 border-b border-dashed border-black pb-3 sm:mb-4 sm:pb-4">
@@ -170,7 +170,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
           <div
             key={tab.value}
             className="sticky w-full rounded-t-[2rem] rounded-b-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-t-[3rem] sm:rounded-b-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
-            style={{ top: `calc(80px + ${idx * 24}px)` }}
+            style={{ top: `calc(64px + ${idx * 8}px)` }}
           >
             <div className="mb-6 w-fit rounded-full bg-lime-50 px-5 py-2 font-sans text-xs font-bold tracking-widest text-lime-950 uppercase shadow-sm sm:mb-8 sm:px-6 sm:py-2.5 sm:text-sm">
               {tab.label}

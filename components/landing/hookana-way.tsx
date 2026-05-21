@@ -60,9 +60,9 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
   const displaySteps = steps?.length > 0 ? steps : FALLBACK.steps
 
   return (
-    <section className="mt-40 px-5 pb-20 md:pb-28">
-      <div className="mx-auto flex flex-col items-center gap-6 text-center">
-        <h2 className="font-sans text-[42px] leading-9 font-semibold tracking-[-1.5px] text-primary-foreground md:text-[64px] md:leading-12">
+    <section className="mt-20 px-5 pb-14 md:mt-40 md:pb-28">
+      <div className="mx-auto flex flex-col items-center gap-4 text-center md:gap-6">
+        <h2 className="font-sans text-4xl leading-tight font-semibold tracking-tight text-primary-foreground sm:text-[42px] sm:leading-9 sm:tracking-[-1.5px] md:text-[64px] md:leading-12">
           {headingLines.map((line, i) => (
             <span key={i}>
               {line}
@@ -83,7 +83,7 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
         </ContactLink>
       </div>
 
-      <div className="mx-auto mt-24 grid max-w-237.5 gap-2 md:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-237.5 gap-2 md:mt-24 md:grid-cols-3">
         {displaySteps.map((step, i) => (
           <HookanaStepCard
             key={i}

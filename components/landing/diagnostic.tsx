@@ -324,7 +324,7 @@ export function Diagnostic({ content }: { content: DiagnosticContent | null }) {
 
   return (
     <div className="flex w-full justify-center">
-      <section className="relative -mt-10 min-h-[600px] w-full max-w-180 bg-card px-6 py-12 md:min-h-240 md:px-19 md:py-18 2xl:-mt-20">
+      <section className="relative w-full max-w-180 bg-card px-6 py-10 md:-mt-10 md:px-19 md:py-12 2xl:-mt-20">
         <div className="absolute top-0 -right-px h-12 w-12 overflow-hidden bg-blue-950 sm:h-16 sm:w-16 2xl:bg-pink-300">
           <div
             className="absolute inset-0 bg-muted-foreground"
@@ -333,8 +333,8 @@ export function Diagnostic({ content }: { content: DiagnosticContent | null }) {
         </div>
 
         <div className="mx-auto flex h-full flex-col">
-          <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:gap-8">
-            <h2 className="font-sans text-4xl leading-none font-semibold tracking-[-1.5px] text-card-foreground uppercase sm:text-5xl 2xl:text-[64px] 2xl:leading-12">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-8">
+            <h2 className="font-sans text-2xl leading-tight font-semibold tracking-tight text-card-foreground uppercase sm:text-5xl sm:leading-none sm:tracking-[-1.5px] 2xl:text-[64px] 2xl:leading-12">
               <span className="block">{headingLines[0]}</span>
               <span className="block">{headingLines[1]}</span>
               <span className="block">{headingLines[2]}</span>
@@ -344,9 +344,9 @@ export function Diagnostic({ content }: { content: DiagnosticContent | null }) {
             </p>
           </div>
 
-          <div className="mt-20 border-t border-dotted border-neutral-950" />
+          <div className="mt-6 border-t border-dotted border-neutral-950 sm:mt-10" />
 
-          <div className="mt-24 flex min-h-140 flex-col">
+          <div className="mt-6 flex min-h-80 flex-col sm:mt-8 sm:min-h-100">
             {stage === "intro" && (
               <DiagnosticIntro
                 brandName={brandName}
@@ -419,8 +419,8 @@ export function Diagnostic({ content }: { content: DiagnosticContent | null }) {
             )}
           </div>
 
-          <div className="mt-24 border-t border-dotted border-neutral-950" />
-          <p className="mt-5 font-mono text-xs leading-3.5 text-blue-500">
+          <div className="mt-6 border-t border-dotted border-neutral-950 sm:mt-10" />
+          <p className="mt-3 font-mono text-xs leading-3.5 text-blue-500 sm:mt-5">
             {footerCopy}
           </p>
         </div>

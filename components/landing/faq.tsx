@@ -40,10 +40,10 @@ export function Faq({ content }: { content: FaqContent | null }) {
   const h2Lines = heading2.split("\n")
 
   return (
-    <section className="mx-auto w-full px-5 py-20 sm:py-32 2xl:py-52 md:px-36">
-      <div className="flex flex-col gap-16 2xl:grid 2xl:grid-cols-[500px_800px] 2xl:justify-between 2xl:gap-0">
-        <div className="flex flex-col gap-6 sm:gap-10 2xl:gap-15">
-          <h2 className="font-sans text-5xl sm:text-7xl 2xl:text-[96px] leading-tight 2xl:leading-18 font-semibold tracking-tight 2xl:tracking-[-1.5px] text-primary">
+    <section className="mx-auto w-full px-5 py-14 sm:py-20 md:px-12 lg:px-20 2xl:py-52 2xl:px-36">
+      <div className="flex flex-col gap-10 sm:gap-14 2xl:grid 2xl:grid-cols-[500px_800px] 2xl:justify-between 2xl:gap-0">
+        <div className="flex flex-col gap-3 sm:gap-6 2xl:gap-15">
+          <h2 className="font-sans text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-tight 2xl:leading-18 font-semibold tracking-tight 2xl:tracking-[-1.5px] text-primary">
             {h1Lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -51,7 +51,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
               </span>
             ))}
           </h2>
-          <p className="font-sans text-5xl sm:text-7xl 2xl:text-[96px] leading-tight 2xl:leading-18 font-semibold tracking-tight 2xl:tracking-[-1.5px] text-secondary-foreground">
+          <p className="font-sans text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-tight 2xl:leading-18 font-semibold tracking-tight 2xl:tracking-[-1.5px] text-secondary-foreground">
             {h2Lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -72,7 +72,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
                 value={String(index)}
                 className="border-0 not-last:border-b-0 data-open:bg-transparent"
               >
-                <AccordionTrigger className="font-sans text-xl sm:text-2xl 2xl:type-heading-2 text-left leading-tight px-0 py-4 text-pink-100 hover:no-underline **:data-[slot=accordion-trigger-icon]:text-pink-100">
+                <AccordionTrigger className="font-sans text-xl sm:text-2xl 2xl:type-heading-2 text-left leading-tight px-0 py-2 2xl:py-4 text-pink-100 hover:no-underline **:data-[slot=accordion-trigger-icon]:text-pink-100">
                   {item.question}
                 </AccordionTrigger>
                 <AccordionContent className="px-0 pt-1 pb-4 2xl:pb-0 text-pink-50/90">
@@ -81,7 +81,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
               </AccordionItem>
 
               <div
-                className="mt-5 mb-5 h-px w-full text-primary"
+                className="mt-3 mb-3 2xl:mt-5 2xl:mb-5 h-px w-full text-primary"
                 style={{
                   backgroundImage:
                     "repeating-linear-gradient(to right, currentColor 0, currentColor 2px, transparent 2px, transparent 4px)",

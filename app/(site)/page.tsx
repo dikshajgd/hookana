@@ -47,7 +47,7 @@ export default async function Page() {
 
       <StatsMarquee items={page?.stats?.marqueeItems ?? []} />
 
-      <section className="w-full bg-blue-50 pt-30 pb-15">
+      <section className="w-full bg-blue-50 pt-12 pb-15 sm:pt-30">
         <div id="services" className="scroll-mt-24">
           <WhatWeDo content={page?.services ?? null} />
         </div>

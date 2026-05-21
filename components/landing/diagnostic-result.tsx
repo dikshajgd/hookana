@@ -57,7 +57,7 @@ export function DiagnosticResult({
         </p>
       </div>
 
-      <div className="mt-auto flex w-80 items-center gap-3 pt-8">
+      <div className="mt-auto flex w-full items-center gap-3 pt-8 sm:w-80">
         <Button
           type="button"
           variant="outline"

@@ -1,4 +1,9 @@
+"use client"
+
+import { useState, type FormEvent } from "react"
 import type { ContactContent } from "@/sanity/lib/types"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const FALLBACK: Pick<ContactContent, "heading" | "subtext" | "footerText"> = {
   heading: "Get your\nfirst 2\n concepts\nfree.",
@@ -8,9 +13,67 @@ const FALLBACK: Pick<ContactContent, "heading" | "subtext" | "footerText"> = {
     "We'll review your brand, build 2 sample concepts, and walk you through them on a quick call.",
 }
 
+const TARGET_EMAIL = "dikshajgd@gmail.com"
+
+type FormState = {
+  name: string
+  brandName: string
+  website: string
+  email: string
+  ongoingSupport: string
+  budget: string
+  productDescription: string
+  brief: string
+  brandAssets: string
+  adSpend: string
+  deliveryEmail: string
+}
+
+const INITIAL: FormState = {
+  name: "",
+  brandName: "",
+  website: "",
+  email: "",
+  ongoingSupport: "",
+  budget: "",
+  productDescription: "",
+  brief: "",
+  brandAssets: "",
+  adSpend: "",
+  deliveryEmail: "",
+}
+
 export function CtaForm({ content }: { content: ContactContent | null }) {
   const c = content ?? FALLBACK
   const headingLines = c.heading.split("\n")
+  const [values, setValues] = useState<FormState>(INITIAL)
+
+  const update =
+    (key: keyof FormState) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setValues((v) => ({ ...v, [key]: e.target.value }))
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const subject = `New Concept Request — ${values.brandName || values.name}`
+    const body = [
+      `Name: ${values.name}`,
+      `Brand name: ${values.brandName}`,
+      `Website / Landing Page: ${values.website}`,
+      `Email: ${values.email}`,
+      `Looking for ongoing creative support: ${values.ongoingSupport}`,
+      `Budget Per Creative (Design/Editing Only): ${values.budget}`,
+      `Product Description: ${values.productDescription}`,
+      `Brief/Concept (links): ${values.brief}`,
+      `Brand Assets (links): ${values.brandAssets}`,
+      `Current Monthly Ad Spend: ${values.adSpend}`,
+      `Where to send concepts: ${values.deliveryEmail}`,
+    ].join("\n")
+    const href = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`
+    window.location.href = href
+  }
 
   return (
     <div className="flex w-full justify-center px-5 2xl:px-0">
@@ -32,24 +95,169 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                 </span>
               ))}
             </h2>
-            <p className="type-heading-3 max-w-70.25 text-foreground">
+            <p className="type-heading-3 max-w-none text-foreground 2xl:max-w-70.25">
               {c.subtext}
             </p>
           </div>
 
           <div className="mt-12 border-t border-dotted border-neutral-950 2xl:mt-20" />
 
-          <div className="mt-12 rounded-sm border border-neutral-200 shadow-xl 2xl:mt-24">
-            <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLSfKDKhg1sxeayXdk4fOuXMIMe81BkOzQl_MdTg4fLTarabDoQ/viewform?embedded=true"
-              width="100%"
-              frameBorder={0}
-              marginHeight={0}
-              marginWidth={0}
-              className="h-[2500px] 2xl:h-[600px]"
-            >
-              Loading…
-            </iframe>
+          <div className="mt-12 2xl:mt-24">
+            <div className="mb-8">
+              <h3 className="font-sans text-2xl font-semibold tracking-tight text-card-foreground">
+                GET 2 FREE CONCEPTS
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                for Meta, Snapchat & short-form ads
+              </p>
+              <p className="mt-3 text-sm text-foreground">
+                We only take a limited number of brands each month.
+              </p>
+              <p className="mt-2 text-sm text-foreground">
+                If it&rsquo;s a fit, we&rsquo;ll send 2 tailored concepts based on your
+                product, creatives, and current ad direction.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <Field label="Name" required>
+                <Input
+                  required
+                  value={values.name}
+                  onChange={update("name")}
+                  placeholder="Your full name"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+              </Field>
+
+              <Field label="Brand name" required>
+                <Input
+                  required
+                  value={values.brandName}
+                  onChange={update("brandName")}
+                  placeholder="e.g. Hookana"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+              </Field>
+
+              <Field label="Website / Landing Page">
+                <Input
+                  type="url"
+                  value={values.website}
+                  onChange={update("website")}
+                  placeholder="https://yourbrand.com"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+              </Field>
+
+              <Field label="Email" required>
+                <Input
+                  type="email"
+                  required
+                  value={values.email}
+                  onChange={update("email")}
+                  placeholder="you@brand.com"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+              </Field>
+
+              <Field
+                label="Are you looking for ongoing creative support if it's a fit?"
+                required
+              >
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center gap-2 text-sm text-foreground">
+                    <input
+                      type="radio"
+                      name="ongoingSupport"
+                      value="Yes — actively looking"
+                      checked={values.ongoingSupport === "Yes — actively looking"}
+                      onChange={update("ongoingSupport")}
+                      required
+                    />
+                    Yes — actively looking
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-foreground">
+                    <input
+                      type="radio"
+                      name="ongoingSupport"
+                      value="Just exploring for now"
+                      checked={values.ongoingSupport === "Just exploring for now"}
+                      onChange={update("ongoingSupport")}
+                    />
+                    Just exploring for now
+                  </label>
+                </div>
+              </Field>
+
+              <Field label="Budget Per Creative (Design/Editing Only)">
+                <Input
+                  value={values.budget}
+                  onChange={update("budget")}
+                  placeholder="e.g. $150 per creative"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+              </Field>
+
+              <Field label="Product Description">
+                <Textarea
+                  value={values.productDescription}
+                  onChange={update("productDescription")}
+                  rows={3}
+                  placeholder="What you sell, who it's for, and what makes it different"
+                />
+              </Field>
+
+              <Field label="Brief/Concept you would like us to produce (LINKS ONLY)">
+                <Textarea
+                  value={values.brief}
+                  onChange={update("brief")}
+                  rows={2}
+                  placeholder="Paste links to references, briefs, or boards (Drive, Notion, Figma, etc.)"
+                />
+              </Field>
+
+              <Field
+                label="Brand Assets — Product, UGC Footages, Brand Guide (LINKS ONLY)"
+                required
+              >
+                <Textarea
+                  required
+                  value={values.brandAssets}
+                  onChange={update("brandAssets")}
+                  rows={2}
+                  placeholder="Drive / Dropbox / Notion links to product shots, UGC, brand guide"
+                />
+              </Field>
+
+              <Field label="Current Monthly Ad Spend">
+                <Input
+                  value={values.adSpend}
+                  onChange={update("adSpend")}
+                  placeholder="e.g. $10k / month on Meta + Snap"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+              </Field>
+
+              <Field label="Where should we send your concepts?">
+                <Input
+                  type="email"
+                  value={values.deliveryEmail}
+                  onChange={update("deliveryEmail")}
+                  placeholder="best email to receive the concepts"
+                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                />
+                <p className="mt-1 text-xs text-muted-foreground">
+                  We usually deliver within 2&ndash;4 business days if selected.
+                </p>
+              </Field>
+
+              <div className="mt-2">
+                <Button type="submit" size="lg" className="w-full sm:w-auto">
+                  Send request
+                </Button>
+              </div>
+            </form>
           </div>
 
           <div className="mt-12 border-t border-dotted border-neutral-950 2xl:mt-24" />
@@ -74,5 +282,38 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
         </div>
       </section>
     </div>
+  )
+}
+
+function Field({
+  label,
+  required,
+  children,
+}: {
+  label: string
+  required?: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label className="text-sm font-medium text-card-foreground">
+        {label}
+        {required && <span className="ml-0.5 text-destructive">*</span>}
+      </label>
+      {children}
+    </div>
+  )
+}
+
+function Textarea(props: React.ComponentProps<"textarea">) {
+  const { className, ...rest } = props
+  return (
+    <textarea
+      {...rest}
+      className={
+        "w-full min-w-0 rounded-md border border-neutral-300 bg-white px-3 py-2 text-base text-neutral-900 transition-[color,box-shadow,background-color] outline-none placeholder:text-neutral-400 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 md:text-sm " +
+        (className ?? "")
+      }
+    />
   )
 }
