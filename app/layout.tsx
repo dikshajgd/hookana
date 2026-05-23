@@ -48,9 +48,7 @@ export default function RootLayout({
       <body className="overflow-x-hidden bg-pink-300 font-serif">
         {children}
       </body>
-      {process.env.NEXT_PUBLIC_GA_ID && (
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-      )}
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-929LX8S0BB"} />
     </html>
   )
 }
