@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { ArrowUpRight, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -34,18 +35,29 @@ const FALLBACK_GROUPS = [
 export function Navbar({ content }: { content: NavbarContent | null }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
+
+  function navigateTo(href: string) {
+    if (href.startsWith("#")) {
+      const id = href.slice(1)
+      if (pathname === "/") {
+        document.getElementById(id)?.scrollIntoView()
+      } else {
+        router.push(`/${href}`)
+      }
+    } else if (href.startsWith("/")) {
+      if (href === pathname) {
+        window.scrollTo({ top: 0 })
+      } else {
+        router.push(href)
+      }
+    }
+  }
 
   function closeAndScroll(href: string) {
     setMenuOpen(false)
-    setTimeout(() => {
-      if (href.startsWith("#")) {
-        document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" })
-      } else if (href.startsWith("/")) {
-        window.location.href = href
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" })
-      }
-    }, 300)
+    navigateTo(href)
   }
 
   useEffect(() => {
@@ -53,6 +65,17 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (pathname !== "/") return
+    if (typeof window === "undefined") return
+    const hash = window.location.hash
+    if (!hash) return
+    const id = hash.slice(1)
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView()
+    })
+  }, [pathname])
 
   const allLinks = content?.links ?? FALLBACK_LINKS
   const logoText = content?.logoText ?? "HOOKANA"
@@ -73,7 +96,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             className="font-sans text-[42px] leading-8 font-black tracking-tight text-black xl:text-[60px] xl:leading-10 2xl:text-[64px] 2xl:leading-12 2xl:tracking-[-1.5px]"
             onClick={(e) => {
               e.preventDefault()
-              window.scrollTo({ top: 0, behavior: "smooth" })
+              window.scrollTo({ top: 0 })
             }}
           >
             {logoText}
@@ -85,7 +108,11 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                 {group.map((link) => (
                   <Link
                     key={link.href}
-                    href={link.href}
+                    href={link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      navigateTo(link.href)
+                    }}
                     className="2xl:type-heading-4 text-sm font-semibold whitespace-nowrap text-primary-foreground transition-opacity hover:opacity-70 xl:text-lg"
                   >
                     {link.label}
@@ -102,12 +129,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             asChild
           >
             <Link
-              href="#contact"
+              href={pathname === "/" ? "#contact" : "/#contact"}
               onClick={(e) => {
                 e.preventDefault()
-                document
-                  .getElementById("contact")
-                  ?.scrollIntoView({ behavior: "smooth" })
+                navigateTo("#contact")
               }}
             >
               {ctaText}
@@ -132,7 +157,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             className="font-sans text-lg leading-none font-black tracking-[-1px] whitespace-nowrap text-white"
             onClick={(e) => {
               e.preventDefault()
-              window.scrollTo({ top: 0, behavior: "smooth" })
+              window.scrollTo({ top: 0 })
             }}
           >
             {logoText}
