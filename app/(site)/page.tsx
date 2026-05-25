@@ -31,10 +31,9 @@ export default async function Page() {
       <div className="flex flex-col">
         <Problems
           tabs={page?.problems?.tabs ?? []}
-          className="order-2 md:order-1"
         />
 
-        <div className="order-1 mt-26 w-full bg-blue-950 md:order-2 md:mt-50">
+        <div className="mt-26 w-full bg-blue-950 md:mt-50">
           <div id="contact" className="scroll-mt-24 bg-secondary pt-24 lg:pt-0">
             <div className="relative">
               <img
