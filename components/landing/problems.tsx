@@ -164,7 +164,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
   const displayTabs = tabs?.length > 0 ? tabs : FALLBACK_TABS
 
   return (
-    <div className={`px-5 ${className ?? ""}`}>
+    <div className={`relative z-20 px-5 ${className ?? ""}`}>
       <div className="mt-24 mb-10 flex flex-col gap-6 lg:hidden">
         {displayTabs.map((tab) => (
           <div
