@@ -35,7 +35,7 @@ export default async function Page() {
         />
 
         <div className="order-1 mt-26 w-full bg-blue-950 md:order-2 md:mt-50">
-          <div id="contact" className="scroll-mt-24 bg-secondary">
+          <div id="contact" className="scroll-mt-24 bg-secondary pt-24 lg:pt-0">
             <div className="relative">
               <img
                 src="/svg/guy.svg"
