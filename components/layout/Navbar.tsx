@@ -21,7 +21,7 @@ const FALLBACK_LINKS = [
   { label: "Services", href: "#services" },
   { label: "Pricing", href: "#pricing" },
   { label: "Who it's for", href: "#who-its-for" },
-  { label: "Free check", href: "#free-check" },
+  { label: "Tools", href: "/tools" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -40,6 +40,8 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
     setTimeout(() => {
       if (href.startsWith("#")) {
         document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" })
+      } else if (href.startsWith("/")) {
+        window.location.href = href
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" })
       }
