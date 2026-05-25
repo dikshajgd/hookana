@@ -20,7 +20,7 @@ const FALLBACK_LINKS = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Services", href: "#services" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Who it's for", href: "#who-its-for" },
+  { label: "Portfolio", href: "/portfolio" },
   { label: "Tools", href: "/tools" },
   { label: "Contact", href: "#contact" },
 ]
