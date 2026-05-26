@@ -82,13 +82,6 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
   return (
     <div className="flex w-full justify-center px-5 2xl:px-0">
       <section className="relative -mt-20 w-full max-w-180 bg-card px-6 py-12 2xl:px-19 2xl:py-18">
-        <div className="absolute top-0 -right-px h-16 w-16 overflow-hidden bg-blue-50">
-          <div
-            className="absolute inset-0 bg-muted-foreground"
-            style={{ clipPath: "polygon(0 0, 0 100%, 100% 100%)" }}
-          />
-        </div>
-
         <div className="mx-auto">
           <div className="grid gap-6 2xl:grid-cols-[255px_1fr] 2xl:gap-9">
             <h2 className="font-sans text-4xl leading-tight font-semibold tracking-tight text-card-foreground sm:text-[42px] sm:tracking-[-1.5px] 2xl:text-[64px] 2xl:leading-12">
