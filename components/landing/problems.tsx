@@ -1,6 +1,7 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { AutoCarousel } from "@/components/landing/auto-carousel"
 import type { ProblemTab } from "@/sanity/lib/types"
 
 const FALLBACK_TABS: ProblemTab[] = [
@@ -165,12 +166,15 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
 
   return (
     <div className={`relative z-20 px-5 ${className ?? ""}`}>
-      <div className="relative mt-24 mb-10 block lg:hidden">
-        {displayTabs.map((tab, idx) => (
+      <AutoCarousel
+        interval={3000}
+        className="mt-24 mb-10 -mx-5 scroll-px-5 px-5 lg:hidden"
+        slideClassName="w-[88%] sm:w-[80%]"
+      >
+        {displayTabs.map((tab) => (
           <div
             key={tab.value}
-            className="sticky w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
-            style={{ top: `calc(64px + ${idx * 8}px)` }}
+            className="h-full w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
           >
             <div className="mb-6 w-fit rounded-full bg-lime-50 px-5 py-2 font-sans text-xs font-bold tracking-widest text-lime-950 uppercase shadow-sm sm:mb-8 sm:px-6 sm:py-2.5 sm:text-sm">
               {tab.label}
@@ -197,7 +201,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
             </div>
           </div>
         ))}
-      </div>
+      </AutoCarousel>
 
       <div className="hidden lg:block">
         <Tabs defaultValue={displayTabs[0]?.value} className="mt-40 gap-0">
