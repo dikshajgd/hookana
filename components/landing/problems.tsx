@@ -1,6 +1,7 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FadeIn } from "@/components/landing/fade-in"
 import type { ProblemTab } from "@/sanity/lib/types"
 
 const FALLBACK_TABS: ProblemTab[] = [
@@ -167,7 +168,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
     <div className={`relative z-20 px-5 ${className ?? ""}`}>
       <div className="mt-24 mb-10 flex flex-col gap-6 lg:hidden">
         {displayTabs.map((tab) => (
-          <div
+          <FadeIn
             key={tab.value}
             className="w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
           >
@@ -194,7 +195,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
                 <DiagnosticReceipt receipt={tab.receipt} />
               </div>
             </div>
-          </div>
+          </FadeIn>
         ))}
       </div>
 
