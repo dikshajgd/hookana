@@ -1,7 +1,6 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FadeIn } from "@/components/landing/fade-in"
 import type { ProblemTab } from "@/sanity/lib/types"
 
 const FALLBACK_TABS: ProblemTab[] = [
@@ -166,11 +165,12 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
 
   return (
     <div className={`relative z-20 px-5 ${className ?? ""}`}>
-      <div className="mt-24 mb-10 flex flex-col gap-6 lg:hidden">
-        {displayTabs.map((tab) => (
-          <FadeIn
+      <div className="relative mt-24 mb-10 block lg:hidden">
+        {displayTabs.map((tab, idx) => (
+          <div
             key={tab.value}
-            className="w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
+            className="sticky w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
+            style={{ top: `calc(64px + ${idx * 8}px)` }}
           >
             <div className="mb-6 w-fit rounded-full bg-lime-50 px-5 py-2 font-sans text-xs font-bold tracking-widest text-lime-950 uppercase shadow-sm sm:mb-8 sm:px-6 sm:py-2.5 sm:text-sm">
               {tab.label}
@@ -195,7 +195,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
                 <DiagnosticReceipt receipt={tab.receipt} />
               </div>
             </div>
-          </FadeIn>
+          </div>
         ))}
       </div>
 

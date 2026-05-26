@@ -6,11 +6,11 @@ import { cn } from "@/lib/utils"
 export function FadeIn({
   children,
   className,
-  delay = 0,
+  style,
 }: {
   children: React.ReactNode
   className?: string
-  delay?: number
+  style?: React.CSSProperties
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -26,7 +26,7 @@ export function FadeIn({
           observer.unobserve(entry.target)
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0, rootMargin: "0px 0px 15% 0px" }
     )
 
     observer.observe(el)
@@ -34,18 +34,25 @@ export function FadeIn({
   }, [])
 
   return (
-    <div
-      ref={ref}
-      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
-      className={cn(
-        "transition-all duration-700 ease-out",
-        visible
-          ? "translate-y-0 opacity-100"
-          : "translate-y-6 opacity-0",
-        className
-      )}
-    >
-      {children}
-    </div>
+    <>
+      <style>{`
+        @keyframes blinkIn {
+          0%   { opacity: 0; }
+          20%  { opacity: 1; }
+          40%  { opacity: 0.2; }
+          60%  { opacity: 1; }
+          80%  { opacity: 0.4; }
+          100% { opacity: 1; }
+        }
+        .animate-blink-in { animation: blinkIn 0.7s ease-out both; }
+      `}</style>
+      <div
+        ref={ref}
+        style={style}
+        className={cn(visible ? "animate-blink-in" : "opacity-0", className)}
+      >
+        {children}
+      </div>
+    </>
   )
 }
