@@ -2,7 +2,7 @@ import { defineConfig } from "sanity"
 import { structureTool } from "sanity/structure"
 import { schemaTypes } from "./sanity/schemas"
 
-const singletonTypes = new Set(["landingPage", "siteSettings"])
+const singletonTypes = new Set(["landingPage", "siteSettings", "portfolioPage"])
 
 export default defineConfig({
   name: "hookana",
@@ -31,6 +31,14 @@ export default defineConfig({
                 S.document()
                   .schemaType("siteSettings")
                   .documentId("siteSettings")
+              ),
+            S.listItem()
+              .title("Portfolio Page")
+              .id("portfolioPage")
+              .child(
+                S.document()
+                  .schemaType("portfolioPage")
+                  .documentId("portfolioPage")
               ),
           ]),
     }),

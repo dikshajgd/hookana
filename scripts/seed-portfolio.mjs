@@ -1,88 +1,47 @@
 /**
- * Portfolio media (Cloudinary).
+ * Seeds the Sanity `portfolioPage` singleton with the existing portfolio media.
  *
- * Each raw Cloudinary URL is turned into a set of optimized delivery URLs so we
- * never ship the full-resolution / full-length asset to the grid:
+ * Usage:
+ *   1. Add a write token to .env.local:  SANITY_API_WRITE_TOKEN=...
+ *   2. node scripts/seed-portfolio.mjs
  *
- *  - `poster`  : a single still frame (for video) or a small image, used as the
- *                lightweight placeholder so nothing autoplays until needed.
- *  - `preview` : a short, muted, low-bitrate clip (videos only) that plays on
- *                hover / when scrolled into view. Trimmed with `du_` so we only
- *                load the first few seconds, not the whole video.
- *  - `full`    : the higher-quality asset shown in the lightbox on click.
- *
- * Cloudinary transforms used:
- *   f_auto    -> best format for the browser (webp/avif/h264)
- *   q_auto    -> automatic quality compression
- *   w_        -> cap delivery width
- *   c_limit   -> never upscale, preserve aspect ratio
- *   du_       -> trim clip duration (seconds)
- *   so_       -> start offset (which frame to grab for the poster)
- *   ac_none   -> strip audio from the preview clip (smaller, muted anyway)
+ * Safe to re-run: it createOrReplace's the single `portfolioPage` document.
  */
+import { createClient } from "@sanity/client"
+import { readFileSync } from "node:fs"
+import { fileURLToPath } from "node:url"
+import { dirname, join } from "node:path"
 
-const PREVIEW_SECONDS = 6
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
-function withTransform(rawUrl: string, transform: string, ext?: string): string {
-  const [base, rest] = rawUrl.split("/upload/")
-  if (!rest) return rawUrl
-  const tail = ext ? rest.replace(/\.[^/.]+$/, `.${ext}`) : rest
-  return `${base}/upload/${transform}/${tail}`
-}
-
-export type MediaItem = {
-  id: string
-  kind: "video" | "image"
-  poster: string
-  /** short, muted, autoplay-on-hover clip (videos only) */
-  preview?: string
-  /** high quality asset for the lightbox */
-  full: string
-  /** optional label / alt text */
-  title?: string
-}
-
-function video(rawUrl: string, title?: string): MediaItem {
-  return {
-    id: rawUrl,
-    kind: "video",
-    poster: withTransform(rawUrl, "so_1,w_640,c_limit,q_auto", "jpg"),
-    preview: withTransform(
-      rawUrl,
-      `w_720,du_${PREVIEW_SECONDS},vc_auto,ac_none,q_auto,f_mp4`,
-      "mp4"
-    ),
-    full: withTransform(rawUrl, "w_1080,q_auto,f_mp4", "mp4"),
-    title,
+// Minimal .env.local loader (avoids adding a dotenv dependency).
+function loadEnv() {
+  try {
+    const raw = readFileSync(join(__dirname, "..", ".env.local"), "utf8")
+    for (const line of raw.split("\n")) {
+      const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/)
+      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim()
+    }
+  } catch {
+    /* no .env.local — rely on real env */
   }
 }
+loadEnv()
 
-function image(rawUrl: string, title?: string): MediaItem {
-  return {
-    id: rawUrl,
-    kind: "image",
-    poster: withTransform(rawUrl, "w_700,c_limit,q_auto,f_auto"),
-    full: withTransform(rawUrl, "w_1280,c_limit,q_auto,f_auto"),
-    title,
-  }
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production"
+const token = process.env.SANITY_API_WRITE_TOKEN
+
+if (!projectId) {
+  console.error("Missing NEXT_PUBLIC_SANITY_PROJECT_ID")
+  process.exit(1)
 }
-
-/**
- * Map raw CMS portfolio items into optimized MediaItems. Items without a URL
- * are skipped so a half-filled CMS entry never breaks the grid.
- */
-export function toMediaItems(
-  items?: { kind?: "video" | "image"; url?: string; title?: string }[] | null
-): MediaItem[] {
-  if (!items?.length) return []
-  return items
-    .filter(
-      (it): it is { kind: "video" | "image"; url: string; title?: string } =>
-        Boolean(it?.url)
-    )
-    .map((it) =>
-      it.kind === "image" ? image(it.url, it.title) : video(it.url, it.title)
-    )
+if (!token) {
+  console.error(
+    "Missing SANITY_API_WRITE_TOKEN. Create one at sanity.io/manage " +
+      "(project > API > Tokens, Editor permission) and add it to .env.local."
+  )
+  process.exit(1)
 }
 
 const VIDEO_URLS = [
@@ -95,7 +54,6 @@ const VIDEO_URLS = [
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787987/Ad_Variations_1_1_moxzfj.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787983/1_hedra_svy61g.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787945/One_nutraceutical_product.Energy_angle._Sleep_angle._Focus_angle._Gut_health_angle._ttezjm.mp4",
-  // "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787944/hedra_4_vinuey.mov",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787940/3_hedra_odxbpk.mov",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787938/2_hedra_ttpicg.mov",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787936/Same_structure_different_colors_1_ad_the_algorithm_has_seen_before._r4ddoz.mp4",
@@ -140,9 +98,35 @@ const IMAGE_URLS = [
   "https://res.cloudinary.com/ddbynpktj/image/upload/v1779787265/hf_20260519_175522_13e17061-1ade-4e49-9a46-cc8f48ed4b98_hjk6dx.png",
 ]
 
-export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map((u) => video(u))
-export const PORTFOLIO_IMAGES: MediaItem[] = IMAGE_URLS.map((u) => image(u))
-export const PORTFOLIO_MEDIA: MediaItem[] = [
-  ...PORTFOLIO_VIDEOS,
-  ...PORTFOLIO_IMAGES,
+let n = 0
+const key = () => `item_${(++n).toString().padStart(3, "0")}`
+
+const items = [
+  ...VIDEO_URLS.map((url) => ({ _key: key(), _type: "portfolioItem", kind: "video", url })),
+  ...IMAGE_URLS.map((url) => ({ _key: key(), _type: "portfolioItem", kind: "image", url })),
 ]
+
+const doc = {
+  _id: "portfolioPage",
+  _type: "portfolioPage",
+  eyebrow: "Portfolio",
+  heading: "Creative that converts.",
+  description:
+    "Video ads and static concepts we've produced for D2C brands. Hover any reel for a preview, or tap to watch it full screen.",
+  items,
+}
+
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion: "2024-01-01",
+  token,
+  useCdn: false,
+})
+
+const result = await client.createOrReplace(doc)
+console.log(
+  `Seeded "${result._id}" in dataset "${dataset}" with ${items.length} items ` +
+    `(${VIDEO_URLS.length} videos, ${IMAGE_URLS.length} statics).`
+)
+console.log("Open /studio > Portfolio Page to edit. Remember to keep it Published.")

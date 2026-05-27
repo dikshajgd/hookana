@@ -1,5 +1,6 @@
 import { landingPage } from "./documents/landingPage"
 import { siteSettings } from "./documents/siteSettings"
+import { portfolioPage } from "./documents/portfolioPage"
 import { heroSection } from "./objects/heroSection"
 import { problemsSection } from "./objects/problemsSection"
 import { diagnosticSection } from "./objects/diagnosticSection"
@@ -19,6 +20,7 @@ import { logoTickerSection } from "./objects/logoTickerSection"
 export const schemaTypes = [
   landingPage,
   siteSettings,
+  portfolioPage,
   heroSection,
   problemsSection,
   diagnosticSection,

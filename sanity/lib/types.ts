@@ -176,6 +176,19 @@ export type ContactContent = {
   footerText: string
 }
 
+// Portfolio
+export type PortfolioItem = {
+  kind: "video" | "image"
+  url: string
+  title?: string
+}
+export type PortfolioPageContent = {
+  eyebrow?: string
+  heading?: string
+  description?: string
+  items?: PortfolioItem[]
+}
+
 // Full page bundle
 export type LandingPageContent = {
   hero: HeroContent

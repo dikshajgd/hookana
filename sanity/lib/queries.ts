@@ -29,3 +29,16 @@ export const SITE_SETTINGS_QUERY = groq`
     footer
   }
 `
+
+export const PORTFOLIO_PAGE_QUERY = groq`
+  *[_type == "portfolioPage" && _id == "portfolioPage"][0]{
+    eyebrow,
+    heading,
+    description,
+    items[]{
+      kind,
+      url,
+      title
+    }
+  }
+`
