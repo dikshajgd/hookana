@@ -30,9 +30,14 @@ function withTransform(rawUrl: string, transform: string, ext?: string): string 
   return `${base}/upload/${transform}/${tail}`
 }
 
+export type MediaCategory = "ai" | "static" | "video"
+
 export type MediaItem = {
   id: string
+  /** Drives rendering (video element vs img). */
   kind: "video" | "image"
+  /** Drives the filter tabs (AI, Static, Videos). */
+  category: MediaCategory
   poster: string
   /** short, muted, autoplay-on-hover clip (videos only) */
   preview?: string
@@ -40,10 +45,11 @@ export type MediaItem = {
   full: string
 }
 
-function video(rawUrl: string): MediaItem {
+function video(rawUrl: string, category: MediaCategory = "video"): MediaItem {
   return {
     id: rawUrl,
     kind: "video",
+    category,
     poster: withTransform(rawUrl, "so_1,w_640,c_limit,q_auto", "jpg"),
     preview: withTransform(
       rawUrl,
@@ -58,14 +64,16 @@ function image(rawUrl: string): MediaItem {
   return {
     id: rawUrl,
     kind: "image",
+    category: "static",
     poster: withTransform(rawUrl, "w_700,c_limit,q_auto,f_auto"),
     full: withTransform(rawUrl, "w_1280,c_limit,q_auto,f_auto"),
   }
 }
 
-const VIDEO_URLS = [
+// AI-generated content. The Japanese-themed videos are intentionally placed at
+// the end of this list per the brief.
+const AI_URLS = [
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779804429/Diabetes_30_days_animated_song_ybsmdj.mp4",
-  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779804217/vv416.v6_japans_secret_for_stable_blood_sugar_tqxkae.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779788392/vv555_mfmcti.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779788018/vv530.v1_nutritional_breakdown_animated_cartoon_mj4qv8.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779788010/HOOKANA_V1_1_gdkchi.mp4",
@@ -80,6 +88,23 @@ const VIDEO_URLS = [
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787931/Their_UGC_creator_went_on_holiday._ikqotg.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787929/10_creatives_a_week_isn_t_scale._It_s_a_content_calendar._1_julvdw.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779787906/Are_you_afraid_of_someone_asking_this_question__lqkrxx.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779804217/vv416.v6_japans_secret_for_stable_blood_sugar_tqxkae.mp4",
+]
+
+// Real (non-AI) video content.
+const VIDEO_URLS: string[] = [
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966481/vv203.v2_warehouse_packing_bfcm_creb_tmsjju.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966479/TOB_Video-2_oakpi1.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966478/Nutrisense_UGC_2_a2xqey.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966478/STOMACH_WHISPERER_H03_vnkx6q.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966477/Ishan_Nutri_2_bu84wd.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966477/Nutri_5_June_without_music_lwzs88.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966475/Hair_Loss_Meds_V2_gq4j83.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966474/869cc9pj3_-_Vera_Lane_-_The__Anti-Gamble__Logic_Angle_V2_nh1adr.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966473/2_vv530.v1_nutritional_breakdown_animated_cartoon_qlgjxm.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966472/Ishan_Nutri_1_z4cehy.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966472/95-UGC_Ad_r2lasm.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966471/4_1_r9qyqk.mp4",
 ]
 
 const IMAGE_URLS = [
@@ -118,9 +143,13 @@ const IMAGE_URLS = [
   "https://res.cloudinary.com/ddbynpktj/image/upload/v1779787265/hf_20260519_175522_13e17061-1ade-4e49-9a46-cc8f48ed4b98_hjk6dx.png",
 ]
 
-export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map(video)
+export const PORTFOLIO_AI: MediaItem[] = AI_URLS.map((u) => video(u, "ai"))
 export const PORTFOLIO_IMAGES: MediaItem[] = IMAGE_URLS.map(image)
+export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map((u) => video(u, "video"))
+
+// "All" ordering: AI first, then Static, then Videos.
 export const PORTFOLIO_MEDIA: MediaItem[] = [
-  ...PORTFOLIO_VIDEOS,
+  ...PORTFOLIO_AI,
   ...PORTFOLIO_IMAGES,
+  ...PORTFOLIO_VIDEOS,
 ]

@@ -5,12 +5,13 @@ import { Play, X, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { MediaItem } from "@/lib/portfolio-media"
 
-type Filter = "all" | "video" | "image"
+type Filter = "all" | "ai" | "static" | "video"
 
 const FILTERS: { value: Filter; label: string }[] = [
   { value: "all", label: "All work" },
-  { value: "video", label: "Video" },
-  { value: "image", label: "Static" },
+  { value: "ai", label: "AI" },
+  { value: "static", label: "Static" },
+  { value: "video", label: "Videos" },
 ]
 
 export function PortfolioGallery({ items }: { items: MediaItem[] }) {
@@ -18,7 +19,8 @@ export function PortfolioGallery({ items }: { items: MediaItem[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   const visible = useMemo(
-    () => (filter === "all" ? items : items.filter((m) => m.kind === filter)),
+    () =>
+      filter === "all" ? items : items.filter((m) => m.category === filter),
     [items, filter]
   )
 
@@ -45,7 +47,7 @@ export function PortfolioGallery({ items }: { items: MediaItem[] }) {
           const count =
             f.value === "all"
               ? items.length
-              : items.filter((m) => m.kind === f.value).length
+              : items.filter((m) => m.category === f.value).length
           const active = filter === f.value
           return (
             <button
