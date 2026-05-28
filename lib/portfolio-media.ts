@@ -70,6 +70,51 @@ function image(rawUrl: string): MediaItem {
   }
 }
 
+/**
+ * Each portfolio tab is an independently-ordered list. The "All work" tab is
+ * its own list too (not a merge), so the editor has full custom control over
+ * every tab via the CMS.
+ */
+export type PortfolioBundles = {
+  all: MediaItem[]
+  ai: MediaItem[]
+  static: MediaItem[]
+  video: MediaItem[]
+}
+
+/** Build a video-tab list from raw CMS entries (skipping ones missing a URL). */
+export function toVideoItems(
+  items: { url?: string | null }[] | null | undefined,
+  category: MediaCategory
+): MediaItem[] {
+  if (!items?.length) return []
+  return items.filter((it) => Boolean(it?.url)).map((it) => video(it.url as string, category))
+}
+
+/** Build a static-tab list from raw CMS entries. */
+export function toImageItems(
+  items: { url?: string | null }[] | null | undefined
+): MediaItem[] {
+  if (!items?.length) return []
+  return items.filter((it) => Boolean(it?.url)).map((it) => image(it.url as string))
+}
+
+/** Build the mixed "All work" tab list, where each entry declares its kind. */
+export function toMixedItems(
+  items:
+    | { kind?: "video" | "image" | null; url?: string | null }[]
+    | null
+    | undefined
+): MediaItem[] {
+  if (!items?.length) return []
+  return items
+    .filter(
+      (it): it is { kind: "video" | "image"; url: string } =>
+        Boolean(it?.url && it?.kind)
+    )
+    .map((it) => (it.kind === "image" ? image(it.url) : video(it.url, "video")))
+}
+
 // AI-generated content. The Japanese-themed videos are intentionally placed at
 // the end of this list per the brief.
 const AI_URLS = [
@@ -150,9 +195,17 @@ export const PORTFOLIO_AI: MediaItem[] = AI_URLS.map((u) => video(u, "ai"))
 export const PORTFOLIO_IMAGES: MediaItem[] = IMAGE_URLS.map(image)
 export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map((u) => video(u, "video"))
 
-// "All" ordering: AI first, then Static, then Videos.
+// Default "All work" ordering when the CMS hasn't set one: AI → Static → Videos.
 export const PORTFOLIO_MEDIA: MediaItem[] = [
   ...PORTFOLIO_AI,
   ...PORTFOLIO_IMAGES,
   ...PORTFOLIO_VIDEOS,
 ]
+
+/** Bundled fallback used when the CMS document is empty. */
+export const PORTFOLIO_BUNDLES_FALLBACK: PortfolioBundles = {
+  all: PORTFOLIO_MEDIA,
+  ai: PORTFOLIO_AI,
+  static: PORTFOLIO_IMAGES,
+  video: PORTFOLIO_VIDEOS,
+}

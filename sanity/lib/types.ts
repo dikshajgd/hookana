@@ -176,6 +176,23 @@ export type ContactContent = {
   footerText: string
 }
 
+// Portfolio
+export type PortfolioMediaInput = { url: string; title?: string }
+export type PortfolioMixedInput = {
+  kind: "video" | "image"
+  url: string
+  title?: string
+}
+export type PortfolioPageContent = {
+  eyebrow?: string
+  heading?: string
+  description?: string
+  allWorkItems?: PortfolioMixedInput[]
+  aiItems?: PortfolioMediaInput[]
+  staticItems?: PortfolioMediaInput[]
+  videoItems?: PortfolioMediaInput[]
+}
+
 // Full page bundle
 export type LandingPageContent = {
   hero: HeroContent

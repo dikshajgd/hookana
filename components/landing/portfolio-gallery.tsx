@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Play, X, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { MediaItem } from "@/lib/portfolio-media"
+import type { MediaItem, PortfolioBundles } from "@/lib/portfolio-media"
 
 type Filter = "all" | "ai" | "static" | "video"
 
@@ -14,15 +14,11 @@ const FILTERS: { value: Filter; label: string }[] = [
   { value: "video", label: "Videos" },
 ]
 
-export function PortfolioGallery({ items }: { items: MediaItem[] }) {
+export function PortfolioGallery({ bundles }: { bundles: PortfolioBundles }) {
   const [filter, setFilter] = useState<Filter>("all")
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-  const visible = useMemo(
-    () =>
-      filter === "all" ? items : items.filter((m) => m.category === filter),
-    [items, filter]
-  )
+  const visible = useMemo<MediaItem[]>(() => bundles[filter], [bundles, filter])
 
   // Reset the lightbox whenever the filtered set changes underneath it.
   useEffect(() => {
@@ -44,10 +40,7 @@ export function PortfolioGallery({ items }: { items: MediaItem[] }) {
       {/* Filters */}
       <div className="mt-10 flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => {
-          const count =
-            f.value === "all"
-              ? items.length
-              : items.filter((m) => m.category === f.value).length
+          const count = bundles[f.value].length
           const active = filter === f.value
           return (
             <button
