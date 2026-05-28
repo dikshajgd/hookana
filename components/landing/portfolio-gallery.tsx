@@ -22,12 +22,10 @@ export function PortfolioGallery({ items }: { items: MediaItem[] }) {
     [items, filter]
   )
 
-  // Switching filters also closes the lightbox so its index can't point at a
-  // now-hidden item.
-  const changeFilter = useCallback((f: Filter) => {
-    setFilter(f)
+  // Reset the lightbox whenever the filtered set changes underneath it.
+  useEffect(() => {
     setActiveIndex(null)
-  }, [])
+  }, [filter])
 
   const open = useCallback((i: number) => setActiveIndex(i), [])
   const close = useCallback(() => setActiveIndex(null), [])
@@ -53,7 +51,7 @@ export function PortfolioGallery({ items }: { items: MediaItem[] }) {
             <button
               key={f.value}
               type="button"
-              onClick={() => changeFilter(f.value)}
+              onClick={() => setFilter(f.value)}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                 active

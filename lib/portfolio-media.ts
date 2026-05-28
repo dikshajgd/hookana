@@ -38,11 +38,9 @@ export type MediaItem = {
   preview?: string
   /** high quality asset for the lightbox */
   full: string
-  /** optional label / alt text */
-  title?: string
 }
 
-function video(rawUrl: string, title?: string): MediaItem {
+function video(rawUrl: string): MediaItem {
   return {
     id: rawUrl,
     kind: "video",
@@ -53,36 +51,16 @@ function video(rawUrl: string, title?: string): MediaItem {
       "mp4"
     ),
     full: withTransform(rawUrl, "w_1080,q_auto,f_mp4", "mp4"),
-    title,
   }
 }
 
-function image(rawUrl: string, title?: string): MediaItem {
+function image(rawUrl: string): MediaItem {
   return {
     id: rawUrl,
     kind: "image",
     poster: withTransform(rawUrl, "w_700,c_limit,q_auto,f_auto"),
     full: withTransform(rawUrl, "w_1280,c_limit,q_auto,f_auto"),
-    title,
   }
-}
-
-/**
- * Map raw CMS portfolio items into optimized MediaItems. Items without a URL
- * are skipped so a half-filled CMS entry never breaks the grid.
- */
-export function toMediaItems(
-  items?: { kind?: "video" | "image"; url?: string; title?: string }[] | null
-): MediaItem[] {
-  if (!items?.length) return []
-  return items
-    .filter(
-      (it): it is { kind: "video" | "image"; url: string; title?: string } =>
-        Boolean(it?.url)
-    )
-    .map((it) =>
-      it.kind === "image" ? image(it.url, it.title) : video(it.url, it.title)
-    )
 }
 
 const VIDEO_URLS = [
@@ -140,8 +118,8 @@ const IMAGE_URLS = [
   "https://res.cloudinary.com/ddbynpktj/image/upload/v1779787265/hf_20260519_175522_13e17061-1ade-4e49-9a46-cc8f48ed4b98_hjk6dx.png",
 ]
 
-export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map((u) => video(u))
-export const PORTFOLIO_IMAGES: MediaItem[] = IMAGE_URLS.map((u) => image(u))
+export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map(video)
+export const PORTFOLIO_IMAGES: MediaItem[] = IMAGE_URLS.map(image)
 export const PORTFOLIO_MEDIA: MediaItem[] = [
   ...PORTFOLIO_VIDEOS,
   ...PORTFOLIO_IMAGES,
