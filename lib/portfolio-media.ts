@@ -105,6 +105,9 @@ const VIDEO_URLS: string[] = [
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966472/Ishan_Nutri_1_z4cehy.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966472/95-UGC_Ad_r2lasm.mp4",
   "https://res.cloudinary.com/ddbynpktj/video/upload/v1779966471/4_1_r9qyqk.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779967150/Nutri_V34_V1_kwlbyj.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779967194/1_Nutri_Starbucks_ifsww6.mp4",
+  "https://res.cloudinary.com/ddbynpktj/video/upload/v1779967066/6_1_onvddi.mp4",
 ]
 
 const IMAGE_URLS = [
