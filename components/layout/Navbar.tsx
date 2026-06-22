@@ -194,10 +194,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
               </VisuallyHidden>
               <div className="flex h-full flex-col">
                 {/* Drawer header */}
-                <div className="flex items-center justify-between px-6 pt-2 pb-3 sm:items-start sm:px-14 sm:pt-14 sm:pb-12">
+                <div className="flex items-center justify-between px-6 pt-8 pb-6 sm:items-start sm:px-14 sm:pt-14 sm:pb-12">
                   <Link
                     href="/"
-                    className="font-sans text-[26px] leading-none font-black tracking-[-1px] text-white sm:text-[56px] sm:tracking-[-2px]"
+                    className="font-sans text-[56px] leading-none font-black tracking-[-2px] text-white sm:text-[56px] sm:tracking-[-2px]"
                   >
                     {logoText}
                   </Link>
@@ -219,13 +219,13 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                       <div key={link.href} className="border-b border-white/10 last:border-none">
                         <Link
                           href={link.href}
-                          className="group flex items-center justify-between py-5 sm:py-6"
+                          className="group flex items-center justify-between py-[22px] sm:py-6"
                           onClick={(e) => {
                             e.preventDefault()
                             closeAndScroll(link.href)
                           }}
                         >
-                          <span className="text-base font-semibold text-white/60 transition-colors group-hover:text-white sm:text-2xl sm:font-semibold">
+                          <span className="text-[40px] font-light leading-tight text-white/60 transition-colors group-hover:text-white sm:text-2xl sm:font-semibold">
                             {link.label}
                           </span>
                           <ArrowUpRight className="size-4 text-white/20 transition-colors group-hover:text-white/60 sm:size-5" />
