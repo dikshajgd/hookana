@@ -11,7 +11,7 @@ import { client } from "@/sanity/lib/client"
 import { PORTFOLIO_PAGE_QUERY } from "@/sanity/lib/queries"
 import type { PortfolioPageContent } from "@/sanity/lib/types"
 
-type CategorySlug = "ai" | "static" | "videos"
+type CategorySlug = "ai" | "statics" | "videos"
 
 const CATEGORY_META: Record<
   CategorySlug,
@@ -24,7 +24,7 @@ const CATEGORY_META: Record<
     description:
       "Fast without sacrificing brand. Sharp hooks, on-brand visuals, and conversion-focused edits built to perform in the feed.",
   },
-  static: {
+  statics: {
     filter: "static",
     label: "Static Ads",
     tagline: "Every pixel earns its place.",

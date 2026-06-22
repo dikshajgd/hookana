@@ -18,7 +18,7 @@ import type { NavbarContent } from "@/sanity/lib/types"
 
 const PORTFOLIO_SUB_LINKS = [
   { label: "AI", href: "/portfolio/ai" },
-  { label: "Statics", href: "/portfolio/static" },
+  { label: "Statics", href: "/portfolio/statics" },
   { label: "Videos", href: "/portfolio/videos" },
 ]
 
