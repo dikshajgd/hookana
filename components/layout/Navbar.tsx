@@ -219,7 +219,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                       <div key={link.href} className="border-b border-white/10 last:border-none">
                         <Link
                           href={link.href}
-                          className="group flex items-center justify-between py-2 sm:py-6"
+                          className="group flex items-center justify-between py-5 sm:py-6"
                           onClick={(e) => {
                             e.preventDefault()
                             closeAndScroll(link.href)
