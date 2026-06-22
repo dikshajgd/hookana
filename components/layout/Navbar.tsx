@@ -225,10 +225,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                             closeAndScroll(link.href)
                           }}
                         >
-                          <span className="text-[40px] font-light leading-tight text-white/60 transition-colors group-hover:text-white sm:text-2xl sm:font-semibold">
+                          <span className="text-[34px] font-light leading-tight text-white/60 transition-colors group-hover:text-white sm:text-2xl sm:font-semibold">
                             {link.label}
                           </span>
-                          <ArrowUpRight className="size-4 text-white/20 transition-colors group-hover:text-white/60 sm:size-5" />
+                          <ArrowUpRight className="size-5 text-white/40 transition-colors group-hover:text-white sm:size-5" />
                         </Link>
                         {link.href === "/portfolio" && (
                           <div className="flex items-center gap-4 pb-3">
