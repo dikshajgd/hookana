@@ -7,7 +7,7 @@ export default async function ToolsPage() {
   const page: LandingPageContent | null = await client.fetch(LANDING_PAGE_QUERY)
 
   return (
-    <div className="w-full overflow-x-clip bg-blue-950 pt-28 lg:pt-40">
+    <div className="mt-4 w-full overflow-x-clip bg-blue-950 pt-36 lg:pt-32">
       <DiagnosticSection content={page?.diagnostic ?? null} />
     </div>
   )

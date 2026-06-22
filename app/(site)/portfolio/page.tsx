@@ -36,13 +36,10 @@ export default async function PortfolioPage() {
   }
 
   return (
-    <div className="w-full overflow-x-clip bg-blue-50 pt-28 pb-20 lg:pt-40">
+    <div className="mt-4 w-full overflow-x-clip bg-blue-50 pt-28 pb-20 lg:pt-24">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-6">
         <div className="flex flex-col gap-4">
-          <p className="font-mono text-2xl font-semibold tracking-tight text-pink-500 sm:text-3xl 2xl:text-4xl">
-            {page?.eyebrow ?? "Portfolio"}
-          </p>
-          <h1 className="font-sans text-4xl leading-tight font-semibold tracking-[-1.5px] text-foreground sm:text-[42px] md:text-[64px] md:leading-12">
+          <h1 className="font-sans text-4xl leading-tight font-semibold tracking-[-1.5px] sm:text-[42px] md:text-[64px] md:leading-12 bg-gradient-to-r from-pink-500 via-pink-400 to-pink-300 bg-clip-text text-transparent">
             {page?.heading ?? "Creative that converts."}
           </h1>
           <p className="max-w-2xl text-base text-accent-foreground sm:text-lg">

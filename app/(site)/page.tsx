@@ -8,6 +8,7 @@ import { Footer } from "@/components/landing/footer"
 import { Hero } from "@/components/landing/hero"
 import { HeroCarousel } from "@/components/landing/hero-carousel"
 import { HookanaWay } from "@/components/landing/hookana-way"
+import { Newsletter } from "@/components/landing/newsletter"
 import { Pricing } from "@/components/landing/pricing"
 import { Problems } from "@/components/landing/problems"
 // import { Roles } from "@/components/landing/roles"
@@ -101,6 +102,8 @@ export default async function Page() {
       <section className="bg-blue-950">
         <Faq content={page?.faq ?? null} />
       </section>
+
+      <Newsletter />
 
       <section className="bg-secondary">
         <Footer content={settings?.footer ?? null} />

@@ -16,20 +16,28 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { cn } from "@/lib/utils"
 import type { NavbarContent } from "@/sanity/lib/types"
 
+const PORTFOLIO_SUB_LINKS = [
+  { label: "AI", href: "/portfolio/ai" },
+  { label: "Statics", href: "/portfolio/static" },
+  { label: "Videos", href: "/portfolio/videos" },
+]
+
+const PORTFOLIO_SUB_HREFS = PORTFOLIO_SUB_LINKS.map((l) => l.href)
+
 const FALLBACK_LINKS = [
-  { label: "Home", href: "/" },
   { label: "How it works", href: "#how-it-works" },
   { label: "Services", href: "#services" },
   { label: "Pricing", href: "#pricing" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Tools", href: "/tools" },
   { label: "Contact", href: "#contact" },
+  ...PORTFOLIO_SUB_LINKS,
 ]
 
 const FALLBACK_GROUPS = [
   FALLBACK_LINKS.slice(0, 3),
-  FALLBACK_LINKS.slice(3, 5),
-  FALLBACK_LINKS.slice(5, 7),
+  FALLBACK_LINKS.slice(3, 6),
+  FALLBACK_LINKS.slice(6, 9),
 ]
 
 export function Navbar({ content }: { content: NavbarContent | null }) {
@@ -95,8 +103,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             href="/"
             className="font-sans text-[42px] leading-8 font-black tracking-tight text-black xl:text-[60px] xl:leading-10 2xl:text-[64px] 2xl:leading-12 2xl:tracking-[-1.5px]"
             onClick={(e) => {
-              e.preventDefault()
-              window.scrollTo({ top: 0 })
+              if (pathname === "/") {
+                e.preventDefault()
+                window.scrollTo({ top: 0 })
+              }
             }}
           >
             {logoText}
@@ -124,7 +134,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
 
           <Button
             size="lg"
-            className="h-10 rounded-md px-4 text-xs xl:h-11 xl:px-5 xl:text-sm 2xl:px-6 2xl:text-base"
+            className="h-10 shrink-0 rounded-md px-4 text-xs xl:h-11 xl:px-5 xl:text-sm 2xl:px-6 2xl:text-base"
             variant="default"
             asChild
           >
@@ -156,8 +166,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             href="/"
             className="font-sans text-lg leading-none font-black tracking-[-1px] whitespace-nowrap text-white"
             onClick={(e) => {
-              e.preventDefault()
-              window.scrollTo({ top: 0 })
+              if (pathname === "/") {
+                e.preventDefault()
+                window.scrollTo({ top: 0 })
+              }
             }}
           >
             {logoText}
@@ -182,45 +194,67 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
               </VisuallyHidden>
               <div className="flex h-full flex-col">
                 {/* Drawer header */}
-                <div className="flex items-start justify-between px-6 pt-8 pb-6 sm:px-14 sm:pt-14 sm:pb-12">
+                <div className="flex items-center justify-between px-6 pt-2 pb-3 sm:items-start sm:px-14 sm:pt-14 sm:pb-12">
                   <Link
                     href="/"
-                    className="font-sans text-[56px] leading-none font-black tracking-[-2px] text-white"
+                    className="font-sans text-[26px] leading-none font-black tracking-[-1px] text-white sm:text-[56px] sm:tracking-[-2px]"
                   >
                     {logoText}
                   </Link>
                   <SheetClose asChild>
                     <button
-                      className="mt-2 flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                      className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:mt-2 sm:size-10"
                       aria-label="Close menu"
                     >
-                      <X className="size-5" />
+                      <X className="size-4 sm:size-5" />
                     </button>
                   </SheetClose>
                 </div>
 
                 {/* Nav links */}
-                <nav className="flex flex-1 flex-col border-t border-white/10 px-6 pt-2 sm:px-14">
-                  {allLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="group flex items-center justify-between border-b border-white/10 py-6 last:border-none"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        closeAndScroll(link.href)
-                      }}
-                    >
-                      <span className="type-heading-3 text-white/60 transition-colors group-hover:text-white">
-                        {link.label}
-                      </span>
-                      <ArrowUpRight className="size-5 text-white/20 transition-colors group-hover:text-white/60" />
-                    </Link>
-                  ))}
+                <nav className="flex flex-1 flex-col border-t border-white/10 px-6 sm:px-14">
+                  {allLinks
+                    .filter((link) => !PORTFOLIO_SUB_HREFS.includes(link.href))
+                    .map((link) => (
+                      <div key={link.href} className="border-b border-white/10 last:border-none">
+                        <Link
+                          href={link.href}
+                          className="group flex items-center justify-between py-2 sm:py-6"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            closeAndScroll(link.href)
+                          }}
+                        >
+                          <span className="text-base font-semibold text-white/60 transition-colors group-hover:text-white sm:text-2xl sm:font-semibold">
+                            {link.label}
+                          </span>
+                          <ArrowUpRight className="size-4 text-white/20 transition-colors group-hover:text-white/60 sm:size-5" />
+                        </Link>
+                        {link.href === "/portfolio" && (
+                          <div className="flex items-center gap-4 pb-3">
+                            {PORTFOLIO_SUB_LINKS.map((sub) => (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                onClick={() => setMenuOpen(false)}
+                                className={cn(
+                                  "text-base font-medium transition-colors",
+                                  pathname === sub.href
+                                    ? "text-white"
+                                    : "text-white/70 hover:text-white"
+                                )}
+                              >
+                                {sub.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </nav>
 
                 {/* CTA */}
-                <div className="px-6 py-8 sm:px-14 sm:py-12">
+                <div className="px-6 py-4 sm:px-14 sm:py-12">
                   <Button
                     size="lg"
                     className="w-full rounded-md"

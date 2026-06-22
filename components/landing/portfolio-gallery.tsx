@@ -14,8 +14,16 @@ const FILTERS: { value: Filter; label: string }[] = [
   { value: "video", label: "Videos" },
 ]
 
-export function PortfolioGallery({ bundles }: { bundles: PortfolioBundles }) {
-  const [filter, setFilter] = useState<Filter>("all")
+export function PortfolioGallery({
+  bundles,
+  defaultFilter = "all",
+  showFilters = true,
+}: {
+  bundles: PortfolioBundles
+  defaultFilter?: Filter
+  showFilters?: boolean
+}) {
+  const [filter, setFilter] = useState<Filter>(defaultFilter)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   const visible = useMemo<MediaItem[]>(() => bundles[filter], [bundles, filter])
@@ -38,7 +46,7 @@ export function PortfolioGallery({ bundles }: { bundles: PortfolioBundles }) {
   return (
     <div>
       {/* Filters */}
-      <div className="mt-10 flex flex-wrap items-center gap-2">
+      {showFilters && <div className="mt-10 flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => {
           const count = bundles[f.value].length
           const active = filter === f.value
@@ -66,7 +74,7 @@ export function PortfolioGallery({ bundles }: { bundles: PortfolioBundles }) {
             </button>
           )
         })}
-      </div>
+      </div>}
 
       {/* Grid */}
       <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
