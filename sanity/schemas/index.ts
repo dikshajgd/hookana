@@ -1,6 +1,8 @@
 import { landingPage } from "./documents/landingPage"
 import { siteSettings } from "./documents/siteSettings"
 import { portfolioPage } from "./documents/portfolioPage"
+import { subscriber } from "./documents/subscriber"
+import { newsletterCampaign } from "./documents/newsletterCampaign"
 import { heroSection } from "./objects/heroSection"
 import { problemsSection } from "./objects/problemsSection"
 import { diagnosticSection } from "./objects/diagnosticSection"
@@ -21,6 +23,8 @@ export const schemaTypes = [
   landingPage,
   siteSettings,
   portfolioPage,
+  subscriber,
+  newsletterCampaign,
   heroSection,
   problemsSection,
   diagnosticSection,
