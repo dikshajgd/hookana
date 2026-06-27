@@ -9,6 +9,7 @@ import { Hero } from "@/components/landing/hero"
 import { HeroCarousel } from "@/components/landing/hero-carousel"
 import { HookanaWay } from "@/components/landing/hookana-way"
 import { Newsletter } from "@/components/landing/newsletter"
+import { NewsletterSubscribeBar } from "@/components/landing/newsletter-subscribe-bar"
 import { Pricing } from "@/components/landing/pricing"
 import { Problems } from "@/components/landing/problems"
 // import { Roles } from "@/components/landing/roles"
@@ -108,6 +109,8 @@ export default async function Page() {
       <section className="bg-secondary">
         <Footer content={settings?.footer ?? null} />
       </section>
+
+      <NewsletterSubscribeBar />
     </div>
   )
 }
