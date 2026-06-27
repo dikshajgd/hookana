@@ -175,7 +175,7 @@ export default function SubscribersPage() {
     iso ? new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—"
 
   return (
-    <div className="p-8 max-w-5xl">
+    <div className="p-8 w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
