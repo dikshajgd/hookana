@@ -1,15 +1,7 @@
 import { notFound } from "next/navigation"
 import { PortfolioGallery } from "@/components/landing/portfolio-gallery"
-import {
-  PORTFOLIO_BUNDLES_FALLBACK,
-  toImageItems,
-  toMixedItems,
-  toVideoItems,
-  type PortfolioBundles,
-} from "@/lib/portfolio-media"
-import { client } from "@/sanity/lib/client"
-import { PORTFOLIO_PAGE_QUERY } from "@/sanity/lib/queries"
-import type { PortfolioPageContent } from "@/sanity/lib/types"
+import { PORTFOLIO_BUNDLES_FALLBACK, type PortfolioBundles } from "@/lib/portfolio-media"
+import { getPortfolioBundles } from "@/lib/supabase/queries"
 
 type CategorySlug = "ai" | "statics" | "videos"
 
@@ -69,15 +61,7 @@ export default async function CategoryPortfolioPage({
   const meta = CATEGORY_META[category as CategorySlug]
   if (!meta) notFound()
 
-  const page: PortfolioPageContent | null =
-    await client.fetch(PORTFOLIO_PAGE_QUERY)
-
-  const cms: PortfolioBundles = {
-    all: toMixedItems(page?.allWorkItems),
-    ai: toVideoItems(page?.aiItems, "ai"),
-    static: toImageItems(page?.staticItems),
-    video: toVideoItems(page?.videoItems, "video"),
-  }
+  const cms = await getPortfolioBundles()
   const bundles: PortfolioBundles = {
     all: cms.all.length ? cms.all : PORTFOLIO_BUNDLES_FALLBACK.all,
     ai: cms.ai.length ? cms.ai : PORTFOLIO_BUNDLES_FALLBACK.ai,

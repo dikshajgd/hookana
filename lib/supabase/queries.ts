@@ -19,7 +19,7 @@ export async function getPortfolioItems() {
       kind: isVideo ? "video" : "image",
       category: item.category,
       poster: item.poster_url,
-      preview: item.preview_url,
+      preview: item.preview_url ?? undefined,
       full: item.full_url,
     }
   })
