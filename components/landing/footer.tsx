@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import type { FooterContent } from "@/sanity/lib/types"
 
 const FALLBACK: FooterContent = {
@@ -19,10 +20,9 @@ export function Footer({ content }: { content: FooterContent | null }) {
       <p className="max-w-122 text-center">{tagline}</p>
       <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
         {socials.map((s, i) => (
-          <>
-            {i > 0 && <span key={`dot-${i}`} aria-hidden="true">·</span>}
+          <Fragment key={s.href}>
+            {i > 0 && <span aria-hidden="true">·</span>}
             <a
-              key={s.href}
               href={s.href}
               target={s.href.startsWith("mailto:") ? undefined : "_blank"}
               rel={s.href.startsWith("mailto:") ? undefined : "noreferrer"}
@@ -30,7 +30,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
             >
               {s.label}
             </a>
-          </>
+          </Fragment>
         ))}
       </p>
       <p>{copyright}</p>

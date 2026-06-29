@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { supabase } from "@/lib/supabase/client"
 import { extractPoster, recordPreview } from "@/lib/video-processing"
 import { Upload, Trash2, ChevronUp, ChevronDown } from "lucide-react"
@@ -15,12 +15,24 @@ type PortfolioItem = {
 }
 
 const CATEGORIES = ["ai", "static", "video"] as const
+type Category = (typeof CATEGORIES)[number]
 
 export default function AdminPage() {
   const [items, setItems] = useState<PortfolioItem[]>([])
   const [loading, setLoading] = useState(true)
+
+  // Upload form state
+  const [file, setFile] = useState<File | null>(null)
+  const [title, setTitle] = useState("")
+  const [category, setCategory] = useState<Category>("video")
   const [uploading, setUploading] = useState(false)
-  const [status, setStatus] = useState<string>("")
+  const [status, setStatus] = useState("")
+  const [error, setError] = useState("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Per-item delete confirmation
+  const [confirmingDelete, setConfirmingDelete] = useState<string | null>(null)
+
   const [activeTab, setActiveTab] = useState<"portfolio" | "settings">("portfolio")
 
   useEffect(() => {
@@ -35,19 +47,23 @@ export default function AdminPage() {
     fetchItems()
   }, [])
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const resetForm = () => {
+    setFile(null)
+    setTitle("")
+    setCategory("video")
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }
 
-    const title = prompt("Title for this item:")
-    if (!title) {
-      e.target.value = ""
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+
+    if (!file) {
+      setError("Please choose a file.")
       return
     }
-    const category = prompt("Category (ai, static, or video):")?.trim().toLowerCase()
-    if (!category || !CATEGORIES.includes(category as (typeof CATEGORIES)[number])) {
-      alert("Invalid category. Use: ai, static, or video")
-      e.target.value = ""
+    if (!title.trim()) {
+      setError("Please enter a title.")
       return
     }
 
@@ -55,10 +71,9 @@ export default function AdminPage() {
     try {
       const formData = new FormData()
       formData.append("file", file)
-      formData.append("title", title)
+      formData.append("title", title.trim())
       formData.append("category", category)
 
-      // For videos, derive poster + preview in the browser before upload.
       if (file.type.startsWith("video/")) {
         setStatus("Generating poster…")
         try {
@@ -86,28 +101,27 @@ export default function AdminPage() {
 
       if (result.success) {
         setItems((prev) => [...prev, result.data])
-        setStatus("")
+        resetForm()
       } else {
-        alert(`Upload failed: ${result.error}`)
+        setError(result.error || "Upload failed")
       }
-    } catch (error) {
-      alert(`Upload error: ${error}`)
+    } catch (err) {
+      setError(`Upload error: ${err instanceof Error ? err.message : String(err)}`)
     } finally {
       setUploading(false)
       setStatus("")
-      e.target.value = ""
     }
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this item?")) return
     const res = await fetch(`/api/portfolio/${id}`, { method: "DELETE" })
     const result = await res.json()
     if (result.success) {
       setItems((prev) => prev.filter((item) => item.id !== id))
     } else {
-      alert(`Delete failed: ${result.error}`)
+      setError(`Delete failed: ${result.error}`)
     }
+    setConfirmingDelete(null)
   }
 
   const handleReorder = async (id: string, direction: "up" | "down") => {
@@ -120,7 +134,6 @@ export default function AdminPage() {
     const a = items[idx]
     const b = items[swapIdx]
 
-    // Swap display_order values and persist both via the server route.
     const newItems = [...items]
     newItems[idx] = { ...b, display_order: a.display_order }
     newItems[swapIdx] = { ...a, display_order: b.display_order }
@@ -142,7 +155,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen bg-white p-8 text-neutral-900">
       <div className="mx-auto max-w-4xl">
         <h1 className="mb-8 text-3xl font-bold">Hookana Admin</h1>
 
@@ -164,26 +177,68 @@ export default function AdminPage() {
 
         {activeTab === "portfolio" && (
           <div className="space-y-8">
-            <div className="rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
-              <Upload className="mx-auto mb-3 h-8 w-8 text-gray-400" />
-              <p className="mb-4 text-gray-600">Upload a video or image</p>
-              <input
-                type="file"
-                accept="video/*,image/*"
-                onChange={handleUpload}
-                disabled={uploading}
-                className="hidden"
-                id="file-input"
-              />
+            {/* Upload form */}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 rounded-lg border border-gray-200 p-6"
+            >
+              <h2 className="flex items-center gap-2 text-lg font-semibold">
+                <Upload className="h-5 w-5" /> Add to portfolio
+              </h2>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium">File (video or image)</label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="video/*,image/*"
+                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  disabled={uploading}
+                  className="block w-full text-sm file:mr-4 file:rounded file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-white hover:file:bg-blue-700"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-sm font-medium">Title</label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    disabled={uploading}
+                    placeholder="e.g. Nutri UGC — June"
+                    className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium">Category</label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value as Category)}
+                    disabled={uploading}
+                    className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {error && <p className="text-sm text-red-600">{error}</p>}
+
               <button
-                onClick={() => document.getElementById("file-input")?.click()}
+                type="submit"
                 disabled={uploading}
                 className="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {uploading ? status || "Uploading…" : "Select File"}
+                {uploading ? status || "Uploading…" : "Upload"}
               </button>
-            </div>
+            </form>
 
+            {/* Items list */}
             <div>
               <h2 className="mb-4 text-xl font-bold">Portfolio Items ({items.length})</h2>
               {loading ? (
@@ -201,7 +256,7 @@ export default function AdminPage() {
                       <img
                         src={item.poster_url}
                         alt={item.title}
-                        className="h-16 w-16 rounded object-cover"
+                        className="h-16 w-16 rounded bg-gray-100 object-cover"
                       />
                       <div className="flex-1">
                         <p className="font-medium">{item.title}</p>
@@ -212,6 +267,7 @@ export default function AdminPage() {
                           onClick={() => handleReorder(item.id, "up")}
                           disabled={idx === 0}
                           className="rounded p-1 hover:bg-gray-100 disabled:opacity-30"
+                          aria-label="Move up"
                         >
                           <ChevronUp className="h-5 w-5" />
                         </button>
@@ -219,16 +275,35 @@ export default function AdminPage() {
                           onClick={() => handleReorder(item.id, "down")}
                           disabled={idx === items.length - 1}
                           className="rounded p-1 hover:bg-gray-100 disabled:opacity-30"
+                          aria-label="Move down"
                         >
                           <ChevronDown className="h-5 w-5" />
                         </button>
                       </div>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <Trash2 className="h-5 w-5" />
-                      </button>
+                      {confirmingDelete === item.id ? (
+                        <div className="flex items-center gap-2 text-sm">
+                          <button
+                            onClick={() => handleDelete(item.id)}
+                            className="rounded bg-red-600 px-2 py-1 text-white hover:bg-red-700"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            onClick={() => setConfirmingDelete(null)}
+                            className="rounded px-2 py-1 hover:bg-gray-100"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setConfirmingDelete(item.id)}
+                          className="text-red-600 hover:text-red-800"
+                          aria-label="Delete"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>

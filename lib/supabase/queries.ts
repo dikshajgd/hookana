@@ -1,7 +1,11 @@
 import { supabaseAdmin } from "./server"
 import type { MediaItem, PortfolioBundles } from "@/lib/portfolio-media"
+import { rowToMediaItem, bundleItems } from "@/lib/portfolio-transform"
 
-export async function getPortfolioItems() {
+export type { PortfolioRow } from "@/lib/portfolio-transform"
+export { rowToMediaItem, bundleItems } from "@/lib/portfolio-transform"
+
+export async function getPortfolioItems(): Promise<MediaItem[]> {
   const { data, error } = await supabaseAdmin
     .from("portfolio_items")
     .select("*")
@@ -12,31 +16,14 @@ export async function getPortfolioItems() {
     return []
   }
 
-  return (data || []).map((item): MediaItem => {
-    const isVideo = item.category === "video" || item.category === "ai"
-    return {
-      id: item.id,
-      kind: isVideo ? "video" : "image",
-      category: item.category,
-      poster: item.poster_url,
-      preview: item.preview_url ?? undefined,
-      full: item.full_url,
-    }
-  })
+  return (data || []).map(rowToMediaItem)
 }
 
 export async function getPortfolioBundles(): Promise<PortfolioBundles> {
-  const items = await getPortfolioItems()
-
-  return {
-    all: items,
-    ai: items.filter((i) => i.category === "ai"),
-    static: items.filter((i) => i.category === "static"),
-    video: items.filter((i) => i.category === "video"),
-  }
+  return bundleItems(await getPortfolioItems())
 }
 
-export async function getSiteSettings() {
+export async function getSiteSettings(): Promise<Record<string, any>> {
   const { data, error } = await supabaseAdmin.from("site_settings").select("*")
 
   if (error) {
@@ -48,6 +35,5 @@ export async function getSiteSettings() {
   for (const item of data || []) {
     settings[item.key] = item.value
   }
-
   return settings
 }

@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase/server"
+import { extractStoragePath } from "@/lib/supabase/storage"
 
 const BUCKET = "portfolio-media"
 
 export const runtime = "nodejs"
 
-/** Turn a public storage URL back into its in-bucket path for deletion. */
-function storagePath(url: string | null | undefined): string | null {
-  if (!url) return null
-  const marker = `/storage/v1/object/public/${BUCKET}/`
-  const i = url.indexOf(marker)
-  return i === -1 ? null : url.slice(i + marker.length)
-}
+const storagePath = (url: string | null | undefined) => extractStoragePath(BUCKET, url)
 
 // DELETE /api/portfolio/:id — remove the row and its storage objects.
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

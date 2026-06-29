@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase/server"
+import { buildPublicUrl } from "@/lib/supabase/storage"
 import sharp from "sharp"
 
 const BUCKET = "portfolio-media"
@@ -22,7 +23,7 @@ type UploadResponse = {
 }
 
 function publicUrl(path: string): string {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`
+  return buildPublicUrl(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", BUCKET, path)
 }
 
 const IMMUTABLE = "31536000" // 1 year — media never changes once uploaded
