@@ -138,9 +138,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<UploadRes
       full_url = original_url
     }
 
+    // Append to the end: next display_order = current max + 1 (small integer,
+    // not a timestamp — display_order is an INT column).
+    const { data: last } = await supabaseAdmin
+      .from("portfolio_items")
+      .select("display_order")
+      .order("display_order", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    const nextOrder = (last?.display_order ?? -1) + 1
+
     const { data, error: dbError } = await supabaseAdmin
       .from("portfolio_items")
-      .insert({ title, category, original_url, poster_url, preview_url, full_url, display_order: timestamp })
+      .insert({ title, category, original_url, poster_url, preview_url, full_url, display_order: nextOrder })
       .select()
       .single()
 
