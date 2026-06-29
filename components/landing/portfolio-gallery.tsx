@@ -177,7 +177,9 @@ function MediaCard({
           muted
           loop
           playsInline
+          autoPlay
           preload="none"
+          onPlaying={() => setPlaying(true)}
           className={cn(
             "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
             playing ? "opacity-100" : "opacity-0"
