@@ -45,14 +45,17 @@ function ytId(url: string) {
 export function Hero({ content }: { content: HeroContent | null }) {
   const [activeVideo, setActiveVideo] = useState<number | null>(null)
   const [carouselStart, setCarouselStart] = useState(0)
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return true
-    return window.matchMedia("(max-width: 1023px)").matches
-  })
+  // Deterministic first render: server and client-first-paint must agree, so we
+  // can't read window during render (that caused the hydration mismatch — server
+  // rendered the mobile poster <img>, desktop client rendered <video>). Start
+  // non-mobile + unmounted, then correct after mount.
+  const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [mobileVideoInView, setMobileVideoInView] = useState(false)
   const carouselRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    setMounted(true)
     const check = () => setIsMobile(window.matchMedia("(max-width: 1023px)").matches)
     check()
     window.addEventListener("resize", check)
@@ -222,7 +225,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                               allow="autoplay; encrypted-media"
                               loading="lazy"
                             />
-                          ) : isMobile && !mobileVideoInView ? (
+                          ) : !mounted || (isMobile && !mobileVideoInView) ? (
                             <img
                               src={cldPoster(card.url, mediaWidth)}
                               alt=""
