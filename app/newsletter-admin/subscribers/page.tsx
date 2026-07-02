@@ -61,7 +61,14 @@ export default function SubscribersPage() {
     if (statusFilter) params.set("status", statusFilter)
     const res = await fetch(`/api/newsletter/subscribers?${params}`)
     const json = await res.json()
-    setData(json)
+    // Normalize so a null/partial response (e.g. empty data source) can't crash
+    // the render via data.total.toLocaleString() etc.
+    setData({
+      subscribers: Array.isArray(json?.subscribers) ? json.subscribers : [],
+      total: json?.total ?? 0,
+      pages: json?.pages ?? 1,
+      page: json?.page ?? page,
+    })
     setLoading(false)
   }
 
