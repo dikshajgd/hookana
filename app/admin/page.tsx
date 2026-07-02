@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { supabase } from "@/lib/supabase/client"
 import { extractPoster, recordPreview } from "@/lib/video-processing"
 import { Upload, Trash2, ChevronUp, ChevronDown } from "lucide-react"
+import { SECTIONS } from "@/lib/admin/content-schema"
+import { SectionEditor } from "@/components/admin/section-editor"
 
 type PortfolioItem = {
   id: string
@@ -33,7 +35,11 @@ export default function AdminPage() {
   // Per-item delete confirmation
   const [confirmingDelete, setConfirmingDelete] = useState<string | null>(null)
 
-  const [activeTab, setActiveTab] = useState<"portfolio" | "settings">("portfolio")
+  const [activeTab, setActiveTab] = useState<"portfolio" | "content">("portfolio")
+
+  // Content editor state
+  const [settings, setSettings] = useState<Record<string, any>>({})
+  const [selectedSection, setSelectedSection] = useState<string>(SECTIONS[0].key)
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -44,7 +50,14 @@ export default function AdminPage() {
       setItems(data || [])
       setLoading(false)
     }
+    const fetchSettings = async () => {
+      const { data } = await supabase.from("site_settings").select("key, value")
+      const map: Record<string, any> = {}
+      for (const row of data || []) map[row.key] = row.value
+      setSettings(map)
+    }
     fetchItems()
+    fetchSettings()
   }, [])
 
   const resetForm = () => {
@@ -160,7 +173,7 @@ export default function AdminPage() {
         <h1 className="mb-8 text-3xl font-bold">Hookana Admin</h1>
 
         <div className="mb-6 flex gap-4 border-b">
-          {(["portfolio", "settings"] as const).map((tab) => (
+          {(["portfolio", "content"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -312,10 +325,37 @@ export default function AdminPage() {
           </div>
         )}
 
-        {activeTab === "settings" && (
-          <p className="text-gray-600">
-            Settings editor coming next — for now, manage media in the Portfolio tab.
-          </p>
+        {activeTab === "content" && (
+          <div className="flex flex-col gap-8 md:flex-row">
+            {/* Section list */}
+            <nav className="flex shrink-0 flex-col gap-1 md:w-64">
+              {SECTIONS.map((s) => (
+                <button
+                  key={s.key}
+                  onClick={() => setSelectedSection(s.key)}
+                  className={`rounded px-3 py-2 text-left text-sm ${
+                    selectedSection === s.key
+                      ? "bg-blue-50 font-medium text-blue-700"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </nav>
+
+            {/* Editor for the selected section */}
+            <div className="min-w-0 flex-1">
+              {SECTIONS.filter((s) => s.key === selectedSection).map((s) => (
+                <SectionEditor
+                  key={s.key}
+                  section={s}
+                  initial={settings[s.key]}
+                  onSaved={(v) => setSettings((prev) => ({ ...prev, [s.key]: v }))}
+                />
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>

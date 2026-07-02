@@ -9,26 +9,38 @@ async function sha256Hex(text: string): Promise<string> {
     .join("")
 }
 
+// Admin surfaces gated behind the shared newsletter-admin login. The content
+// CMS (/admin) and its mutation APIs use the SAME cookie, so one sign-in covers
+// both the newsletter dashboard and the portfolio/content editor.
+const PROTECTED_PAGES = ["/newsletter-admin", "/admin"]
+const PROTECTED_APIS = ["/api/upload", "/api/portfolio", "/api/settings"]
+const LOGIN_PATH = "/newsletter-admin/login"
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  if (!pathname.startsWith("/newsletter-admin")) {
-    return NextResponse.next()
-  }
+  // The login page itself is always reachable.
+  if (pathname === LOGIN_PATH) return NextResponse.next()
 
-  // Login page is always accessible
-  if (pathname === "/newsletter-admin/login") {
-    return NextResponse.next()
-  }
+  const isProtectedPage = PROTECTED_PAGES.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  )
+  const isProtectedApi = PROTECTED_APIS.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  )
+  if (!isProtectedPage && !isProtectedApi) return NextResponse.next()
 
   const authCookie = req.cookies.get("nl_admin_auth")
-  const adminPassword =
-    process.env.NEWSLETTER_ADMIN_PASSWORD ?? "hookana_admin_2026"
+  const adminPassword = process.env.NEWSLETTER_ADMIN_PASSWORD ?? "hookana_admin_2026"
   const expectedHash = await sha256Hex(adminPassword)
 
   if (authCookie?.value !== expectedHash) {
+    // APIs get a clean 401; pages bounce to the shared login.
+    if (isProtectedApi) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
+    }
     const url = req.nextUrl.clone()
-    url.pathname = "/newsletter-admin/login"
+    url.pathname = LOGIN_PATH
     return NextResponse.redirect(url)
   }
 
@@ -36,5 +48,12 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: "/newsletter-admin/:path*",
+  matcher: [
+    "/newsletter-admin/:path*",
+    "/admin",
+    "/admin/:path*",
+    "/api/upload",
+    "/api/portfolio/:path*",
+    "/api/settings",
+  ],
 }

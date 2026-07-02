@@ -1,6 +1,4 @@
-import { client } from "@/sanity/lib/client"
-import { LANDING_PAGE_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/lib/queries"
-import type { LandingPageContent, SiteSettings } from "@/sanity/lib/types"
+import { getSiteSettings } from "@/lib/supabase/queries"
 import { Cta } from "@/components/landing/cta"
 import { CtaForm } from "@/components/landing/cta-form"
 import { Faq } from "@/components/landing/faq"
@@ -19,20 +17,16 @@ import { Testimonial } from "@/components/landing/testimonial"
 import { WhatWeDo } from "@/components/landing/what-we-do"
 
 export default async function Page() {
-  const [page, settings]: [LandingPageContent | null, SiteSettings | null] =
-    await Promise.all([
-      client.fetch(LANDING_PAGE_QUERY),
-      client.fetch(SITE_SETTINGS_QUERY),
-    ])
+  const settings = await getSiteSettings()
 
   return (
     <div className="w-full overflow-x-clip">
-      <Hero content={page?.hero ?? null} />
-      <HeroCarousel logos={page?.logoTicker?.logos} />
+      <Hero content={settings.hero ?? null} />
+      <HeroCarousel logos={settings.logoTicker?.logos} />
 
       <div className="flex flex-col">
         <Problems
-          tabs={page?.problems?.tabs ?? []}
+          tabs={settings.problems?.tabs ?? []}
         />
 
         <div className="mt-26 w-full bg-blue-950 md:mt-50">
@@ -51,7 +45,7 @@ export default async function Page() {
                 className="pointer-events-none absolute top-1/2 left-1/2 z-0 hidden w-108 max-w-none translate-x-78 -translate-y-44 2xl:block"
               />
               <div className="relative z-10">
-                <CtaForm content={page?.contact ?? null} />
+                <CtaForm content={settings.contact ?? null} />
               </div>
               <div className="mt-12 flex items-end justify-center gap-12 px-5 pb-20 2xl:hidden">
                 <img
@@ -70,44 +64,44 @@ export default async function Page() {
             </div>
           </div>
           <div id="how-it-works" className="scroll-mt-24">
-            <HookanaWay content={page?.howItWorks ?? null} />
+            <HookanaWay content={settings.howItWorks ?? null} />
           </div>
         </div>
       </div>
 
-      <StatsMarquee items={page?.stats?.marqueeItems ?? []} />
+      <StatsMarquee items={settings.stats?.marqueeItems ?? []} />
 
       <section className="w-full bg-blue-50 pt-12 pb-15 sm:pt-30">
         <div id="services" className="scroll-mt-24">
-          <WhatWeDo content={page?.services ?? null} />
+          <WhatWeDo content={settings.services ?? null} />
         </div>
         {/* <div id="who-its-for" className="scroll-mt-24">
-          <Roles content={page?.roles ?? null} />
+          <Roles content={settings.roles ?? null} />
         </div> */}
         <div className="px-6">
-          <Stats content={page?.stats ?? null} />
-          <Testimonial content={page?.testimonial ?? null} />
+          <Stats content={settings.stats ?? null} />
+          <Testimonial content={settings.testimonial ?? null} />
         </div>
       </section>
 
       <section className="bg-blue-950">
         <div id="pricing" className="scroll-mt-24">
-          <Pricing content={page?.pricing ?? null} />
+          <Pricing content={settings.pricing ?? null} />
         </div>
       </section>
 
       <section className="bg-blue-50">
-        <Cta content={page?.cta ?? null} />
+        <Cta content={settings.cta ?? null} />
       </section>
 
       <section className="bg-blue-950">
-        <Faq content={page?.faq ?? null} />
+        <Faq content={settings.faq ?? null} />
       </section>
 
       <Newsletter />
 
       <section className="bg-secondary">
-        <Footer content={settings?.footer ?? null} />
+        <Footer content={settings.footer ?? null} />
       </section>
 
       <NewsletterSubscribeBar />
