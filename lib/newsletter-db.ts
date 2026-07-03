@@ -1,49 +1,60 @@
-import { writeClient } from "@/sanity/lib/write-client"
+/**
+ * Newsletter data layer — backed by Supabase (migrated off Sanity).
+ *
+ * The public surface (function names + returned Subscriber/Campaign shapes) is
+ * unchanged from the old Sanity implementation, so every /api/newsletter/*
+ * route and the admin UI keep working without edits. Column <-> field mapping
+ * and validation live in the pure, unit-tested lib/newsletter-transform.ts.
+ */
+import { supabaseAdmin } from "@/lib/supabase/server"
+import {
+  rowToSubscriber,
+  rowToCampaign,
+  isValidEmail,
+  pageRange,
+  pageCount,
+  emailIlikePattern,
+  campaignUpdateToColumns,
+  type Subscriber,
+  type Campaign,
+  type SubscriberRow,
+  type CampaignRow,
+} from "@/lib/newsletter-transform"
+
+export type { Subscriber, Campaign } from "@/lib/newsletter-transform"
 
 const PAGE_SIZE = 25
+const SUBSCRIBERS = "subscribers"
+const CAMPAIGNS = "newsletter_campaigns"
 
-// ─── Types ──────────────────────────────────────────────────────────────────
-
-export type Subscriber = {
-  _id: string
-  email: string
-  name?: string
-  status: "active" | "unsubscribed"
-  source?: string
-  subscribedAt?: string
-}
-
-export type Campaign = {
-  _id: string
-  title?: string
-  subject: string
-  htmlContent?: string
-  plainText?: string
-  mode: "manual" | "generated"
-  prompt?: string
-  status: "draft" | "sent"
-  sentAt?: string
-  sentCount?: number
-  recipientCount?: number
-  _createdAt: string
-}
+// Postgres unique-violation error code (raised by the lower(email) index).
+const UNIQUE_VIOLATION = "23505"
 
 // ─── Subscribers ─────────────────────────────────────────────────────────────
 
 export async function getSubscribers(page = 1, status?: string) {
-  const offset = (page - 1) * PAGE_SIZE
-  const filter = status
-    ? `_type == "subscriber" && status == "${status}"`
-    : `_type == "subscriber"`
+  const [from, to] = pageRange(page, PAGE_SIZE)
+  let query = supabaseAdmin
+    .from(SUBSCRIBERS)
+    .select("*", { count: "exact" })
+    .order("subscribed_at", { ascending: false })
+    .range(from, to)
 
-  const [subscribers, total] = await Promise.all([
-    writeClient.fetch<Subscriber[]>(
-      `*[${filter}] | order(subscribedAt desc) [${offset}...${offset + PAGE_SIZE}] { _id, email, name, status, source, subscribedAt }`
-    ),
-    writeClient.fetch<number>(`count(*[${filter}])`),
-  ])
+  if (status) query = query.eq("status", status)
 
-  return { subscribers, total, pages: Math.ceil(total / PAGE_SIZE), page }
+  const { data, count, error } = await query
+  if (error) {
+    console.error("getSubscribers:", error.message)
+    return { subscribers: [] as Subscriber[], total: 0, pages: 0, page }
+  }
+
+  const total = count ?? 0
+  return {
+    subscribers: (data as SubscriberRow[]).map(rowToSubscriber),
+    total,
+    pages: pageCount(total, PAGE_SIZE),
+    page,
+  }
 }
 
 export async function addSubscriber(
@@ -51,58 +62,67 @@ export async function addSubscriber(
   name?: string,
   source = "manual"
 ): Promise<Subscriber> {
-  const existing = await writeClient.fetch<string | null>(
-    `*[_type == "subscriber" && email == $email][0]._id`,
-    { email }
-  )
-  if (existing) throw new Error("Email already subscribed")
+  // Rely on the case-insensitive unique index rather than a pre-check, so this
+  // is race-free and doesn't misfire on emails containing `_`.
+  const { data, error } = await supabaseAdmin
+    .from(SUBSCRIBERS)
+    .insert({
+      email,
+      name,
+      status: "active",
+      source,
+      subscribed_at: new Date().toISOString(),
+    })
+    .select()
+    .single()
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (writeClient as any).create({
-    _type: "subscriber",
-    email,
-    name,
-    status: "active",
-    source,
-    subscribedAt: new Date().toISOString(),
-  }) as Promise<Subscriber>
+  if (error) {
+    if (error.code === UNIQUE_VIOLATION) throw new Error("Email already subscribed")
+    throw new Error(error.message)
+  }
+  return rowToSubscriber(data as SubscriberRow)
 }
 
 export async function bulkAddSubscribers(
   entries: Array<{ email: string; name?: string }>,
   source = "bulk_import"
 ) {
-  const existing = await writeClient.fetch<string[]>(`*[_type == "subscriber"].email`)
-  const existingSet = new Set((existing ?? []).map((e) => e.toLowerCase()))
+  const { data: existing } = await supabaseAdmin.from(SUBSCRIBERS).select("email")
+  const existingSet = new Set(
+    ((existing as { email: string }[]) ?? []).map((e) => e.email.toLowerCase())
+  )
 
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   let added = 0
   let skipped = 0
   const invalid: string[] = []
+  const now = new Date().toISOString()
 
   for (const { email, name } of entries) {
-    if (!EMAIL_RE.test(email)) {
+    if (!isValidEmail(email)) {
       invalid.push(email)
       continue
     }
-    if (existingSet.has(email.toLowerCase())) {
+    const key = email.toLowerCase()
+    if (existingSet.has(key)) {
       skipped++
       continue
     }
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (writeClient as any).create({
-        _type: "subscriber",
-        email,
-        name,
-        status: "active",
-        source,
-        subscribedAt: new Date().toISOString(),
-      })
-      existingSet.add(email.toLowerCase())
+
+    const { error } = await supabaseAdmin.from(SUBSCRIBERS).insert({
+      email,
+      name,
+      status: "active",
+      source,
+      subscribed_at: now,
+    })
+
+    if (error) {
+      // Unique-violation from a concurrent insert counts as a skip, not invalid.
+      if (error.code === UNIQUE_VIOLATION) skipped++
+      else invalid.push(email)
+    } else {
+      existingSet.add(key)
       added++
-    } catch {
-      invalid.push(email)
     }
   }
 
@@ -110,27 +130,75 @@ export async function bulkAddSubscribers(
 }
 
 export async function deleteSubscriber(id: string) {
-  return writeClient.delete(id)
+  const { error } = await supabaseAdmin.from(SUBSCRIBERS).delete().eq("id", id)
+  if (error) throw new Error(error.message)
+  return { success: true }
 }
 
 export async function updateSubscriberStatus(
   id: string,
   status: "active" | "unsubscribed"
 ) {
-  return writeClient.patch(id).set({ status }).commit()
+  const { error } = await supabaseAdmin.from(SUBSCRIBERS).update({ status }).eq("id", id)
+  if (error) throw new Error(error.message)
+  return { success: true }
+}
+
+/**
+ * Flip a subscriber to unsubscribed by email (case-insensitive, exact).
+ * Returns false if no matching subscriber exists.
+ */
+export async function unsubscribeByEmail(email: string): Promise<boolean> {
+  const { data, error } = await supabaseAdmin
+    .from(SUBSCRIBERS)
+    .select("id, email")
+    .ilike("email", emailIlikePattern(email))
+
+  if (error) throw new Error(error.message)
+
+  const target = (data as { id: string; email: string }[] | null)?.find(
+    (r) => r.email.toLowerCase() === email.toLowerCase()
+  )
+  if (!target) return false
+
+  const { error: updateError } = await supabaseAdmin
+    .from(SUBSCRIBERS)
+    .update({ status: "unsubscribed" })
+    .eq("id", target.id)
+  if (updateError) throw new Error(updateError.message)
+  return true
 }
 
 export async function getActiveSubscribers() {
-  return writeClient.fetch<Array<{ _id: string; email: string; name?: string }>>(
-    `*[_type == "subscriber" && status == "active"] { _id, email, name }`
-  )
+  const { data, error } = await supabaseAdmin
+    .from(SUBSCRIBERS)
+    .select("id, email, name")
+    .eq("status", "active")
+
+  if (error) {
+    console.error("getActiveSubscribers:", error.message)
+    return [] as Array<{ _id: string; email: string; name?: string }>
+  }
+
+  return ((data as { id: string; email: string; name: string | null }[]) ?? []).map((r) => ({
+    _id: r.id,
+    email: r.email,
+    name: r.name ?? undefined,
+  }))
+}
+
+async function countSubscribers(status?: "active" | "unsubscribed"): Promise<number> {
+  let query = supabaseAdmin.from(SUBSCRIBERS).select("*", { count: "exact", head: true })
+  if (status) query = query.eq("status", status)
+  const { count } = await query
+  return count ?? 0
 }
 
 export async function getSubscriberStats() {
   const [total, active, unsubscribed] = await Promise.all([
-    writeClient.fetch<number>(`count(*[_type == "subscriber"])`),
-    writeClient.fetch<number>(`count(*[_type == "subscriber" && status == "active"])`),
-    writeClient.fetch<number>(`count(*[_type == "subscriber" && status == "unsubscribed"])`),
+    countSubscribers(),
+    countSubscribers("active"),
+    countSubscribers("unsubscribed"),
   ])
   return { total, active, unsubscribed }
 }
@@ -138,21 +206,36 @@ export async function getSubscriberStats() {
 // ─── Campaigns ───────────────────────────────────────────────────────────────
 
 export async function getCampaigns(page = 1) {
-  const offset = (page - 1) * PAGE_SIZE
-  const [campaigns, total] = await Promise.all([
-    writeClient.fetch<Campaign[]>(
-      `*[_type == "newsletterCampaign"] | order(_createdAt desc) [${offset}...${offset + PAGE_SIZE}] { _id, title, subject, status, mode, sentAt, sentCount, recipientCount, _createdAt }`
-    ),
-    writeClient.fetch<number>(`count(*[_type == "newsletterCampaign"])`),
-  ])
-  return { campaigns, total, pages: Math.ceil(total / PAGE_SIZE), page }
+  const [from, to] = pageRange(page, PAGE_SIZE)
+  const { data, count, error } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to)
+
+  if (error) {
+    console.error("getCampaigns:", error.message)
+    return { campaigns: [] as Campaign[], total: 0, pages: 0, page }
+  }
+
+  const total = count ?? 0
+  return {
+    campaigns: (data as CampaignRow[]).map(rowToCampaign),
+    total,
+    pages: pageCount(total, PAGE_SIZE),
+    page,
+  }
 }
 
-export async function getCampaign(id: string) {
-  return writeClient.fetch<Campaign | null>(
-    `*[_type == "newsletterCampaign" && _id == $id][0]`,
-    { id }
-  )
+export async function getCampaign(id: string): Promise<Campaign | null> {
+  const { data, error } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .select("*")
+    .eq("id", id)
+    .maybeSingle()
+
+  if (error || !data) return null
+  return rowToCampaign(data as CampaignRow)
 }
 
 export async function createCampaign(data: {
@@ -162,46 +245,91 @@ export async function createCampaign(data: {
   plainText: string
   mode: "manual" | "generated"
   prompt?: string
-}) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (writeClient as any).create({
-    _type: "newsletterCampaign",
-    ...data,
-    status: "draft",
-    sentCount: 0,
-    recipientCount: 0,
-  })
+}): Promise<Campaign> {
+  const { data: row, error } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .insert({
+      title: data.title,
+      subject: data.subject,
+      html_content: data.htmlContent,
+      plain_text: data.plainText,
+      mode: data.mode,
+      prompt: data.prompt,
+      status: "draft",
+      sent_count: 0,
+      recipient_count: 0,
+    })
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return rowToCampaign(row as CampaignRow)
 }
 
 export async function updateCampaign(
   id: string,
-  data: Partial<{ title: string; subject: string; htmlContent: string; plainText: string }>
-) {
-  return writeClient.patch(id).set(data).commit()
+  data: Partial<{ title: string; subject: string; htmlContent: string; plainText: string; prompt: string }>
+): Promise<Campaign | null> {
+  const columns = campaignUpdateToColumns(data as Record<string, unknown>)
+  if (Object.keys(columns).length === 0) return getCampaign(id)
+
+  const { data: row, error } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .update(columns)
+    .eq("id", id)
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return rowToCampaign(row as CampaignRow)
 }
 
 export async function markCampaignSent(id: string, sentCount: number, recipientCount: number) {
-  return writeClient.patch(id).set({
-    status: "sent",
-    sentAt: new Date().toISOString(),
-    sentCount,
-    recipientCount,
-  }).commit()
+  const { error } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .update({
+      status: "sent",
+      sent_at: new Date().toISOString(),
+      sent_count: sentCount,
+      recipient_count: recipientCount,
+    })
+    .eq("id", id)
+  if (error) throw new Error(error.message)
+  return { success: true }
 }
 
 export async function deleteCampaign(id: string) {
-  return writeClient.delete(id)
+  const { error } = await supabaseAdmin.from(CAMPAIGNS).delete().eq("id", id)
+  if (error) throw new Error(error.message)
+  return { success: true }
+}
+
+async function countCampaigns(status?: "draft" | "sent"): Promise<number> {
+  let query = supabaseAdmin.from(CAMPAIGNS).select("*", { count: "exact", head: true })
+  if (status) query = query.eq("status", status)
+  const { count } = await query
+  return count ?? 0
 }
 
 export async function getCampaignStats() {
   const [total, sent, draft] = await Promise.all([
-    writeClient.fetch<number>(`count(*[_type == "newsletterCampaign"])`),
-    writeClient.fetch<number>(`count(*[_type == "newsletterCampaign" && status == "sent"])`),
-    writeClient.fetch<number>(`count(*[_type == "newsletterCampaign" && status == "draft"])`),
+    countCampaigns(),
+    countCampaigns("sent"),
+    countCampaigns("draft"),
   ])
-  const lastCampaign = await writeClient.fetch<{ sentAt: string; title?: string; subject: string } | null>(
-    `*[_type == "newsletterCampaign" && status == "sent"] | order(sentAt desc)[0] { sentAt, title, subject }`
-  )
+
+  const { data: last } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .select("sent_at, title, subject")
+    .eq("status", "sent")
+    .order("sent_at", { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const lastCampaign = last
+    ? { sentAt: (last as { sent_at: string }).sent_at, title: (last as { title: string | null }).title ?? undefined, subject: (last as { subject: string | null }).subject ?? "" }
+    : null
+
   return { total, sent, draft, lastCampaign }
 }
 
@@ -213,12 +341,21 @@ export async function getDailyStats() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const campaigns = await writeClient.fetch<Array<{ sentCount: number }>>(
-    `*[_type == "newsletterCampaign" && status == "sent" && sentAt >= $today] { sentCount }`,
-    { today: today.toISOString() }
-  )
+  const { data, error } = await supabaseAdmin
+    .from(CAMPAIGNS)
+    .select("sent_count")
+    .eq("status", "sent")
+    .gte("sent_at", today.toISOString())
 
-  const used = (campaigns ?? []).reduce((sum, c) => sum + (c.sentCount ?? 0), 0)
+  if (error) {
+    console.error("getDailyStats:", error.message)
+    return { used: 0, remaining: DAILY_LIMIT, limit: DAILY_LIMIT }
+  }
+
+  const used = ((data as { sent_count: number | null }[]) ?? []).reduce(
+    (sum, c) => sum + (c.sent_count ?? 0),
+    0
+  )
   const remaining = Math.max(0, DAILY_LIMIT - used)
 
   return { used, remaining, limit: DAILY_LIMIT }
