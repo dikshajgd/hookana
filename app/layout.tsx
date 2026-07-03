@@ -45,7 +45,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", lato.variable, fontMono.variable)}
     >
-      <body className="overflow-x-hidden bg-white font-serif">
+      <body className="overflow-x-hidden bg-pink-300 font-serif">
         {children}
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-929LX8S0BB"} />
