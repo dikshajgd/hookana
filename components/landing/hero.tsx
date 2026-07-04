@@ -284,9 +284,16 @@ export function Hero({ content }: { content: HeroContent | null }) {
 
         {/* Scroll Indicator */}
         <div className="relative hidden lg:block">
-          <div className="absolute bottom-8 left-8 z-20">
-            <ArrowDown className="size-6 text-accent-foreground" />
-          </div>
+          <button
+            type="button"
+            aria-label="Scroll down"
+            onClick={() =>
+              window.scrollBy({ top: window.innerHeight * 0.9, behavior: "smooth" })
+            }
+            className="absolute bottom-8 left-8 z-20 flex size-11 items-center justify-center rounded-full border border-ink bg-paper-white text-ink transition-colors hover:bg-sun-yellow"
+          >
+            <ArrowDown className="size-5 animate-bounce" />
+          </button>
         </div>
       </div>
 

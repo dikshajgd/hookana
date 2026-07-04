@@ -161,10 +161,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             : "pointer-events-auto translate-y-0 opacity-100 lg:pointer-events-none lg:-translate-y-3 lg:opacity-0"
         )}
       >
-        <div className="flex items-center gap-4 rounded-full bg-secondary py-3 pr-3 pl-6 shadow-xl">
+        <div className="flex items-center gap-4 rounded-full border border-ink bg-paper-white py-3 pr-3 pl-6 shadow-[1px_0px_5px_0px_rgba(0,0,0,0.13),2px_2px_4px_1px_rgba(0,0,0,0.08)]">
           <Link
             href="/"
-            className="font-sans text-lg leading-none font-black tracking-[-1px] whitespace-nowrap text-white"
+            className="font-ease text-lg leading-none font-normal tracking-[-0.03em] whitespace-nowrap text-ink"
             onClick={(e) => {
               if (pathname === "/") {
                 e.preventDefault()
@@ -178,7 +178,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
               <button
-                className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                className="flex size-9 items-center justify-center rounded-full bg-ink text-paper-white transition-colors hover:bg-charcoal"
                 aria-label="Open menu"
               >
                 <Menu className="size-4" />
@@ -186,7 +186,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full max-w-full border-none bg-secondary p-0 sm:w-180! sm:max-w-[720px]"
+              className="w-full max-w-full border-none bg-charcoal p-0 sm:w-180! sm:max-w-[720px]"
               showCloseButton={false}
             >
               <VisuallyHidden>
@@ -257,8 +257,8 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                 <div className="px-6 py-4 sm:px-14 sm:py-12">
                   <Button
                     size="lg"
-                    className="w-full rounded-md"
-                    variant="destructive"
+                    className="w-full"
+                    variant="default"
                     asChild
                   >
                     <Link

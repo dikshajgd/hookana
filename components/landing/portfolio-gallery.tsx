@@ -56,10 +56,10 @@ export function PortfolioGallery({
               type="button"
               onClick={() => setFilter(f.value)}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                "font-ease inline-flex items-center gap-1.5 rounded-full border border-ink px-4 py-2 text-sm font-normal tracking-[-0.02em] transition-colors",
                 active
-                  ? "border-transparent bg-foreground text-background"
-                  : "border-blue-950/15 bg-white/60 text-accent-foreground hover:border-blue-950/30"
+                  ? "bg-ink text-paper-white"
+                  : "bg-paper-white text-ink hover:bg-sand"
               )}
             >
               {f.label}
@@ -154,7 +154,7 @@ function MediaCard({
       onClick={onOpen}
       onMouseEnter={play}
       onMouseLeave={stop}
-      className="group relative block aspect-[4/5] w-full overflow-hidden rounded-2xl border border-blue-950/10 bg-blue-950/5 shadow-sm transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+      className="group relative block aspect-[4/5] w-full overflow-hidden rounded-[5px] border border-ink bg-sand transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none"
       aria-label={isVideo ? "Play video" : "View image"}
     >
       {/* Poster — always present, keeps the grid stable and cheap */}

@@ -26,30 +26,32 @@ const FALLBACK: HowItWorksContent = {
   ],
 }
 
-const STEP_ROTATIONS = ["md:-rotate-2", "md:rotate-1", "md:-rotate-2"]
+// Streamtime: each step is a colored paper cutout — the fill is the container,
+// hairline ink border, ink text, a playful tilt.
+const STEP_STYLES = [
+  { rotate: "md:-rotate-2", bg: "bg-sun-yellow" },
+  { rotate: "md:rotate-1", bg: "bg-lime-burst" },
+  { rotate: "md:-rotate-2", bg: "bg-periwinkle" },
+]
 
 function HookanaStepCard({
   title,
   body,
   caption,
-  className,
+  bg,
+  rotate,
 }: {
   title: string
   body: string
   caption: string
-  className?: string
+  bg: string
+  rotate: string
 }) {
   return (
-    <article
-      className={`rounded-md border border-pink-500 p-6 text-center ${className ?? ""}`}
-    >
-      <p className="type-heading-3 font-black! text-primary">{title}</p>
-      <p className="type-paragraph-regular mt-3 font-semibold text-primary-foreground">
-        {body}
-      </p>
-      <p className="type-monospaced mt-3 text-primary-foreground/95">
-        {caption}
-      </p>
+    <article className={`rounded-[5px] border border-ink p-6 text-left ${bg} ${rotate}`}>
+      <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">{title}</p>
+      <p className="font-ease mt-3 text-base leading-snug tracking-[-0.02em] text-ink">{body}</p>
+      <p className="font-ease mt-4 text-xs tracking-[-0.02em] text-ink/70 uppercase">{caption}</p>
     </article>
   )
 }
@@ -62,7 +64,7 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
   return (
     <section className="mt-20 px-5 pb-14 md:mt-40 md:pb-28">
       <div className="mx-auto flex flex-col items-center gap-4 text-center md:gap-6">
-        <h2 className="font-sans text-4xl leading-tight font-semibold tracking-tight text-primary-foreground sm:text-[42px] sm:leading-9 sm:tracking-[-1.5px] md:text-[64px] md:leading-12">
+        <h2 className="font-ease text-4xl leading-[0.95] font-normal tracking-[-0.04em] text-paper-white sm:text-[42px] md:text-[64px] md:leading-[0.95]">
           {headingLines.map((line, i) => (
             <span key={i}>
               {line}
@@ -72,22 +74,19 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
         </h2>
 
         <ContactLink>
-          <Button
-            size="lg"
-            variant="outline"
-            className="rounded-md px-6 text-primary-foreground"
-          >
+          <Button size="lg" variant="secondary" className="px-6">
             {ctaText}
             <ArrowUpRight className="size-4" />
           </Button>
         </ContactLink>
       </div>
 
-      <div className="mx-auto mt-12 grid max-w-237.5 gap-2 md:mt-24 md:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-237.5 gap-4 md:mt-24 md:grid-cols-3">
         {displaySteps.map((step, i) => (
           <HookanaStepCard
             key={i}
-            className={STEP_ROTATIONS[i % STEP_ROTATIONS.length]}
+            bg={STEP_STYLES[i % STEP_STYLES.length].bg}
+            rotate={STEP_STYLES[i % STEP_STYLES.length].rotate}
             title={step.title}
             body={step.body}
             caption={step.caption}
