@@ -81,10 +81,10 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
 
   return (
     <div className="flex w-full justify-center px-5 2xl:px-0">
-      <section className="relative -mt-20 w-full max-w-180 bg-card px-6 py-12 2xl:px-19 2xl:py-18">
+      <section className="relative -mt-20 w-full max-w-180 rounded-t-[5px] border border-ink bg-paper-white px-6 py-12 2xl:px-19 2xl:py-18">
         <div className="mx-auto">
           <div className="grid gap-6 2xl:grid-cols-[255px_1fr] 2xl:gap-9">
-            <h2 className="font-sans text-4xl leading-tight font-semibold tracking-tight text-card-foreground sm:text-[42px] sm:tracking-[-1.5px] 2xl:text-[64px] 2xl:leading-12">
+            <h2 className="font-ease text-4xl leading-[0.95] font-normal tracking-[-0.04em] text-ink sm:text-[42px] 2xl:text-[64px] 2xl:leading-[0.95]">
               {headingLines.map((line, i) => (
                 <span key={i}>
                   {line}
@@ -92,16 +92,16 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                 </span>
               ))}
             </h2>
-            <p className="type-heading-3 max-w-none text-foreground 2xl:max-w-70.25">
+            <p className="font-ease text-xl tracking-[-0.02em] max-w-none text-charcoal 2xl:max-w-70.25">
               {c.subtext}
             </p>
           </div>
 
-          <div className="mt-12 border-t border-dotted border-neutral-950 2xl:mt-20" />
+          <div className="mt-12 border-t border-dotted border-ink 2xl:mt-20" />
 
           <div className="mt-12 2xl:mt-24">
             <div className="mb-8">
-              <h3 className="font-sans text-2xl font-semibold tracking-tight text-card-foreground">
+              <h3 className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">
                 GET 2 FREE CONCEPTS
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -117,9 +117,9 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
             </div>
 
             {status === "success" ? (
-              <div className="rounded-md border border-neutral-200 bg-white p-8 text-center">
-                <p className="type-heading-3 text-foreground">Thanks — we got it.</p>
-                <p className="mt-3 font-mono text-xs text-blue-500">
+              <div className="rounded-[5px] border border-ink bg-sun-yellow p-8 text-center">
+                <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">Thanks — we got it.</p>
+                <p className="mt-3 font-ease text-sm tracking-[-0.02em] text-ink/70">
                   We&apos;ll review your brand and be in touch within 1&ndash;2 business days.
                 </p>
               </div>
@@ -131,7 +131,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.name}
                   onChange={update("name")}
                   placeholder="Your full name"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
               </Field>
 
@@ -141,7 +141,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.brandName}
                   onChange={update("brandName")}
                   placeholder="e.g. Hookana"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
               </Field>
 
@@ -151,7 +151,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.website}
                   onChange={update("website")}
                   placeholder="https://yourbrand.com"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
               </Field>
 
@@ -162,7 +162,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.email}
                   onChange={update("email")}
                   placeholder="you@brand.com"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
               </Field>
 
@@ -200,7 +200,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.budget}
                   onChange={update("budget")}
                   placeholder="e.g. $150 per creative"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
               </Field>
 
@@ -240,7 +240,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.adSpend}
                   onChange={update("adSpend")}
                   placeholder="e.g. $10k / month on Meta + Snap"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
               </Field>
 
@@ -250,7 +250,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   value={values.deliveryEmail}
                   onChange={update("deliveryEmail")}
                   placeholder="best email to receive the concepts"
-                  className="rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400"
+                  className="rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog"
                 />
                 <p className="mt-1 text-xs text-muted-foreground">
                   We usually deliver within 2&ndash;4 business days if selected.
@@ -275,8 +275,8 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
             )}
           </div>
 
-          <div className="mt-12 border-t border-dotted border-neutral-950 2xl:mt-24" />
-          <p className="mt-5 font-mono text-xs leading-3.5 text-blue-500">
+          <div className="mt-12 border-t border-dotted border-ink 2xl:mt-24" />
+          <p className="mt-5 font-ease text-xs leading-relaxed tracking-[-0.02em] text-charcoal/70">
             {c.footerText}
           </p>
         </div>
@@ -291,7 +291,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
           >
             <path
               d="M0,0 L25,28 L50,0 L75,28 L100,0 L125,28 L150,0 L175,28 L200,0 L225,28 L250,0 L275,28 L300,0 L325,28 L350,0 L375,28 L400,0 L425,28 L450,0 L475,28 L500,0 L525,28 L550,0 L575,28 L600,0 L625,28 L650,0 L675,28 L696,0 Z"
-              fill="#fff"
+              fill="#fbf8f5"
             />
           </svg>
         </div>
@@ -311,9 +311,9 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-card-foreground">
+      <label className="font-ease text-sm font-normal tracking-[-0.02em] text-ink">
         {label}
-        {required && <span className="ml-0.5 text-destructive">*</span>}
+        {required && <span className="ml-0.5 text-hot-pink">*</span>}
       </label>
       {children}
     </div>
@@ -326,7 +326,7 @@ function Textarea(props: React.ComponentProps<"textarea">) {
     <textarea
       {...rest}
       className={
-        "w-full min-w-0 rounded-md border border-neutral-300 bg-white px-3 py-2 text-base text-neutral-900 transition-[color,box-shadow,background-color] outline-none placeholder:text-neutral-400 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 md:text-sm " +
+        "w-full min-w-0 rounded-[5px] border border-ink bg-paper-white px-3 py-2 text-base text-ink transition-[color,box-shadow,background-color] outline-none placeholder:text-fog focus-visible:ring-2 focus-visible:ring-ink/30 md:text-sm " +
         (className ?? "")
       }
     />
