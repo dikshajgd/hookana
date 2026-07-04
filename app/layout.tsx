@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono, Lato } from "next/font/google"
+import { JetBrains_Mono, Lato, Inter } from "next/font/google"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { cn } from "@/lib/utils"
 import "./globals.css"
@@ -34,6 +34,13 @@ const fontMono = JetBrains_Mono({
   variable: "--font-mono",
 })
 
+// Streamtime redesign: substitute for "Ease" — single 400 weight, editorial.
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-inter",
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,9 +50,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", lato.variable, fontMono.variable)}
+      className={cn("antialiased", lato.variable, fontMono.variable, inter.variable)}
     >
-      <body className="overflow-x-hidden bg-white font-serif">
+      <body className="overflow-x-hidden bg-warm-linen font-serif">
         {children}
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-929LX8S0BB"} />

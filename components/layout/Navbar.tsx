@@ -101,7 +101,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
         <div className="flex w-full items-start justify-between">
           <Link
             href="/"
-            className="font-sans text-[42px] leading-8 font-black tracking-tight text-black xl:text-[60px] xl:leading-10 2xl:text-[64px] 2xl:leading-12 2xl:tracking-[-1.5px]"
+            className="font-ease text-[42px] leading-8 font-normal tracking-[-0.04em] text-ink xl:text-[60px] xl:leading-10 2xl:text-[64px] 2xl:leading-12"
             onClick={(e) => {
               if (pathname === "/") {
                 e.preventDefault()
@@ -123,7 +123,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                       e.preventDefault()
                       navigateTo(link.href)
                     }}
-                    className="2xl:type-heading-4 text-sm font-semibold whitespace-nowrap text-primary-foreground transition-opacity hover:opacity-70 xl:text-lg"
+                    className="font-ease text-sm font-normal tracking-[-0.02em] whitespace-nowrap text-ink transition-opacity hover:opacity-60 xl:text-lg"
                   >
                     {link.label}
                   </Link>
@@ -134,7 +134,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
 
           <Button
             size="lg"
-            className="h-10 shrink-0 rounded-md px-4 text-xs xl:h-11 xl:px-5 xl:text-sm 2xl:px-6 2xl:text-base"
+            className="font-ease h-11 shrink-0 rounded-[160px] border border-ink bg-sun-yellow px-6 text-xs font-normal tracking-[-0.02em] text-ink shadow-none hover:bg-sun-yellow/90 xl:h-12 xl:px-7 xl:text-sm"
             variant="default"
             asChild
           >

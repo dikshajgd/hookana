@@ -243,6 +243,33 @@
   --color-yellow-950: oklch(0.438 0.078 104.383);
 }
 
+/* ── Streamtime redesign (experiment) ─────────────────────────────
+   Warm editorial palette + single-weight type + small-radius cards /
+   pill buttons. Additive — the existing tokens above are untouched. */
+@theme {
+  --color-sun-yellow: #ffde3b;
+  --color-hot-pink: #ff4dd5;
+  --color-lime-burst: #c1f32b;
+  --color-periwinkle: #6483ff;
+  --color-spring-green: #c6dc3c;
+  --color-bubblegum: #ee84d5;
+  --color-warm-linen: #f1e8de;
+  --color-paper-white: #fbf8f5;
+  --color-charcoal: #2f2c29;
+  --color-stone: #c3b7ac;
+  --color-sand: #eadcce;
+  --color-ink: #000000;
+  --color-fog: #999999;
+
+  --font-ease: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 5px;
+  --radius-pill: 96px;
+  --radius-action: 160px;
+
+  --shadow-paper: 1px 0px 5px 0px rgba(0, 0, 0, 0.13), 2px 2px 4px 1px rgba(0, 0, 0, 0.08);
+}
+
 /* Scrollbar */
 html,
 body {

@@ -30,10 +30,12 @@ const FALLBACK: HeroContent = {
   ],
 }
 
+// Streamtime redesign: each card is a colored paper cutout — the fill IS the
+// container, hairline black border, small 5px radius.
 const CARD_STYLES = [
-  { bg: "bg-neutral-100", labelColor: "text-neutral-950/60" },
-  { bg: "bg-neutral-100", labelColor: "text-neutral-950/60" },
-  { bg: "bg-neutral-100", labelColor: "text-neutral-950/60" },
+  { bg: "bg-lime-burst", labelColor: "text-ink" },
+  { bg: "bg-periwinkle", labelColor: "text-ink" },
+  { bg: "bg-sun-yellow", labelColor: "text-ink" },
 ]
 
 const VISIBLE = 3
@@ -123,27 +125,31 @@ export function Hero({ content }: { content: HeroContent | null }) {
   return (
     <>
       <div className="px-2 lg:px-5">
-        <div className="mt-5 flex min-h-[600px] w-full flex-col overflow-hidden rounded-t-[1.5rem] rounded-b-[2.5rem] bg-pink-50 px-5 pt-14 pb-24 md:mt-10 md:rounded-t-md md:rounded-b-[3rem] md:px-10 md:pt-18 lg:mt-14 lg:h-220 lg:min-h-0 lg:rounded-md lg:px-12 lg:pt-16 lg:pb-0 xl:px-20 xl:pt-22">
+        <div className="relative mt-5 flex min-h-[600px] w-full flex-col overflow-hidden rounded-[5px] border border-ink bg-paper-white px-5 pt-14 pb-24 md:mt-10 md:px-10 md:pt-18 lg:mt-14 lg:h-220 lg:min-h-0 lg:px-12 lg:pt-16 lg:pb-0 xl:px-20 xl:pt-22">
+          {/* Decorative paper-cutout shapes */}
+          <span aria-hidden className="pointer-events-none absolute -top-6 right-10 hidden size-24 rounded-full bg-hot-pink lg:block" />
+          <span aria-hidden className="pointer-events-none absolute top-40 left-6 hidden size-0 border-x-[26px] border-b-[44px] border-x-transparent border-b-spring-green lg:block" />
+
           {/* Hero Content */}
           <div className="flex w-full flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-center lg:gap-16 lg:text-left xl:gap-34">
-            <div className="flex max-w-120 flex-col gap-2 md:gap-3 lg:max-w-96 xl:max-w-120">
-              <p className="font-sans text-5xl leading-[0.9] font-black tracking-tighter text-neutral-950 uppercase sm:text-6xl lg:text-[52px] lg:leading-[1.05] lg:tracking-tight xl:text-[64px] xl:leading-16">
+            <div className="flex max-w-120 flex-col gap-4 md:gap-4 lg:max-w-96 xl:max-w-120">
+              <p className="font-ease text-5xl leading-[0.95] font-normal tracking-[-0.04em] text-ink sm:text-6xl lg:text-[56px] lg:leading-[0.95] xl:text-[68px] xl:leading-[0.95]">
                 {headline}
               </p>
-              <p className="type-heading-3 xl:type-heading-2 text-pink-500 uppercase lg:text-2xl">
+              <p className="font-ease w-fit bg-sun-yellow px-2 py-0.5 text-xl font-normal tracking-[-0.03em] text-ink lg:text-2xl">
                 {subheadline}
               </p>
             </div>
 
             <div className="flex max-w-160 flex-col gap-8 lg:max-w-120 lg:gap-6 xl:max-w-160">
-              <p className="type-paragraph-regular md:type-paragraph-large px-2 text-accent-foreground lg:px-0">
+              <p className="font-ease text-base leading-snug font-normal tracking-[-0.02em] text-charcoal md:text-lg lg:px-0">
                 {description}
               </p>
 
               <div className="flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start lg:gap-5">
                 <Button
                   size="lg"
-                  className="w-full rounded-md sm:w-auto"
+                  className="font-ease w-full rounded-[160px] border border-ink bg-sun-yellow px-7 py-6 text-sm font-normal tracking-[-0.02em] text-ink shadow-none hover:bg-sun-yellow/90 sm:w-auto"
                   variant="default"
                   asChild
                 >
@@ -194,21 +200,21 @@ export function Hero({ content }: { content: HeroContent | null }) {
                     onClick={() => setActiveVideo(carouselStart + i)}
                   >
                     <div className="mb-3 flex">
-                      <span className="type-monospaced inline-flex items-center gap-1 rounded-full border border-neutral-950/15 bg-pink-200 px-1.5 py-px text-[7px] font-bold tracking-[0.1em] text-neutral-950 uppercase shadow-sm leading-tight">
-                        <Tag className="size-2.5" strokeWidth={2.5} />
+                      <span className="font-ease inline-flex items-center gap-1 rounded-[5px] border border-ink bg-paper-white px-2 py-0.5 text-[9px] font-normal tracking-[-0.02em] text-ink uppercase leading-tight">
+                        <Tag className="size-2.5" strokeWidth={2} />
                         {card.label}
                       </span>
                     </div>
                     <div
                       className={cn(
-                        "relative overflow-hidden rounded-md transition-shadow duration-300 group-hover:shadow-2xl",
+                        "relative overflow-hidden rounded-[5px] border border-ink transition-transform duration-300",
                         aspectClass,
                         "lg:h-[460px] lg:w-auto",
                         bg
                       )}
                     >
                       {card.url && (
-                        <div className="absolute inset-0">
+                        <div className="absolute inset-[6px] overflow-hidden rounded-[3px]">
                           {card.type === "image" ? (
                             <img
                               src={cldImage(card.url, mediaWidth)}
