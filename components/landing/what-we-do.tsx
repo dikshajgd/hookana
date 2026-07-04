@@ -161,10 +161,10 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
   return (
     <div className="mx-auto w-full px-5 sm:px-6">
       <div className="flex flex-col gap-2 sm:gap-4 lg:px-30">
-        <p className="font-mono text-2xl font-semibold tracking-tight text-pink-500 sm:text-3xl 2xl:text-4xl">
+        <p className="font-ease text-xl font-normal tracking-[-0.02em] text-hot-pink sm:text-2xl">
           {label}
         </p>
-        <h2 className="font-sans text-4xl leading-tight font-semibold tracking-[-1.5px] text-foreground sm:text-[42px] md:text-[64px] md:leading-12">
+        <h2 className="font-ease text-4xl leading-[0.95] font-normal tracking-[-0.04em] text-ink sm:text-[42px] md:text-[64px] md:leading-[0.95]">
           {heading}
         </h2>
       </div>

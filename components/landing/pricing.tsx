@@ -71,22 +71,22 @@ function PlanTierTearEdge() {
 function PlanTierCard({ tier }: { tier: PlanTier }) {
   const headerClasses =
     tier.id === "starter"
-      ? "bg-lime-500 text-accent-foreground"
+      ? "bg-spring-green text-ink"
       : tier.id === "growth"
-        ? "bg-blue-500 text-primary-foreground"
-        : "bg-pink-500 text-primary-foreground"
+        ? "bg-periwinkle text-ink"
+        : "bg-sun-yellow text-ink"
 
   return (
     <article className="relative w-full overflow-visible">
-      <div className="overflow-hidden rounded-t-md bg-card">
+      <div className="overflow-hidden rounded-t-[5px] border border-ink bg-paper-white">
         <div
-          className={`relative flex items-center justify-between py-4 pl-10 2xl:py-5 2xl:pl-15 ${headerClasses}`}
+          className={`relative flex items-center justify-between border-b border-ink py-4 pl-10 2xl:py-5 2xl:pl-15 ${headerClasses}`}
         >
           <div
-            className="absolute top-0 left-0 h-6 w-6 bg-blue-950"
+            className="absolute top-0 left-0 h-6 w-6 bg-ink"
             style={{ clipPath: "polygon(0 0, 0 100%, 100% 0)" }}
           />
-          <p className="relative font-sans text-2xl font-semibold tracking-tight sm:text-3xl 2xl:text-[56px] 2xl:leading-12 2xl:tracking-[-2px]">
+          <p className="relative font-ease text-2xl font-normal tracking-[-0.03em] sm:text-3xl 2xl:text-[56px] 2xl:leading-12">
             {tier.name}
           </p>
           <DollarSign
@@ -96,18 +96,18 @@ function PlanTierCard({ tier }: { tier: PlanTier }) {
         </div>
 
         <div className="px-6 pt-10 pb-20 2xl:px-12 2xl:pt-15 2xl:pb-40">
-          <p className="type-heading-2 text-foreground">{tier.description}</p>
+          <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">{tier.description}</p>
 
           <div className="mt-8 2xl:mt-11">
             {tier.features.map((feature) => (
               <div
                 key={feature.label}
-                className="flex flex-col justify-between border-t border-dotted border-neutral-950 py-5 2xl:block 2xl:py-11"
+                className="flex flex-col justify-between border-t border-dotted border-ink py-5 2xl:block 2xl:py-11"
               >
-                <p className="font-sans text-sm font-semibold tracking-tight text-foreground sm:text-base 2xl:text-[36px] 2xl:leading-[36px] 2xl:tracking-[-1px]">
+                <p className="font-ease text-sm font-normal tracking-[-0.02em] text-charcoal sm:text-base 2xl:text-[32px] 2xl:leading-[34px]">
                   {feature.label}
                 </p>
-                <p className="mt-1 font-sans text-xl font-semibold tracking-tight text-foreground sm:text-2xl 2xl:mt-2 2xl:text-[56px] 2xl:leading-[48px] 2xl:tracking-[-2px]">
+                <p className="mt-1 font-ease text-xl font-normal tracking-[-0.03em] text-ink sm:text-2xl 2xl:mt-2 2xl:text-[52px] 2xl:leading-[48px]">
                   {feature.value}
                 </p>
               </div>
@@ -140,7 +140,7 @@ export function Pricing({ content }: { content: PricingContent | null }) {
     <div className="overflow-hidden py-20 md:py-40">
       <div className="mx-auto flex flex-col items-center gap-12 2xl:gap-20">
         <div className="flex max-w-142 flex-col items-center gap-6 px-5 text-center md:px-36">
-          <h2 className="font-sans text-[42px] leading-9 font-semibold tracking-[-1.5px] text-primary-foreground md:text-[64px] md:leading-12">
+          <h2 className="font-ease text-[42px] leading-[0.95] font-normal tracking-[-0.04em] text-ink md:text-[64px] md:leading-[0.95]">
             {headingLines.map((line, i) => (
               <span key={i}>
                 {line}

@@ -181,12 +181,12 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
             </div>
             <div className="flex flex-col gap-6 sm:gap-10">
               <div className="flex flex-col gap-4 sm:gap-6">
-                <p className="type-heading-3 sm:type-heading-2 text-primary">
+                <p className="font-ease text-3xl sm:text-4xl font-normal tracking-[-0.03em] text-ink">
                   {tab.headlineLine1}
                   <br />
                   {tab.headlineLine2}
                 </p>
-                <p className="type-heading-4 font-semibold text-accent-foreground">
+                <p className="font-ease text-xl font-normal tracking-[-0.02em] text-charcoal">
                   {tab.subheading}
                 </p>
               </div>
@@ -226,12 +226,12 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
               <div className="grid h-full grid-cols-1 gap-12 lg:grid-cols-2">
                 <div className="flex min-h-120 flex-col justify-between">
                   <div className="flex max-w-120 flex-col gap-6">
-                    <p className="type-heading-1 text-primary">
+                    <p className="font-ease text-5xl leading-[0.95] font-normal tracking-[-0.04em] text-ink 2xl:text-6xl">
                       {tab.headlineLine1}
                       <br />
                       {tab.headlineLine2}
                     </p>
-                    <p className="type-heading-3 text-accent-foreground">
+                    <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-charcoal">
                       {tab.subheading}
                     </p>
                   </div>

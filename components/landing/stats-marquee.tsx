@@ -22,11 +22,11 @@ export function StatsMarquee({ items }: { items: string[] }) {
         }
       `}</style>
 
-      <div className="flex h-18 w-full items-center overflow-hidden bg-secondary">
+      <div className="flex h-18 w-full items-center overflow-hidden border-y border-ink bg-ink">
         <div className="animate-marquee-stats flex w-max items-center">
           {repeatedStats.map((stat, idx) => (
             <div key={idx} className="flex shrink-0 items-center">
-              <span className="type-monospaced text-[16px] whitespace-nowrap text-secondary-foreground">
+              <span className="font-ease text-[16px] tracking-[-0.02em] whitespace-nowrap text-paper-white">
                 ✦ {stat}
               </span>
               <div className="w-12 shrink-0 sm:w-24 lg:w-40" />

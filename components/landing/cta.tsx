@@ -17,7 +17,7 @@ export function Cta({ content }: { content: CtaContent | null }) {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-20 text-center md:pt-36 md:pb-65">
-      <h2 className="font-sans text-[40px] leading-[0.95] font-black tracking-[-1px] text-primary uppercase break-words sm:text-[52px] sm:leading-[0.9] sm:tracking-[-1.5px] md:max-w-187.5 md:text-[96px] md:leading-17">
+      <h2 className="font-ease text-[40px] leading-[0.95] font-normal tracking-[-0.04em] text-ink break-words sm:text-[52px] sm:leading-[0.95] md:max-w-187.5 md:text-[96px] md:leading-[0.92]">
         {lines.map((line, i) => (
           <span key={i}>
             {line}
@@ -26,7 +26,7 @@ export function Cta({ content }: { content: CtaContent | null }) {
         ))}
       </h2>
 
-      <p className="type-heading-4 px-4 text-foreground">{description}</p>
+      <p className="font-ease text-lg tracking-[-0.02em] px-4 text-charcoal">{description}</p>
 
       <Button size="lg" className="rounded-md" asChild>
         <Link

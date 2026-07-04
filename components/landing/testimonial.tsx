@@ -57,7 +57,7 @@ export function Testimonial({ content }: { content: TestimonialContent | null })
   return (
     <section
       ref={sectionRef}
-      className="mx-auto mt-8 2xl:mt-15 w-fit max-w-full overflow-hidden rounded-md bg-secondary p-3"
+      className="mx-auto mt-8 2xl:mt-15 w-fit max-w-full overflow-hidden rounded-[5px] border border-ink bg-sun-yellow p-2.5"
     >
       <div className="group relative cursor-pointer" onClick={togglePlay}>
         <video

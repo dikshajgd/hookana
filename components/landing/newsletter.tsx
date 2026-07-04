@@ -43,9 +43,9 @@ export function Newsletter() {
   }
 
   return (
-    <section className="bg-blue-50">
+    <section className="bg-warm-linen">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-20 text-center md:py-32">
-        <h2 className="font-sans text-[40px] leading-[0.95] font-black tracking-[-1px] text-primary uppercase break-words sm:text-[52px] sm:leading-[0.9] sm:tracking-[-1.5px] md:max-w-187.5 md:text-[80px] md:leading-19">
+        <h2 className="font-ease text-[40px] leading-[0.95] font-normal tracking-[-0.04em] text-ink break-words sm:text-[52px] sm:leading-[0.95] md:max-w-187.5 md:text-[80px] md:leading-[0.95]">
           {lines.map((line, i) => (
             <span key={i}>
               {line}
@@ -75,12 +75,12 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@brand.com"
               aria-label="Email address"
-              className="h-11 rounded-md border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 sm:flex-1"
+              className="h-11 rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog sm:flex-1"
             />
             <Button
               type="submit"
               size="lg"
-              className="h-11 rounded-md"
+              className="h-11"
               disabled={status === "submitting"}
             >
               {status === "submitting" ? "Subscribing..." : "Subscribe"}

@@ -29,8 +29,8 @@ export default async function Page() {
           tabs={settings.problems?.tabs ?? []}
         />
 
-        <div className="mt-26 w-full bg-blue-950 md:mt-50">
-          <div id="contact" className="scroll-mt-24 bg-secondary pt-24 lg:pt-0">
+        <div className="mt-26 w-full bg-charcoal md:mt-50">
+          <div id="contact" className="scroll-mt-24 bg-charcoal pt-24 lg:pt-0">
             <div className="relative">
               <img
                 src="/svg/guy.svg"
@@ -71,7 +71,7 @@ export default async function Page() {
 
       <StatsMarquee items={settings.stats?.marqueeItems ?? []} />
 
-      <section className="w-full bg-blue-50 pt-12 pb-15 sm:pt-30">
+      <section className="w-full bg-warm-linen pt-12 pb-15 sm:pt-30">
         <div id="services" className="scroll-mt-24">
           <WhatWeDo content={settings.services ?? null} />
         </div>
@@ -84,23 +84,23 @@ export default async function Page() {
         </div>
       </section>
 
-      <section className="bg-blue-950">
+      <section className="bg-warm-linen">
         <div id="pricing" className="scroll-mt-24">
           <Pricing content={settings.pricing ?? null} />
         </div>
       </section>
 
-      <section className="bg-blue-50">
+      <section className="bg-warm-linen">
         <Cta content={settings.cta ?? null} />
       </section>
 
-      <section className="bg-blue-950">
+      <section className="bg-warm-linen">
         <Faq content={settings.faq ?? null} />
       </section>
 
       <Newsletter />
 
-      <section className="bg-secondary">
+      <section className="bg-charcoal">
         <Footer content={settings.footer ?? null} />
       </section>
 
