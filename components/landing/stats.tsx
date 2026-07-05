@@ -31,7 +31,7 @@ export function Stats({ content }: { content: StatsContent | null }) {
             >
               <AnimatedStat
                 value={item.value}
-                className="inline-flex items-center font-editorial text-5xl font-light tracking-[-0.02em] text-voltage-blue sm:text-6xl 2xl:text-7xl"
+                className="inline-flex items-center border-b-4 border-lime-brand pb-1 font-editorial text-5xl font-light tracking-[-0.02em] text-voltage-blue sm:text-6xl 2xl:text-7xl"
               />
               <p className="max-w-[120px] font-ease text-sm font-normal tracking-[-0.02em] text-ink sm:text-base 2xl:max-w-none 2xl:text-xl">
                 {item.label}

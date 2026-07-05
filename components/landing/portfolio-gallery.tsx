@@ -207,7 +207,7 @@ function MediaCard({
         </>
       )}
 
-      <span className="pointer-events-none absolute top-2.5 left-2.5 rounded-full bg-black/55 px-2 py-0.5 font-mono text-[10px] tracking-widest text-white uppercase opacity-0 transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute top-2.5 left-2.5 rounded-none border border-ink bg-lime-brand px-2 py-0.5 font-ease text-[10px] font-light tracking-widest text-ink uppercase opacity-0 transition-opacity group-hover:opacity-100">
         {isVideo ? "Reel" : "Static"}
       </span>
     </button>

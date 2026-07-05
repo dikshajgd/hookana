@@ -58,23 +58,23 @@
   --font-sans: "Degular", system-ui, sans-serif;
   --font-serif: "Lato", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --background: #fff8f1;
+  --background: #f5ead4;
   --foreground: oklch(0.14 0 89.876);
-  --card: #fff8f1;
+  --card: #faf3e6;
   --card-foreground: oklch(0.14 0 89.876);
   --popover: oklch(0 0 0);
   --popover-foreground: oklch(1 0 0);
   --primary: #006eff;
-  --primary-foreground: #fff8f1;
-  --secondary: #fff8f1;
+  --primary-foreground: #f5ead4;
+  --secondary: #f5ead4;
   --secondary-foreground: #000000;
   --muted: oklch(0.97 0 89.876);
   --muted-foreground: oklch(0.556 0 89.876);
-  --accent: #e2e8f0;
+  --accent: #e2d9c8;
   --accent-foreground: #000000;
   --destructive: oklch(0.537 0.218 353.737);
   --destructive-foreground: oklch(1 0 0);
-  --border: #e2e8f0;
+  --border: #e2d9c8;
   --input: oklch(1 0 0);
   --ring: oklch(0.87 0 89.876);
   --chart-1: oklch(0.828 0.111 230.318);
@@ -250,18 +250,21 @@
    this palette so existing utility classes keep working during the
    re-theme (e.g. warm-linen/paper-white/charcoal all resolve to cream). */
 @theme {
-  --color-cream: #fff8f1;
-  --color-ash: #e2e8f0;
+  /* Warmer, clearly-cream canvas (not near-white) */
+  --color-cream: #f5ead4;
+  --color-ash: #e2d9c8;
   --color-voltage-blue: #006eff;
   --color-ink: #000000;
   --color-fog: #999999;
+  /* Hookana brand lime — secondary accent alongside the blue */
+  --color-lime-brand: #c1f32b;
 
   /* Compatibility aliases: former Streamtime tokens -> Drive Capital */
-  --color-warm-linen: #fff8f1;
-  --color-paper-white: #fff8f1;
-  --color-charcoal: #fff8f1;
-  --color-sand: #fff8f1;
-  --color-stone: #e2e8f0;
+  --color-warm-linen: #f5ead4;
+  --color-paper-white: #faf3e6;
+  --color-charcoal: #f5ead4;
+  --color-sand: #efe3cd;
+  --color-stone: #e2d9c8;
   --color-sun-yellow: #006eff;
   --color-hot-pink: #006eff;
   --color-lime-burst: #006eff;
@@ -438,24 +441,24 @@ body::-webkit-scrollbar,
 /* Drive Capital: collapse the old vivid scales onto the monochrome palette.
    Later @theme wins, so these override the scale definitions above. */
 @theme {
-  --color-blue-50: #fff8f1;
-  --color-blue-100: #fff8f1;
-  --color-blue-200: #e2e8f0;
+  --color-blue-50: #f5ead4;
+  --color-blue-100: #f5ead4;
+  --color-blue-200: #e2d9c8;
   --color-blue-300: #006eff;
   --color-blue-400: #006eff;
   --color-blue-500: #006eff;
   --color-blue-600: #006eff;
   --color-blue-950: #000000;
 
-  --color-lime-50: #fff8f1;
-  --color-lime-100: #fff8f1;
-  --color-lime-200: #fff8f1;
-  --color-lime-500: #e2e8f0;
+  --color-lime-50: #f5ead4;
+  --color-lime-100: #f5ead4;
+  --color-lime-200: #f5ead4;
+  --color-lime-500: #e2d9c8;
   --color-lime-600: #006eff;
   --color-lime-950: #000000;
 
-  --color-pink-100: #fff8f1;
-  --color-pink-200: #e2e8f0;
+  --color-pink-100: #f5ead4;
+  --color-pink-200: #e2d9c8;
   --color-pink-300: #006eff;
   --color-pink-400: #006eff;
   --color-pink-500: #006eff;

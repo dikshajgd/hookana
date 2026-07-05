@@ -131,7 +131,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
               <p className="font-editorial text-6xl leading-[0.95] font-light tracking-[-0.02em] text-voltage-blue sm:text-7xl lg:text-[72px] lg:leading-[0.95] xl:text-[88px] xl:leading-[0.95]">
                 {headline}
               </p>
-              <p className="font-ease w-fit text-xl font-light tracking-[-0.02em] text-voltage-blue lg:text-2xl">
+              <p className="font-ease w-fit border-b-[3px] border-lime-brand pb-1 text-xl font-light tracking-[-0.02em] text-voltage-blue lg:text-2xl">
                 {subheadline}
               </p>
             </div>
@@ -195,7 +195,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                     onClick={() => setActiveVideo(carouselStart + i)}
                   >
                     <div className="mb-3 flex">
-                      <span className="font-ease inline-flex items-center gap-1 rounded-none border border-ash bg-paper-white px-2 py-0.5 text-[9px] font-normal tracking-[-0.02em] text-ink uppercase leading-tight">
+                      <span className="font-ease inline-flex items-center gap-1 rounded-none border border-ink bg-lime-brand px-2 py-0.5 text-[9px] font-normal tracking-[-0.02em] text-ink uppercase leading-tight">
                         <Tag className="size-2.5" strokeWidth={2} />
                         {card.label}
                       </span>

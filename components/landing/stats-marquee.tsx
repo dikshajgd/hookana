@@ -27,7 +27,7 @@ export function StatsMarquee({ items }: { items: string[] }) {
           {repeatedStats.map((stat, idx) => (
             <div key={idx} className="flex shrink-0 items-center">
               <span className="font-ease text-[16px] font-light uppercase tracking-[-0.02em] whitespace-nowrap text-voltage-blue">
-                ✦ {stat}
+                <span className="text-lime-brand">✦</span> {stat}
               </span>
               <div className="w-12 shrink-0 sm:w-24 lg:w-40" />
             </div>
