@@ -43,7 +43,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
     <section className="mx-auto w-full px-5 py-14 sm:py-20 md:px-12 lg:px-20 2xl:py-52 2xl:px-36">
       <div className="flex flex-col gap-10 sm:gap-14 2xl:grid 2xl:grid-cols-[500px_800px] 2xl:justify-between 2xl:gap-0">
         <div className="flex flex-col gap-3 sm:gap-6 2xl:gap-15">
-          <h2 className="font-ease text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] font-normal tracking-[-0.04em] text-ink">
+          <h2 className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-voltage-blue">
             {h1Lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -51,7 +51,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
               </span>
             ))}
           </h2>
-          <p className="font-ease text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] font-normal tracking-[-0.04em] text-hot-pink">
+          <p className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-hot-pink">
             {h2Lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -75,7 +75,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
                 <AccordionTrigger className="font-ease text-xl sm:text-2xl 2xl:text-[28px] font-normal tracking-[-0.03em] text-left leading-tight px-0 py-2 2xl:py-4 text-ink hover:no-underline **:data-[slot=accordion-trigger-icon]:text-ink">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="px-0 pt-1 pb-4 2xl:pb-0 text-charcoal">
+                <AccordionContent className="px-0 pt-1 pb-4 2xl:pb-0 text-ink">
                   <p className="font-ease text-sm sm:text-base tracking-[-0.02em] leading-relaxed">{item.answer}</p>
                 </AccordionContent>
               </AccordionItem>

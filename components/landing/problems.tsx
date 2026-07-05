@@ -186,7 +186,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
                   <br />
                   {tab.headlineLine2}
                 </p>
-                <p className="font-ease text-xl font-normal tracking-[-0.02em] text-charcoal">
+                <p className="font-ease text-xl font-normal tracking-[-0.02em] text-ink">
                   {tab.subheading}
                 </p>
               </div>
@@ -226,12 +226,12 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
               <div className="grid h-full grid-cols-1 gap-12 lg:grid-cols-2">
                 <div className="flex min-h-120 flex-col justify-between">
                   <div className="flex max-w-120 flex-col gap-6">
-                    <p className="font-ease text-5xl leading-[0.95] font-normal tracking-[-0.04em] text-ink 2xl:text-6xl">
+                    <p className="font-editorial font-light text-5xl leading-[0.95] tracking-[-0.02em] text-voltage-blue 2xl:text-6xl">
                       {tab.headlineLine1}
                       <br />
                       {tab.headlineLine2}
                     </p>
-                    <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-charcoal">
+                    <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">
                       {tab.subheading}
                     </p>
                   </div>

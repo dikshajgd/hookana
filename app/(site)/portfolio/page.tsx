@@ -29,10 +29,10 @@ export default async function PortfolioPage() {
     <div className="mt-4 w-full overflow-x-clip bg-warm-linen pt-28 pb-20 lg:pt-24">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-6">
         <div className="flex flex-col gap-4">
-          <h1 className="font-ease text-4xl leading-[0.95] font-normal tracking-[-0.04em] text-ink sm:text-[42px] md:text-[64px] md:leading-[0.95]">
+          <h1 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] md:text-[64px] md:leading-[0.95]">
             {heading}
           </h1>
-          <p className="font-ease max-w-2xl text-base tracking-[-0.02em] text-charcoal sm:text-lg">{description}</p>
+          <p className="font-ease max-w-2xl text-base tracking-[-0.02em] text-ink sm:text-lg">{description}</p>
         </div>
 
         <PortfolioGallery bundles={finalBundles} />

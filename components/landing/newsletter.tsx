@@ -45,7 +45,7 @@ export function Newsletter() {
   return (
     <section className="bg-warm-linen">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-20 text-center md:py-32">
-        <h2 className="font-ease text-[40px] leading-[0.95] font-normal tracking-[-0.04em] text-ink break-words sm:text-[52px] sm:leading-[0.95] md:max-w-187.5 md:text-[80px] md:leading-[0.95]">
+        <h2 className="font-editorial font-light text-[40px] leading-[0.95] tracking-[-0.02em] text-voltage-blue break-words sm:text-[52px] sm:leading-[0.95] md:max-w-187.5 md:text-[80px] md:leading-[0.95]">
           {lines.map((line, i) => (
             <span key={i}>
               {line}
@@ -75,7 +75,7 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@brand.com"
               aria-label="Email address"
-              className="h-11 rounded-[5px] border-ink bg-paper-white text-ink placeholder:text-fog sm:flex-1"
+              className="h-11 rounded-none border-ash bg-paper-white text-ink placeholder:text-fog sm:flex-1"
             />
             <Button
               type="submit"

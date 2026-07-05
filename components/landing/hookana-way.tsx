@@ -29,9 +29,9 @@ const FALLBACK: HowItWorksContent = {
 // Streamtime: each step is a colored paper cutout — the fill is the container,
 // hairline ink border, ink text, a playful tilt.
 const STEP_STYLES = [
-  { rotate: "md:-rotate-2", bg: "bg-sun-yellow" },
-  { rotate: "md:rotate-1", bg: "bg-lime-burst" },
-  { rotate: "md:-rotate-2", bg: "bg-periwinkle" },
+  { rotate: "md:-rotate-2", bg: "bg-cream" },
+  { rotate: "md:rotate-1", bg: "bg-cream" },
+  { rotate: "md:-rotate-2", bg: "bg-cream" },
 ]
 
 function HookanaStepCard({
@@ -48,7 +48,7 @@ function HookanaStepCard({
   rotate: string
 }) {
   return (
-    <article className={`rounded-[5px] border border-ink p-6 text-left ${bg} ${rotate}`}>
+    <article className={`rounded-none border border-ash p-6 text-left ${bg} ${rotate}`}>
       <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">{title}</p>
       <p className="font-ease mt-3 text-base leading-snug tracking-[-0.02em] text-ink">{body}</p>
       <p className="font-ease mt-4 text-xs tracking-[-0.02em] text-ink/70 uppercase">{caption}</p>
@@ -64,7 +64,7 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
   return (
     <section className="mt-20 px-5 pb-14 md:mt-40 md:pb-28">
       <div className="mx-auto flex flex-col items-center gap-4 text-center md:gap-6">
-        <h2 className="font-ease text-4xl leading-[0.95] font-normal tracking-[-0.04em] text-paper-white sm:text-[42px] md:text-[64px] md:leading-[0.95]">
+        <h2 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] md:text-[64px] md:leading-[0.95]">
           {headingLines.map((line, i) => (
             <span key={i}>
               {line}

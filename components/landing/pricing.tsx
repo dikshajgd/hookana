@@ -71,16 +71,16 @@ function PlanTierTearEdge() {
 function PlanTierCard({ tier }: { tier: PlanTier }) {
   const headerClasses =
     tier.id === "starter"
-      ? "bg-spring-green text-ink"
+      ? "bg-cream text-ink"
       : tier.id === "growth"
-        ? "bg-periwinkle text-ink"
-        : "bg-sun-yellow text-ink"
+        ? "bg-cream text-ink"
+        : "bg-cream text-ink"
 
   return (
     <article className="relative w-full overflow-visible">
-      <div className="overflow-hidden rounded-t-[5px] border border-ink bg-paper-white">
+      <div className="overflow-hidden rounded-t-[5px] border border-ash bg-paper-white">
         <div
-          className={`relative flex items-center justify-between border-b border-ink py-4 pl-10 2xl:py-5 2xl:pl-15 ${headerClasses}`}
+          className={`relative flex items-center justify-between border-b border-ash py-4 pl-10 2xl:py-5 2xl:pl-15 ${headerClasses}`}
         >
           <div
             className="absolute top-0 left-0 h-6 w-6 bg-ink"
@@ -102,9 +102,9 @@ function PlanTierCard({ tier }: { tier: PlanTier }) {
             {tier.features.map((feature) => (
               <div
                 key={feature.label}
-                className="flex flex-col justify-between border-t border-dotted border-ink py-5 2xl:block 2xl:py-11"
+                className="flex flex-col justify-between border-t border-dotted border-ash py-5 2xl:block 2xl:py-11"
               >
-                <p className="font-ease text-sm font-normal tracking-[-0.02em] text-charcoal sm:text-base 2xl:text-[32px] 2xl:leading-[34px]">
+                <p className="font-ease text-sm font-normal tracking-[-0.02em] text-ink sm:text-base 2xl:text-[32px] 2xl:leading-[34px]">
                   {feature.label}
                 </p>
                 <p className="mt-1 font-ease text-xl font-normal tracking-[-0.03em] text-ink sm:text-2xl 2xl:mt-2 2xl:text-[52px] 2xl:leading-[48px]">
@@ -140,7 +140,7 @@ export function Pricing({ content }: { content: PricingContent | null }) {
     <div className="overflow-hidden py-20 md:py-40">
       <div className="mx-auto flex flex-col items-center gap-12 2xl:gap-20">
         <div className="flex max-w-142 flex-col items-center gap-6 px-5 text-center md:px-36">
-          <h2 className="font-ease text-[42px] leading-[0.95] font-normal tracking-[-0.04em] text-ink md:text-[64px] md:leading-[0.95]">
+          <h2 className="font-editorial font-light text-[42px] leading-[0.95] tracking-[-0.02em] text-voltage-blue md:text-[64px] md:leading-[0.95]">
             {headingLines.map((line, i) => (
               <span key={i}>
                 {line}

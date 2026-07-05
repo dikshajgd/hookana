@@ -164,7 +164,7 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
         <p className="font-ease text-xl font-normal tracking-[-0.02em] text-hot-pink sm:text-2xl">
           {label}
         </p>
-        <h2 className="font-ease text-4xl leading-[0.95] font-normal tracking-[-0.04em] text-ink sm:text-[42px] md:text-[64px] md:leading-[0.95]">
+        <h2 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] md:text-[64px] md:leading-[0.95]">
           {heading}
         </h2>
       </div>

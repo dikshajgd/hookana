@@ -123,7 +123,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                       e.preventDefault()
                       navigateTo(link.href)
                     }}
-                    className="font-ease text-sm font-normal tracking-[-0.02em] whitespace-nowrap text-ink transition-opacity hover:opacity-60 xl:text-lg"
+                    className="font-ease text-sm font-light uppercase tracking-[-0.02em] whitespace-nowrap text-voltage-blue transition-opacity hover:opacity-60 xl:text-base"
                   >
                     {link.label}
                   </Link>
@@ -134,7 +134,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
 
           <Button
             size="lg"
-            className="font-ease h-11 shrink-0 rounded-[160px] border border-ink bg-sun-yellow px-6 text-xs font-normal tracking-[-0.02em] text-ink shadow-none hover:bg-sun-yellow/90 xl:h-12 xl:px-7 xl:text-sm"
+            className="h-11 shrink-0 px-7 text-xs uppercase xl:h-12 xl:px-9 xl:text-sm"
             variant="default"
             asChild
           >
@@ -161,7 +161,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             : "pointer-events-auto translate-y-0 opacity-100 lg:pointer-events-none lg:-translate-y-3 lg:opacity-0"
         )}
       >
-        <div className="flex items-center gap-4 rounded-full border border-ink bg-paper-white py-3 pr-3 pl-6 shadow-[1px_0px_5px_0px_rgba(0,0,0,0.13),2px_2px_4px_1px_rgba(0,0,0,0.08)]">
+        <div className="flex items-center gap-4 rounded-full border border-ash bg-cream py-3 pr-3 pl-6">
           <Link
             href="/"
             className="font-ease text-lg leading-none font-normal tracking-[-0.03em] whitespace-nowrap text-ink"
@@ -178,7 +178,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
               <button
-                className="flex size-9 items-center justify-center rounded-full bg-ink text-paper-white transition-colors hover:bg-charcoal"
+                className="flex size-9 items-center justify-center rounded-full border border-voltage-blue bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5"
                 aria-label="Open menu"
               >
                 <Menu className="size-4" />
@@ -186,7 +186,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full max-w-full border-none bg-charcoal p-0 sm:w-180! sm:max-w-[720px]"
+              className="w-full max-w-full border-none bg-cream p-0 sm:w-180! sm:max-w-[720px]"
               showCloseButton={false}
             >
               <VisuallyHidden>
@@ -197,13 +197,13 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                 <div className="flex items-center justify-between px-6 pt-8 pb-6 sm:items-start sm:px-14 sm:pt-14 sm:pb-12">
                   <Link
                     href="/"
-                    className="font-sans text-[40px] leading-none font-black tracking-[-2px] text-white sm:text-[56px] sm:tracking-[-2px]"
+                    className="font-ease text-[40px] leading-none font-normal tracking-[-0.03em] text-ink sm:text-[56px] sm:tracking-[-2px]"
                   >
                     {logoText}
                   </Link>
                   <SheetClose asChild>
                     <button
-                      className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:mt-2 sm:size-10"
+                      className="flex size-9 items-center justify-center rounded-full border border-ash bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5 sm:mt-2 sm:size-10"
                       aria-label="Close menu"
                     >
                       <X className="size-4 sm:size-5" />
@@ -212,11 +212,11 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                 </div>
 
                 {/* Nav links */}
-                <nav className="flex flex-1 flex-col border-t border-white/10 px-6 sm:px-14">
+                <nav className="flex flex-1 flex-col border-t border-ash px-6 sm:px-14">
                   {allLinks
                     .filter((link) => !PORTFOLIO_SUB_HREFS.includes(link.href))
                     .map((link) => (
-                      <div key={link.href} className="border-b border-white/10 last:border-none">
+                      <div key={link.href} className="border-b border-ash last:border-none">
                         <Link
                           href={link.href}
                           className="group flex items-center justify-between py-4 sm:py-6"
@@ -225,10 +225,10 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                             closeAndScroll(link.href)
                           }}
                         >
-                          <span className="text-[28px] font-light leading-tight text-white/60 transition-colors group-hover:text-white sm:text-2xl sm:font-semibold">
+                          <span className="text-[28px] font-light leading-tight text-ink/70 transition-colors group-hover:text-voltage-blue sm:text-2xl sm:font-semibold">
                             {link.label}
                           </span>
-                          <ArrowUpRight className="size-5 text-white/40 transition-colors group-hover:text-white sm:size-5" />
+                          <ArrowUpRight className="size-5 text-ink/50 transition-colors group-hover:text-voltage-blue sm:size-5" />
                         </Link>
                         {link.href === "/portfolio" && (
                           <div className="flex items-center gap-4 pb-3">
@@ -240,8 +240,8 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                                 className={cn(
                                   "text-base font-medium transition-colors",
                                   pathname === sub.href
-                                    ? "text-white"
-                                    : "text-white/70 hover:text-white"
+                                    ? "text-voltage-blue"
+                                    : "text-voltage-blue/70 hover:text-voltage-blue"
                                 )}
                               >
                                 {sub.label}

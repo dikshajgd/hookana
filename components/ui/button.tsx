@@ -5,18 +5,17 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button font-ease inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-normal tracking-[-0.02em] whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button font-ease inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border-[1.5px] border-transparent bg-clip-padding text-sm font-light tracking-[-0.02em] whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-2 focus-visible:ring-voltage-blue/30 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        // Streamtime: sun-yellow is the only filled primary action.
-        default: "border-ink bg-sun-yellow text-ink hover:bg-sun-yellow/90",
-        outline: "border-ink text-ink hover:bg-sand",
-        secondary: "border-ink bg-paper-white text-ink hover:bg-sand",
-        ghost: "border-transparent text-ink hover:bg-sand",
-        // Inverted CTA (used on light bands where the yellow already appears).
-        destructive: "border-ink bg-charcoal text-paper-white hover:bg-charcoal/90",
-        link: "border-transparent text-ink underline-offset-4 hover:underline",
+        // Drive Capital: outlined pill, transparent fill — the outline IS the button.
+        default: "border-voltage-blue bg-transparent text-voltage-blue hover:bg-voltage-blue/5",
+        outline: "border-ash bg-transparent text-ink hover:bg-ash/40",
+        secondary: "border-voltage-blue bg-transparent text-voltage-blue hover:bg-voltage-blue/5",
+        ghost: "border-transparent text-voltage-blue hover:bg-voltage-blue/5",
+        destructive: "border-voltage-blue bg-transparent text-voltage-blue hover:bg-voltage-blue/5",
+        link: "border-transparent text-voltage-blue underline-offset-4 hover:underline",
       },
       size: {
         default:

@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono, Lato, Inter } from "next/font/google"
+import { JetBrains_Mono, Lato, Inter, Cormorant } from "next/font/google"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { cn } from "@/lib/utils"
 import "./globals.css"
@@ -34,11 +34,18 @@ const fontMono = JetBrains_Mono({
   variable: "--font-mono",
 })
 
-// Streamtime redesign: substitute for "Ease" — single 400 weight, editorial.
+// Drive Capital: grotesk (Founders substitute) at whisper weights 300/400.
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400"],
   variable: "--font-inter",
+})
+
+// Drive Capital: hairline didone display (Editorial New substitute).
+const cormorant = Cormorant({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  variable: "--font-cormorant",
 })
 
 export default function RootLayout({
@@ -50,9 +57,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", lato.variable, fontMono.variable, inter.variable)}
+      className={cn("antialiased", lato.variable, fontMono.variable, inter.variable, cormorant.variable)}
     >
-      <body className="overflow-x-hidden bg-warm-linen font-serif">
+      <body className="overflow-x-hidden bg-cream font-serif">
         {children}
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-929LX8S0BB"} />

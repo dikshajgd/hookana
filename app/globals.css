@@ -58,23 +58,23 @@
   --font-sans: "Degular", system-ui, sans-serif;
   --font-serif: "Lato", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --background: oklch(1 0 0);
+  --background: #fff8f1;
   --foreground: oklch(0.14 0 89.876);
-  --card: oklch(1 0 0);
+  --card: #fff8f1;
   --card-foreground: oklch(0.14 0 89.876);
   --popover: oklch(0 0 0);
   --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.638 0.258 355.071);
-  --primary-foreground: oklch(0.972 0.006 350.797);
-  --secondary: oklch(0.469 0.301 266.623);
-  --secondary-foreground: oklch(0.969 0.007 286.275);
+  --primary: #006eff;
+  --primary-foreground: #fff8f1;
+  --secondary: #fff8f1;
+  --secondary-foreground: #000000;
   --muted: oklch(0.97 0 89.876);
   --muted-foreground: oklch(0.556 0 89.876);
-  --accent: oklch(0.909 0.195 129.024);
-  --accent-foreground: oklch(0.205 0 89.876);
+  --accent: #e2e8f0;
+  --accent-foreground: #000000;
   --destructive: oklch(0.537 0.218 353.737);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.919 0 89.876);
+  --border: #e2e8f0;
   --input: oklch(1 0 0);
   --ring: oklch(0.87 0 89.876);
   --chart-1: oklch(0.828 0.111 230.318);
@@ -243,31 +243,39 @@
   --color-yellow-950: oklch(0.438 0.078 104.383);
 }
 
-/* ── Streamtime redesign (experiment) ─────────────────────────────
-   Warm editorial palette + single-weight type + small-radius cards /
-   pill buttons. Additive — the existing tokens above are untouched. */
+/* ── Drive Capital redesign (experiment) ──────────────────────────
+   Monochrome voltage-blue on warm cream. Hairline serif display type +
+   low-weight grotesk. Flat surfaces, ash hairline borders, outlined
+   pill buttons (never filled). The Streamtime aliases below map onto
+   this palette so existing utility classes keep working during the
+   re-theme (e.g. warm-linen/paper-white/charcoal all resolve to cream). */
 @theme {
-  --color-sun-yellow: #ffde3b;
-  --color-hot-pink: #ff4dd5;
-  --color-lime-burst: #c1f32b;
-  --color-periwinkle: #6483ff;
-  --color-spring-green: #c6dc3c;
-  --color-bubblegum: #ee84d5;
-  --color-warm-linen: #f1e8de;
-  --color-paper-white: #fbf8f5;
-  --color-charcoal: #2f2c29;
-  --color-stone: #c3b7ac;
-  --color-sand: #eadcce;
+  --color-cream: #fff8f1;
+  --color-ash: #e2e8f0;
+  --color-voltage-blue: #006eff;
   --color-ink: #000000;
   --color-fog: #999999;
 
+  /* Compatibility aliases: former Streamtime tokens -> Drive Capital */
+  --color-warm-linen: #fff8f1;
+  --color-paper-white: #fff8f1;
+  --color-charcoal: #fff8f1;
+  --color-sand: #fff8f1;
+  --color-stone: #e2e8f0;
+  --color-sun-yellow: #006eff;
+  --color-hot-pink: #006eff;
+  --color-lime-burst: #006eff;
+  --color-periwinkle: #006eff;
+  --color-spring-green: #006eff;
+  --color-bubblegum: #006eff;
+
+  /* Display serif (Editorial New substitute) + grotesk body (Founders sub) */
+  --font-editorial: var(--font-cormorant), ui-serif, Georgia, serif;
   --font-ease: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 5px;
-  --radius-pill: 96px;
-  --radius-action: 160px;
-
-  --shadow-paper: 1px 0px 5px 0px rgba(0, 0, 0, 0.13), 2px 2px 4px 1px rgba(0, 0, 0, 0.08);
+  --radius-card: 0px;
+  --radius-pill: 60px;
+  --radius-action: 60px;
 }
 
 /* Scrollbar */
@@ -425,4 +433,32 @@ body::-webkit-scrollbar,
   html {
     @apply font-sans;
   }
+}
+
+/* Drive Capital: collapse the old vivid scales onto the monochrome palette.
+   Later @theme wins, so these override the scale definitions above. */
+@theme {
+  --color-blue-50: #fff8f1;
+  --color-blue-100: #fff8f1;
+  --color-blue-200: #e2e8f0;
+  --color-blue-300: #006eff;
+  --color-blue-400: #006eff;
+  --color-blue-500: #006eff;
+  --color-blue-600: #006eff;
+  --color-blue-950: #000000;
+
+  --color-lime-50: #fff8f1;
+  --color-lime-100: #fff8f1;
+  --color-lime-200: #fff8f1;
+  --color-lime-500: #e2e8f0;
+  --color-lime-600: #006eff;
+  --color-lime-950: #000000;
+
+  --color-pink-100: #fff8f1;
+  --color-pink-200: #e2e8f0;
+  --color-pink-300: #006eff;
+  --color-pink-400: #006eff;
+  --color-pink-500: #006eff;
+
+  --color-yellow-600: #006eff;
 }
