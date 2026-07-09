@@ -6,7 +6,11 @@ import { cn } from "@/lib/utils"
 import { cldVideo, cldPoster } from "@/lib/cloudinary"
 import type { TestimonialContent } from "@/sanity/lib/types"
 
-const FALLBACK_URL = "https://res.cloudinary.com/ddbynpktj/video/upload/v1778666335/Testimonials_Deeanimators_qkytj7.mp4"
+// Re-hosted on Supabase Storage (migrated off Cloudinary via
+// scripts/migrate-site-videos.mjs).
+const SITE_MEDIA = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/site`
+const FALLBACK_URL = `${SITE_MEDIA}/testimonial/Testimonials-Deeanimators-qkytj7.mp4`
+const FALLBACK_POSTER = `${SITE_MEDIA}/testimonial/Testimonials-Deeanimators-qkytj7.jpg`
 
 export function Testimonial({ content }: { content: TestimonialContent | null }) {
   const sectionRef = useRef<HTMLElement>(null)
@@ -53,6 +57,9 @@ export function Testimonial({ content }: { content: TestimonialContent | null })
   }, [])
 
   const w = isMobile ? 640 : 1080
+  // Supabase-hosted assets can't be transformed on the fly, so use the stored
+  // poster for the fallback; a Cloudinary videoUrl from the CMS still derives one.
+  const poster = content?.posterUrl ?? (content?.videoUrl ? cldPoster(url, w) : FALLBACK_POSTER)
 
   return (
     <section
@@ -63,7 +70,7 @@ export function Testimonial({ content }: { content: TestimonialContent | null })
         <video
           ref={videoRef}
           src={visible ? cldVideo(url, w) : undefined}
-          poster={cldPoster(url, w)}
+          poster={poster}
           className="block h-auto max-h-[55vh] w-auto max-w-full rounded-sm lg:max-h-[80vh]"
           autoPlay
           muted

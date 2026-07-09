@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils"
 import { cldImage, cldVideo, cldPoster } from "@/lib/cloudinary"
 import type { HeroContent } from "@/sanity/lib/types"
 
+// Public base for the homepage media re-hosted on Supabase Storage.
+const SITE_MEDIA = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/site`
+
 const FALLBACK: HeroContent = {
   headline: "Creativity at Volume.",
   subheadline: "Without the compromise.",
@@ -15,18 +18,21 @@ const FALLBACK: HeroContent = {
     "D2C brands and performance teams need fresh creatives, fast, on-brand, and at scale. Hookana is the creative production engine that keeps your pipeline full without blowing your budget or burning out your team.",
   ctaText: "GET 2 FREE CONCEPTS",
   watchReelText: "WATCH THE REEL",
+  // Re-hosted on Supabase Storage (migrated off Cloudinary via
+  // scripts/migrate-site-videos.mjs). `poster` is the still frame Cloudinary
+  // used to generate; Supabase can't derive it on the fly so we store it.
   videoCards: [
-    { label: "Brand Films", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285205/web_1_neyohx.mp4", type: "video" },
-    { label: "Ad Creatives", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285220/web_2_jqspsb.mp4", type: "video" },
-    { label: "Social Content", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285217/web_3__srdr8v.mp4", type: "video" },
-    { label: "Brand Films", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285224/web_4_hskvt6.mp4", type: "video" },
-    { label: "Ad Creatives", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285194/web_5_u6jm0u.mp4", type: "video" },
-    { label: "Social Content", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285212/web_6__w4q8zh.mp4", type: "video" },
-    { label: "Brand Films", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285213/web_7_mp8jqo.mp4", type: "video" },
-    { label: "Ad Creatives", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285199/web_8_b8kyka.mp4", type: "video" },
-    { label: "Social Content", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285217/web_9_bvyerz.mp4", type: "video" },
-    { label: "Brand Films", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285219/web_10_nuhkfe.mp4", type: "video" },
-    { label: "Ad Creatives", url: "https://res.cloudinary.com/ddbynpktj/video/upload/v1779285216/web_11_wdxwuy.mp4", type: "video" },
+    { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-1-neyohx.mp4`, poster: `${SITE_MEDIA}/hero/web-1-neyohx.jpg`, type: "video" },
+    { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-2-jqspsb.mp4`, poster: `${SITE_MEDIA}/hero/web-2-jqspsb.jpg`, type: "video" },
+    { label: "Social Content", url: `${SITE_MEDIA}/hero/web-3-srdr8v.mp4`, poster: `${SITE_MEDIA}/hero/web-3-srdr8v.jpg`, type: "video" },
+    { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-4-hskvt6.mp4`, poster: `${SITE_MEDIA}/hero/web-4-hskvt6.jpg`, type: "video" },
+    { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-5-u6jm0u.mp4`, poster: `${SITE_MEDIA}/hero/web-5-u6jm0u.jpg`, type: "video" },
+    { label: "Social Content", url: `${SITE_MEDIA}/hero/web-6-w4q8zh.mp4`, poster: `${SITE_MEDIA}/hero/web-6-w4q8zh.jpg`, type: "video" },
+    { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-7-mp8jqo.mp4`, poster: `${SITE_MEDIA}/hero/web-7-mp8jqo.jpg`, type: "video" },
+    { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-8-b8kyka.mp4`, poster: `${SITE_MEDIA}/hero/web-8-b8kyka.jpg`, type: "video" },
+    { label: "Social Content", url: `${SITE_MEDIA}/hero/web-9-bvyerz.mp4`, poster: `${SITE_MEDIA}/hero/web-9-bvyerz.jpg`, type: "video" },
+    { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-10-nuhkfe.mp4`, poster: `${SITE_MEDIA}/hero/web-10-nuhkfe.jpg`, type: "video" },
+    { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-11-wdxwuy.mp4`, poster: `${SITE_MEDIA}/hero/web-11-wdxwuy.jpg`, type: "video" },
   ],
 }
 
@@ -228,7 +234,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                             />
                           ) : !mounted || (isMobile && !mobileVideoInView) ? (
                             <img
-                              src={cldPoster(card.url, mediaWidth)}
+                              src={card.poster ?? cldPoster(card.url, mediaWidth)}
                               alt=""
                               loading="lazy"
                               decoding="async"
@@ -238,7 +244,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                             <video
                               key={card.url}
                               src={cldVideo(card.url, mediaWidth)}
-                              poster={cldPoster(card.url, mediaWidth)}
+                              poster={card.poster ?? cldPoster(card.url, mediaWidth)}
                               className={cn("pointer-events-none h-full w-full", mediaFitClass)}
                               autoPlay
                               muted
@@ -340,7 +346,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
               <video
                 key={activeVideo}
                 src={cldVideo(activeUrl, isMobile ? 720 : 1080)}
-                poster={cldPoster(activeUrl, isMobile ? 720 : 1080)}
+                poster={activeCard?.poster ?? cldPoster(activeUrl, isMobile ? 720 : 1080)}
                 className="h-full w-full object-contain"
                 autoPlay
                 controls

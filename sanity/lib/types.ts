@@ -17,7 +17,7 @@ export type SiteSettings = {
 }
 
 // Hero
-export type VideoCard = { label: string; url?: string; type?: "video" | "image" | "youtube" }
+export type VideoCard = { label: string; url?: string; type?: "video" | "image" | "youtube"; poster?: string }
 export type HeroContent = {
   headline: string
   subheadline: string
@@ -160,6 +160,7 @@ export type LogoTickerContent = { logos: LogoItem[] }
 // Testimonial
 export type TestimonialContent = {
   videoUrl?: string
+  posterUrl?: string
 }
 
 // CTA
