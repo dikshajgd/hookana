@@ -1,6 +1,9 @@
 import type { ReactNode } from "react"
+import { Inter } from "next/font/google"
 import { AdminSidebar } from "./AdminSidebar"
 import { AdminLayoutShell } from "./AdminLayoutShell"
+
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "Newsletter Admin — Hookana",
@@ -9,8 +12,10 @@ export const metadata = {
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <AdminLayoutShell sidebar={<AdminSidebar />}>
-      {children}
-    </AdminLayoutShell>
+    <div className={inter.className}>
+      <AdminLayoutShell sidebar={<AdminSidebar />}>
+        {children}
+      </AdminLayoutShell>
+    </div>
   )
 }

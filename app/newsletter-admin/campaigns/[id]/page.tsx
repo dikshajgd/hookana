@@ -40,6 +40,7 @@ export default function CampaignDetailPage() {
   const [recipientMode, setRecipientMode] = useState<RecipientMode>("all")
   const [customEmails, setCustomEmails] = useState("")
   const [showRecipients, setShowRecipients] = useState(false)
+  const [activeSubscriberCount, setActiveSubscriberCount] = useState<number | null>(null)
   const [sendResult, setSendResult] = useState<{
     success?: boolean
     sentCount?: number
@@ -48,12 +49,14 @@ export default function CampaignDetailPage() {
   } | null>(null)
 
   useEffect(() => {
-    fetch(`/api/newsletter/campaigns/${id}`)
-      .then((r) => r.json())
-      .then((json) => {
-        setCampaign(json.campaign)
-        setLoading(false)
-      })
+    Promise.all([
+      fetch(`/api/newsletter/campaigns/${id}`).then((r) => r.json()),
+      fetch("/api/newsletter/stats").then((r) => r.json()),
+    ]).then(([campaignJson, statsJson]) => {
+      setCampaign(campaignJson.campaign)
+      setActiveSubscriberCount(statsJson.subscribers?.active ?? null)
+      setLoading(false)
+    })
   }, [id])
 
   const getCustomRecipientList = () =>
@@ -215,7 +218,9 @@ export default function CampaignDetailPage() {
                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                         }`}
                       >
-                        {m === "all" ? "All Active Subscribers" : "Custom List"}
+                        {m === "all"
+                          ? `All Active Subscribers${activeSubscriberCount !== null ? ` (${activeSubscriberCount.toLocaleString()})` : ""}`
+                          : "Custom List"}
                       </button>
                     ))}
                   </div>
@@ -273,7 +278,7 @@ export default function CampaignDetailPage() {
             </p>
             <p className="text-sm text-gray-500 mb-5">
               {recipientMode === "all"
-                ? "This will be sent to all active subscribers."
+                ? `This will be sent to all active subscribers${activeSubscriberCount !== null ? ` (${activeSubscriberCount.toLocaleString()})` : ""}.`
                 : `This will be sent to ${getCustomRecipientList().length} custom recipients.`}
             </p>
             <div className="flex gap-3">
