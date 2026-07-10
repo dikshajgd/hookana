@@ -116,6 +116,10 @@ export const SECTIONS: Section[] = [
   },
 ]
 
+// Public base for homepage media on Supabase Storage — mirrors the SITE_MEDIA
+// const in the landing components so the editor seeds with exactly what's live.
+const SITE_MEDIA = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/site`
+
 export const CONTENT_DEFAULTS: Record<string, any> = {
   hero: {
     headline: "Creativity at Volume.",
@@ -123,6 +127,19 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
     description:
       "D2C brands and performance teams need fresh creatives, fast, on-brand, and at scale. Hookana is the creative production engine that keeps your pipeline full without blowing your budget or burning out your team.",
     ctaText: "GET 2 FREE CONCEPTS",
+    videoCards: [
+      { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-1-neyohx.mp4`, poster: `${SITE_MEDIA}/hero/web-1-neyohx.jpg`, type: "video" },
+      { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-2-jqspsb.mp4`, poster: `${SITE_MEDIA}/hero/web-2-jqspsb.jpg`, type: "video" },
+      { label: "Social Content", url: `${SITE_MEDIA}/hero/web-3-srdr8v.mp4`, poster: `${SITE_MEDIA}/hero/web-3-srdr8v.jpg`, type: "video" },
+      { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-4-hskvt6.mp4`, poster: `${SITE_MEDIA}/hero/web-4-hskvt6.jpg`, type: "video" },
+      { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-5-u6jm0u.mp4`, poster: `${SITE_MEDIA}/hero/web-5-u6jm0u.jpg`, type: "video" },
+      { label: "Social Content", url: `${SITE_MEDIA}/hero/web-6-w4q8zh.mp4`, poster: `${SITE_MEDIA}/hero/web-6-w4q8zh.jpg`, type: "video" },
+      { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-7-mp8jqo.mp4`, poster: `${SITE_MEDIA}/hero/web-7-mp8jqo.jpg`, type: "video" },
+      { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-8-b8kyka.mp4`, poster: `${SITE_MEDIA}/hero/web-8-b8kyka.jpg`, type: "video" },
+      { label: "Social Content", url: `${SITE_MEDIA}/hero/web-9-bvyerz.mp4`, poster: `${SITE_MEDIA}/hero/web-9-bvyerz.jpg`, type: "video" },
+      { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-10-nuhkfe.mp4`, poster: `${SITE_MEDIA}/hero/web-10-nuhkfe.jpg`, type: "video" },
+      { label: "Ad Creatives", url: `${SITE_MEDIA}/hero/web-11-wdxwuy.mp4`, poster: `${SITE_MEDIA}/hero/web-11-wdxwuy.jpg`, type: "video" },
+    ],
   },
   portfolio: {
     heading: "Creative that converts.",
@@ -180,5 +197,22 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
       { label: "EMAIL US", href: "mailto:admin@hookana.com" },
     ],
     copyright: "© 2026 HOOKANA · ALL RIGHTS RESERVED",
+  },
+  logoTicker: {
+    logos: [
+      { alt: "Nutrisense", imageUrl: "/logos/Nutrisense.png" },
+      { alt: "Salt Labs", imageUrl: "/logos/SaltLabs.png" },
+      { alt: "Studio Era", imageUrl: "/logos/StudioEra.png" },
+      { alt: "TOB", imageUrl: "/logos/TOB.png" },
+      { alt: "Veralane", imageUrl: "/logos/Veralane.png" },
+      { alt: "Brainjolt", imageUrl: "/logos/brainjolt.png" },
+      { alt: "Tata Fit", imageUrl: "/logos/tata-fit.png" },
+      { alt: "Intel", imageUrl: "/logos/intel.png" },
+      { alt: "Dell", imageUrl: "/logos/dell.png" },
+    ],
+  },
+  testimonial: {
+    videoUrl: `${SITE_MEDIA}/testimonial/Testimonials-Deeanimators-qkytj7.mp4`,
+    posterUrl: `${SITE_MEDIA}/testimonial/Testimonials-Deeanimators-qkytj7.jpg`,
   },
 }

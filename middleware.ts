@@ -31,7 +31,9 @@ export const config = {
     "/admin",
     "/admin/:path*",
     "/api/upload",
+    "/api/upload/:path*",
     "/api/portfolio/:path*",
     "/api/settings",
+    "/api/leads",
   ],
 }

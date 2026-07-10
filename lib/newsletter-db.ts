@@ -203,6 +203,56 @@ export async function getSubscriberStats() {
   return { total, active, unsubscribed }
 }
 
+/** Monthly sign-ups + running total, oldest→newest, for a growth chart. */
+export async function getSubscriberGrowth() {
+  const { data, error } = await supabaseAdmin
+    .from(SUBSCRIBERS)
+    .select("subscribed_at")
+    .order("subscribed_at", { ascending: true })
+    .limit(5000)
+
+  if (error) {
+    console.error("getSubscriberGrowth:", error.message)
+    return [] as Array<{ month: string; added: number; total: number }>
+  }
+
+  const buckets = new Map<string, number>()
+  for (const row of (data as { subscribed_at: string | null }[]) ?? []) {
+    if (!row.subscribed_at) continue
+    const d = new Date(row.subscribed_at)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`
+    buckets.set(key, (buckets.get(key) ?? 0) + 1)
+  }
+
+  let total = 0
+  return [...buckets.keys()]
+    .sort()
+    .map((month) => {
+      const added = buckets.get(month) ?? 0
+      total += added
+      return { month, added, total }
+    })
+}
+
+/** Sign-up count grouped by acquisition source, largest first. */
+export async function getSubscriberSources() {
+  const { data, error } = await supabaseAdmin.from(SUBSCRIBERS).select("source").limit(5000)
+  if (error) {
+    console.error("getSubscriberSources:", error.message)
+    return [] as Array<{ source: string; count: number }>
+  }
+
+  const counts = new Map<string, number>()
+  for (const row of (data as { source: string | null }[]) ?? []) {
+    const source = row.source || "unknown"
+    counts.set(source, (counts.get(source) ?? 0) + 1)
+  }
+
+  return [...counts.entries()]
+    .map(([source, count]) => ({ source, count }))
+    .sort((a, b) => b.count - a.count)
+}
+
 // ─── Campaigns ───────────────────────────────────────────────────────────────
 
 export async function getCampaigns(page = 1) {
