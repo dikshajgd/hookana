@@ -140,7 +140,7 @@ export function Pricing({ content }: { content: PricingContent | null }) {
     <div className="overflow-hidden py-20 md:py-40">
       <div className="mx-auto flex flex-col items-center gap-12 2xl:gap-20">
         <div className="flex max-w-142 flex-col items-center gap-6 px-5 text-center md:px-36">
-          <h2 className="font-editorial font-light text-[42px] leading-[0.95] tracking-[-0.02em] text-voltage-blue md:text-[64px] md:leading-[0.95]">
+          <h2 className="font-editorial font-light text-[42px] leading-[0.95] tracking-[-0.02em] text-brand-green md:text-[64px] md:leading-[0.95]">
             {headingLines.map((line, i) => (
               <span key={i}>
                 {line}

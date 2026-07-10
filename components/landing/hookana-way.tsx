@@ -64,7 +64,7 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
   return (
     <section className="mt-20 px-5 pb-14 md:mt-40 md:pb-28">
       <div className="mx-auto flex flex-col items-center gap-4 text-center md:gap-6">
-        <h2 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] md:text-[64px] md:leading-[0.95]">
+        <h2 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-brand-green sm:text-[42px] md:text-[64px] md:leading-[0.95]">
           {headingLines.map((line, i) => (
             <span key={i}>
               {line}
