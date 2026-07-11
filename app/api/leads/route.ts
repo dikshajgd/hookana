@@ -55,7 +55,19 @@ export async function GET(): Promise<NextResponse<LeadsResponse>> {
         ? (parsed as { leads: Record<string, unknown>[] }).leads
         : Array.isArray((parsed as { data?: unknown }).data)
           ? (parsed as { data: Record<string, unknown>[] }).data
-          : []
+          : null
+
+    // A JSON object that isn't an array of rows (e.g. the Apps Script's
+    // {"status":"alive"} health check) means GET doesn't expose the sheet yet.
+    if (!leads) {
+      return NextResponse.json({
+        configured: true,
+        available: false,
+        leads: [],
+        error:
+          "The leads script answered GET with a status object, not rows. Add a doGet to the Apps Script that returns the sheet as a JSON array.",
+      })
+    }
 
     return NextResponse.json({ configured: true, available: true, leads })
   } catch (e) {
