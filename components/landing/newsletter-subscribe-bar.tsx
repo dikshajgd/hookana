@@ -30,35 +30,38 @@ export function NewsletterSubscribeBar() {
   }
 
   return (
-    <section className="border-t border-ash bg-cream py-8">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-5 sm:flex-row sm:gap-8">
-        <div className="text-center sm:flex-1 sm:text-left">
-          <p className="font-ease mb-1 text-[10px] font-light tracking-[3px] text-voltage-blue uppercase">
+    <section className="bg-[#0A1628] border-t border-white/10 py-8">
+      <div className="mx-auto max-w-5xl px-5 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
+        <div className="sm:flex-1 text-center sm:text-left">
+          <p className="font-mono text-[10px] tracking-[3px] text-blue-300/60 uppercase mb-1">
             Creative Edge Weekly
           </p>
-          <p className="font-ease text-sm leading-snug tracking-[-0.02em] text-ink">
+          <p className="text-white/80 text-sm leading-snug">
             Ad breakdowns, winning hooks &amp; production tactics — straight to your inbox.
           </p>
         </div>
 
         {status === "success" ? (
-          <div className="font-ease text-sm font-light text-brand-green">
+          <div className="text-green-400 text-sm font-mono">
             ✓ You&apos;re subscribed!
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex w-full max-w-sm gap-2">
+          <form
+            onSubmit={handleSubmit}
+            className="flex w-full max-w-sm gap-2"
+          >
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@brand.com"
-              className="font-ease min-w-0 flex-1 rounded-full border-[1.5px] border-ash bg-paper-white px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-fog focus:border-voltage-blue"
+              className="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-blue-400 transition-colors"
             />
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="font-ease flex shrink-0 items-center gap-1.5 rounded-full border-[1.5px] border-voltage-blue px-5 py-2.5 text-sm font-light text-voltage-blue uppercase transition-colors hover:bg-voltage-blue/5 disabled:opacity-60"
+              className="flex items-center gap-1.5 bg-white text-[#0A1628] font-bold px-4 py-2.5 rounded-lg text-sm hover:bg-blue-50 disabled:opacity-60 transition-colors shrink-0"
             >
               {status === "submitting" ? "..." : (
                 <>Subscribe <ArrowRight className="size-3.5" /></>
@@ -69,7 +72,7 @@ export function NewsletterSubscribeBar() {
       </div>
 
       {status === "error" && (
-        <p className="font-ease mt-3 px-5 text-center text-xs text-red-600">{errorMsg}</p>
+        <p className="text-center text-xs text-red-400 font-mono mt-3 px-5">{errorMsg}</p>
       )}
     </section>
   )

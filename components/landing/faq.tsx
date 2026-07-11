@@ -43,7 +43,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
     <section className="mx-auto w-full px-5 py-14 sm:py-20 md:px-12 lg:px-20 2xl:py-52 2xl:px-36">
       <div className="flex flex-col gap-10 sm:gap-14 2xl:grid 2xl:grid-cols-[500px_800px] 2xl:justify-between 2xl:gap-0">
         <div className="flex flex-col gap-3 sm:gap-6 2xl:gap-15">
-          <h2 className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-brand-green">
+          <h2 className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-voltage-blue">
             {h1Lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -51,7 +51,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
               </span>
             ))}
           </h2>
-          <p className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-brand-green">
+          <p className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-hot-pink">
             {h2Lines.map((line, i) => (
               <span key={i}>
                 {line}
