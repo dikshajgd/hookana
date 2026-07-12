@@ -4,6 +4,8 @@ import { useState, type FormEvent } from "react"
 import type { ContactContent } from "@/sanity/lib/types"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useEditable } from "@/components/admin/editor/editor-context"
+import { EditableText } from "@/components/admin/editor/editable-text"
 
 const FALLBACK: Pick<ContactContent, "heading" | "subtext" | "footerText"> = {
   heading: "Get your\nfirst 2\n concepts\nfree.",
@@ -44,8 +46,7 @@ const INITIAL: FormState = {
 type Status = "idle" | "submitting" | "success" | "error"
 
 export function CtaForm({ content }: { content: ContactContent | null }) {
-  const c = content ?? FALLBACK
-  const headingLines = c.heading.split("\n")
+  const c = useEditable("contact", content, FALLBACK)
   const [values, setValues] = useState<FormState>(INITIAL)
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState("")
@@ -84,17 +85,19 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
       <section className="relative -mt-20 w-full max-w-180 rounded-t-[5px] border border-ash bg-paper-white px-6 py-12 2xl:px-19 2xl:py-18">
         <div className="mx-auto">
           <div className="grid gap-6 2xl:grid-cols-[255px_1fr] 2xl:gap-9">
-            <h2 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] 2xl:text-[64px] 2xl:leading-[0.95]">
-              {headingLines.map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < headingLines.length - 1 && <br />}
-                </span>
-              ))}
-            </h2>
-            <p className="font-ease text-xl tracking-[-0.02em] max-w-none text-ink 2xl:max-w-70.25">
-              {c.subtext}
-            </p>
+            <EditableText
+              as="h2"
+              path="contact.heading"
+              value={c.heading}
+              multiline
+              className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] 2xl:text-[64px] 2xl:leading-[0.95]"
+            />
+            <EditableText
+              as="p"
+              path="contact.subtext"
+              value={c.subtext}
+              className="font-ease text-xl tracking-[-0.02em] max-w-none text-ink 2xl:max-w-70.25"
+            />
           </div>
 
           <div className="mt-12 border-t border-dotted border-ash 2xl:mt-20" />
@@ -276,9 +279,13 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
           </div>
 
           <div className="mt-12 border-t border-dotted border-ash 2xl:mt-24" />
-          <p className="mt-5 font-ease text-xs leading-relaxed tracking-[-0.02em] text-ink/70">
-            {c.footerText}
-          </p>
+          <EditableText
+            as="p"
+            path="contact.footerText"
+            value={c.footerText}
+            multiline
+            className="mt-5 font-ease text-xs leading-relaxed tracking-[-0.02em] text-ink/70"
+          />
         </div>
 
         <div className="absolute right-0 -bottom-6.75 left-0 h-7">

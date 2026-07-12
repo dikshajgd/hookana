@@ -1,8 +1,13 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { ChevronLeft, ChevronRight, Trash2, X } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AutoCarousel } from "@/components/landing/auto-carousel"
 import type { ProblemTab } from "@/sanity/lib/types"
+import { useEditor, useEditable } from "@/components/admin/editor/editor-context"
+import { useListControls, AddItemButton } from "@/components/admin/editor/editable-list"
+import { EditableText } from "@/components/admin/editor/editable-text"
 
 const FALLBACK_TABS: ProblemTab[] = [
   {
@@ -95,7 +100,40 @@ const FALLBACK_TABS: ProblemTab[] = [
   },
 ]
 
-function DiagnosticReceipt({ receipt }: { receipt: ProblemTab["receipt"] }) {
+function newProblemTab(): ProblemTab {
+  const value =
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? `problem-${crypto.randomUUID().slice(0, 8)}`
+      : `problem-${Math.floor(Math.random() * 1e6)}`
+  return {
+    value,
+    label: "New",
+    inactiveWidth: "10rem",
+    headlineLine1: "New headline.",
+    headlineLine2: "Second line.",
+    subheading: "Subheading.",
+    ask: "Sound familiar?",
+    body: "Describe the problem your prospect is feeling.",
+    receipt: {
+      num: "#00000",
+      problem: "PROBLEM",
+      total: "$0",
+      items: [{ qty: "0", desc: "First line item" }],
+    },
+  }
+}
+
+function DiagnosticReceipt({
+  receipt,
+  tabIndex,
+}: {
+  receipt: ProblemTab["receipt"]
+  tabIndex: number
+}) {
+  const { editing } = useEditor()
+  const base = `problems.tabs.${tabIndex}.receipt`
+  const itemControls = useListControls(`${base}.items`)
+
   return (
     <div className="relative w-full self-start rounded-sm bg-card px-5 pt-6 pb-8 sm:px-8 sm:pt-10 sm:pb-18 md:px-11">
       <div className="pointer-events-none absolute -top-3 right-2 -rotate-12 rounded-[10px] border-2 border-primary bg-card px-2 py-1 font-sans text-xs font-black tracking-wide text-primary uppercase opacity-90 sm:top-[25%] sm:right-2 sm:-translate-y-1/2 sm:border-3 sm:px-4 sm:py-2.5 sm:text-xl">
@@ -107,37 +145,77 @@ function DiagnosticReceipt({ receipt }: { receipt: ProblemTab["receipt"] }) {
           <br />
           DIAGNOSTIC
         </span>
-        <span className="mt-1 font-mono text-[10px] tracking-widest text-primary uppercase sm:mt-2 sm:text-xs">
-          {receipt.num}
-        </span>
+        <EditableText
+          path={`${base}.num`}
+          value={receipt.num}
+          rich={false}
+          className="mt-1 font-mono text-[10px] tracking-widest text-primary uppercase sm:mt-2 sm:text-xs"
+        />
       </div>
       <div className="mb-1 font-mono text-[10px] tracking-widest text-foreground uppercase sm:text-xs">
         CASHIER · CREATIVE OPS
       </div>
       <div className="mb-3 font-mono text-[10px] tracking-widest text-foreground uppercase sm:mb-5 sm:text-xs">
         Hidden cost of{" "}
-        <span className="font-bold text-primary">{receipt.problem}</span> /mo
+        <EditableText
+          path={`${base}.problem`}
+          value={receipt.problem}
+          rich={false}
+          className="font-bold text-primary"
+        />{" "}
+        /mo
       </div>
       <ul className="m-0 list-none p-0">
         {receipt.items.map((item, i) => (
           <li
             key={i}
-            className="type-heading-4 sm:type-heading-3 grid grid-cols-[1fr_auto] gap-2 py-1.5 text-xs leading-snug sm:gap-3 sm:py-3 sm:text-sm"
+            className="type-heading-4 sm:type-heading-3 relative grid grid-cols-[1fr_auto] gap-2 py-1.5 text-xs leading-snug sm:gap-3 sm:py-3 sm:text-sm"
           >
-            <span className="text-foreground">{item.desc}</span>
-            <span className="font-bold whitespace-nowrap text-foreground">
-              {item.qty}
+            <EditableText
+              path={`${base}.items.${i}.desc`}
+              value={item.desc}
+              rich={false}
+              className="text-foreground"
+            />
+            <span className="flex items-center gap-1">
+              <EditableText
+                path={`${base}.items.${i}.qty`}
+                value={item.qty}
+                rich={false}
+                className="font-bold whitespace-nowrap text-foreground"
+              />
+              {editing && (
+                <button
+                  type="button"
+                  onClick={() => itemControls.remove(i)}
+                  className="text-foreground/40 hover:text-red-500"
+                  aria-label="Remove line"
+                >
+                  <X className="size-3.5" />
+                </button>
+              )}
             </span>
           </li>
         ))}
       </ul>
+      {editing && (
+        <div className="mt-2">
+          <AddItemButton
+            label="Add line"
+            onClick={() => itemControls.add({ qty: "0", desc: "New line item" })}
+          />
+        </div>
+      )}
       <div className="mt-3 flex items-baseline justify-between gap-3 border-t border-dashed border-white pt-3 sm:mt-5 sm:pt-5">
         <span className="font-mono text-[10px] tracking-widest text-foreground uppercase sm:text-xs">
           Total drag
         </span>
-        <span className="font-sans text-2xl leading-none font-black tracking-tight text-primary sm:text-4xl">
-          {receipt.total}
-        </span>
+        <EditableText
+          path={`${base}.total`}
+          value={receipt.total}
+          rich={false}
+          className="font-sans text-2xl leading-none font-black tracking-tight text-primary sm:text-4xl"
+        />
       </div>
       <div className="mt-3 flex justify-between font-mono text-[9px] tracking-widest text-foreground uppercase sm:mt-4 sm:text-[11px]">
         <span>TY — COME AGAIN</span>
@@ -162,7 +240,18 @@ function DiagnosticReceipt({ receipt }: { receipt: ProblemTab["receipt"] }) {
 }
 
 export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: string }) {
-  const displayTabs = tabs?.length > 0 ? tabs : FALLBACK_TABS
+  const { editing } = useEditor()
+  const section = useEditable("problems", tabs?.length > 0 ? { tabs } : null, {
+    tabs: FALLBACK_TABS,
+  })
+  const displayTabs = section.tabs?.length > 0 ? section.tabs : FALLBACK_TABS
+  const tabControls = useListControls("problems.tabs")
+
+  // Control the desktop tabs so add/remove/reorder can't leave a dangling value.
+  const [active, setActive] = useState(displayTabs[0]?.value)
+  useEffect(() => {
+    if (!displayTabs.some((t) => t.value === active)) setActive(displayTabs[0]?.value)
+  }, [displayTabs, active])
 
   return (
     <div className={`relative z-20 px-5 ${className ?? ""}`}>
@@ -171,7 +260,7 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
         className="mt-24 mb-10 -mx-5 scroll-px-5 px-5 lg:hidden"
         slideClassName="w-[88%] sm:w-[80%]"
       >
-        {displayTabs.map((tab) => (
+        {displayTabs.map((tab, i) => (
           <div
             key={tab.value}
             className="h-full w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
@@ -191,12 +280,10 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
                 </p>
               </div>
               <div className="flex flex-col gap-2 sm:gap-3">
-                <p className="text-sm text-accent-foreground sm:text-base md:text-lg">
-                  {tab.body}
-                </p>
+                <p className="text-sm text-accent-foreground sm:text-base md:text-lg">{tab.body}</p>
               </div>
               <div className="mt-2 flex w-full justify-center sm:mt-4 sm:max-w-lg sm:self-center">
-                <DiagnosticReceipt receipt={tab.receipt} />
+                <DiagnosticReceipt receipt={tab.receipt} tabIndex={i} />
               </div>
             </div>
           </div>
@@ -204,11 +291,11 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
       </AutoCarousel>
 
       <div className="hidden lg:block">
-        <Tabs defaultValue={displayTabs[0]?.value} className="mt-40 gap-0">
+        <Tabs value={active} onValueChange={setActive} className="mt-40 gap-0">
           <TabsList className="ml-8 h-auto gap-0 rounded-none bg-transparent p-0">
-            {displayTabs.map((tab) => (
+            {displayTabs.map((tab, i) => (
               <TabsTrigger
-                key={tab.value}
+                key={i}
                 value={tab.value}
                 className="type-heading-4 relative z-0 h-15 w-60! rounded-none rounded-t-md border-2 border-lime-500! bg-lime-50 text-accent-foreground [clip-path:polygon(0_0,calc(100%-2.5rem)_0,100%_100%,0_100%)] not-first:-ml-8 data-[state=active]:z-20 data-[state=active]:-translate-y-0.5 data-[state=active]:bg-lime-200"
                 style={{ width: tab.inactiveWidth }}
@@ -217,32 +304,93 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
               </TabsTrigger>
             ))}
           </TabsList>
-          {displayTabs.map((tab) => (
+
+          {editing && (
+            <div className="mt-3 ml-8">
+              <AddItemButton label="Add problem" onClick={() => tabControls.add(newProblemTab())} />
+            </div>
+          )}
+
+          {displayTabs.map((tab, i) => (
             <TabsContent
-              key={tab.value}
+              key={i}
               value={tab.value}
               className="z-40 min-h-[800px] w-full flex-none rounded-md bg-lime-200 py-18 pr-8 pl-20"
             >
+              {editing && (
+                <div className="mb-6 flex items-center gap-4 rounded-md border border-ink/15 bg-lime-50 px-4 py-2">
+                  <span className="text-xs font-semibold tracking-wide text-ink/50 uppercase">
+                    Tab label
+                  </span>
+                  <EditableText
+                    path={`problems.tabs.${i}.label`}
+                    value={tab.label}
+                    rich={false}
+                    className="font-ease text-lg text-ink"
+                  />
+                  <div className="ml-auto flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => tabControls.move(i, -1)}
+                      disabled={i === 0}
+                      className="rounded p-1 hover:bg-ink/10 disabled:opacity-30"
+                      aria-label="Move left"
+                    >
+                      <ChevronLeft className="size-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => tabControls.move(i, 1)}
+                      disabled={i === displayTabs.length - 1}
+                      className="rounded p-1 hover:bg-ink/10 disabled:opacity-30"
+                      aria-label="Move right"
+                    >
+                      <ChevronRight className="size-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => tabControls.remove(i)}
+                      className="rounded p-1 text-red-600 hover:bg-red-500/10"
+                      aria-label="Remove problem"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="grid h-full grid-cols-1 gap-12 lg:grid-cols-2">
                 <div className="flex min-h-120 flex-col justify-between">
                   <div className="flex max-w-120 flex-col gap-6">
                     <p className="font-editorial font-light text-5xl leading-[0.95] tracking-[-0.02em] text-voltage-blue 2xl:text-6xl">
-                      {tab.headlineLine1}
+                      <EditableText
+                        path={`problems.tabs.${i}.headlineLine1`}
+                        value={tab.headlineLine1}
+                      />
                       <br />
-                      {tab.headlineLine2}
+                      <EditableText
+                        path={`problems.tabs.${i}.headlineLine2`}
+                        value={tab.headlineLine2}
+                      />
                     </p>
-                    <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">
-                      {tab.subheading}
-                    </p>
+                    <EditableText
+                      as="p"
+                      path={`problems.tabs.${i}.subheading`}
+                      value={tab.subheading}
+                      className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink"
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <p className="type-heading-4 max-w-172 text-accent-foreground">
-                      {tab.body}
-                    </p>
+                    <EditableText
+                      as="p"
+                      path={`problems.tabs.${i}.body`}
+                      value={tab.body}
+                      multiline
+                      className="type-heading-4 max-w-172 text-accent-foreground"
+                    />
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  <DiagnosticReceipt receipt={tab.receipt} />
+                  <DiagnosticReceipt receipt={tab.receipt} tabIndex={i} />
                 </div>
               </div>
             </TabsContent>

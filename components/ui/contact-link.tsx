@@ -5,9 +5,12 @@ import Link from "next/link"
 export function ContactLink({
   children,
   className,
+  disabled = false,
 }: {
   children: React.ReactNode
   className?: string
+  /** When true, clicks don't scroll — e.g. while editing the button's label. */
+  disabled?: boolean
 }) {
   return (
     <Link
@@ -15,7 +18,8 @@ export function ContactLink({
       className={className}
       onClick={(e) => {
         e.preventDefault()
-        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+        if (!disabled)
+          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
       }}
     >
       {children}

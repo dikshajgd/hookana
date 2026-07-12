@@ -1,7 +1,16 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { ContactLink } from "@/components/ui/contact-link"
-import { ArrowUpRight, DollarSign } from "lucide-react"
+import { ArrowUpRight, DollarSign, X } from "lucide-react"
 import type { PlanTier, PricingContent } from "@/sanity/lib/types"
+import { useEditor, useEditable } from "@/components/admin/editor/editor-context"
+import {
+  useListControls,
+  ListItemControls,
+  AddItemButton,
+} from "@/components/admin/editor/editable-list"
+import { EditableText } from "@/components/admin/editor/editable-text"
 
 const FALLBACK: PricingContent = {
   label: "Simple Pricing",
@@ -68,27 +77,24 @@ function PlanTierTearEdge() {
   )
 }
 
-function PlanTierCard({ tier }: { tier: PlanTier }) {
-  const headerClasses =
-    tier.id === "starter"
-      ? "bg-cream text-ink"
-      : tier.id === "growth"
-        ? "bg-cream text-ink"
-        : "bg-cream text-ink"
+function PlanTierCard({ tier, index }: { tier: PlanTier; index: number }) {
+  const { editing } = useEditor()
+  const featureControls = useListControls(`pricing.tiers.${index}.features`)
 
   return (
     <article className="relative w-full overflow-visible">
       <div className="overflow-hidden rounded-t-[5px] border border-ash bg-paper-white">
-        <div
-          className={`relative flex items-center justify-between border-b border-ash py-4 pl-10 2xl:py-5 2xl:pl-15 ${headerClasses}`}
-        >
+        <div className="relative flex items-center justify-between border-b border-ash bg-cream py-4 pl-10 text-ink 2xl:py-5 2xl:pl-15">
           <div
             className="absolute top-0 left-0 h-6 w-6 bg-ink"
             style={{ clipPath: "polygon(0 0, 0 100%, 100% 0)" }}
           />
-          <p className="relative font-ease text-2xl font-normal tracking-[-0.03em] sm:text-3xl 2xl:text-[56px] 2xl:leading-12">
-            {tier.name}
-          </p>
+          <EditableText
+            as="p"
+            path={`pricing.tiers.${index}.name`}
+            value={tier.name}
+            className="relative font-ease text-2xl font-normal tracking-[-0.03em] sm:text-3xl 2xl:text-[56px] 2xl:leading-12"
+          />
           <DollarSign
             className="relative mr-4 size-6 shrink-0 sm:size-8 2xl:size-10"
             strokeWidth={1.75}
@@ -96,31 +102,64 @@ function PlanTierCard({ tier }: { tier: PlanTier }) {
         </div>
 
         <div className="px-6 pt-10 pb-20 2xl:px-12 2xl:pt-15 2xl:pb-40">
-          <p className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink">{tier.description}</p>
+          <EditableText
+            as="p"
+            path={`pricing.tiers.${index}.description`}
+            value={tier.description}
+            multiline
+            className="font-ease text-2xl font-normal tracking-[-0.03em] text-ink"
+          />
 
           <div className="mt-8 2xl:mt-11">
-            {tier.features.map((feature) => (
+            {tier.features.map((feature, fi) => (
               <div
-                key={feature.label}
-                className="flex flex-col justify-between border-t border-dotted border-ash py-5 2xl:block 2xl:py-11"
+                key={fi}
+                className="relative flex flex-col justify-between border-t border-dotted border-ash py-5 2xl:block 2xl:py-11"
               >
-                <p className="font-ease text-sm font-normal tracking-[-0.02em] text-ink sm:text-base 2xl:text-[32px] 2xl:leading-[34px]">
-                  {feature.label}
-                </p>
-                <p className="mt-1 font-ease text-xl font-normal tracking-[-0.03em] text-ink sm:text-2xl 2xl:mt-2 2xl:text-[52px] 2xl:leading-[48px]">
-                  {feature.value}
-                </p>
+                {editing && (
+                  <button
+                    type="button"
+                    onClick={() => featureControls.remove(fi)}
+                    className="absolute top-2 right-0 text-ink/40 hover:text-red-500"
+                    aria-label="Remove feature"
+                  >
+                    <X className="size-4" />
+                  </button>
+                )}
+                <EditableText
+                  as="p"
+                  path={`pricing.tiers.${index}.features.${fi}.label`}
+                  value={feature.label}
+                  className="font-ease text-sm font-normal tracking-[-0.02em] text-ink sm:text-base 2xl:text-[32px] 2xl:leading-[34px]"
+                />
+                <EditableText
+                  as="p"
+                  path={`pricing.tiers.${index}.features.${fi}.value`}
+                  value={feature.value}
+                  className="mt-1 font-ease text-xl font-normal tracking-[-0.03em] text-ink sm:text-2xl 2xl:mt-2 2xl:text-[52px] 2xl:leading-[48px]"
+                />
               </div>
             ))}
+            {editing && (
+              <div className="mt-4">
+                <AddItemButton
+                  label="Add feature"
+                  onClick={() => featureControls.add({ label: "New feature", value: "—" })}
+                />
+              </div>
+            )}
           </div>
 
-          <ContactLink>
+          <ContactLink disabled={editing}>
             <Button
               size="lg"
               variant="default"
               className="mt-4 w-full rounded-md px-6 py-6 2xl:mt-0 2xl:w-auto"
             >
-              {tier.ctaText ?? "GET 2 FREE CONCEPTS"}
+              <EditableText
+                path={`pricing.tiers.${index}.ctaText`}
+                value={tier.ctaText ?? "GET 2 FREE CONCEPTS"}
+              />
               <ArrowUpRight className="size-4" />
             </Button>
           </ContactLink>
@@ -132,34 +171,57 @@ function PlanTierCard({ tier }: { tier: PlanTier }) {
 }
 
 export function Pricing({ content }: { content: PricingContent | null }) {
-  const { label, heading, tiers } = content ?? FALLBACK
+  const { editing } = useEditor()
+  const { heading, tiers } = useEditable("pricing", content, FALLBACK)
   const displayTiers = tiers?.length > 0 ? tiers : FALLBACK.tiers
-  const headingLines = heading.split("\n")
+  const tierControls = useListControls("pricing.tiers")
 
   return (
     <div className="overflow-hidden py-20 md:py-40">
       <div className="mx-auto flex flex-col items-center gap-12 2xl:gap-20">
         <div className="flex max-w-142 flex-col items-center gap-6 px-5 text-center md:px-36">
-          <h2 className="font-editorial font-light text-[42px] leading-[0.95] tracking-[-0.02em] text-voltage-blue md:text-[64px] md:leading-[0.95]">
-            {headingLines.map((line, i) => (
-              <span key={i}>
-                {line}
-                {i < headingLines.length - 1 && <br />}
-              </span>
-            ))}
-          </h2>
+          <EditableText
+            as="h2"
+            path="pricing.heading"
+            value={heading}
+            multiline
+            className="font-editorial font-light text-[42px] leading-[0.95] tracking-[-0.02em] text-voltage-blue md:text-[64px] md:leading-[0.95]"
+          />
         </div>
 
         <div className="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-8 [-ms-overflow-style:none] [scrollbar-width:none] md:px-36 2xl:grid 2xl:grid-cols-3 2xl:gap-6 2xl:overflow-visible 2xl:px-36 2xl:pb-0 [&::-webkit-scrollbar]:hidden">
-          {displayTiers.map((tier) => (
+          {displayTiers.map((tier, i) => (
             <div
-              key={tier.id}
-              className="w-[85vw] max-w-[400px] shrink-0 snap-center 2xl:w-auto 2xl:max-w-none"
+              key={i}
+              className="relative w-[85vw] max-w-[400px] shrink-0 snap-center 2xl:w-auto 2xl:max-w-none"
             >
-              <PlanTierCard tier={tier} />
+              {editing && (
+                <ListItemControls
+                  index={i}
+                  length={displayTiers.length}
+                  onMove={tierControls.move}
+                  onRemove={tierControls.remove}
+                  className="-top-3 right-3"
+                />
+              )}
+              <PlanTierCard tier={tier} index={i} />
             </div>
           ))}
         </div>
+        {editing && (
+          <AddItemButton
+            label="Add plan"
+            onClick={() =>
+              tierControls.add({
+                id: "growth",
+                name: "New Plan",
+                description: "Describe this plan.",
+                features: [{ label: "Feature", value: "—" }],
+                ctaText: "GET 2 FREE CONCEPTS",
+              })
+            }
+          />
+        )}
       </div>
     </div>
   )
