@@ -2,11 +2,15 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { ArrowUpRight, ArrowDown, Play, X, ChevronLeft, ChevronRight, Tag } from "lucide-react"
+import { ArrowUpRight, ArrowDown, Play, X, ChevronLeft, ChevronRight, Tag, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { cldImage, cldVideo, cldPoster } from "@/lib/cloudinary"
 import type { HeroContent } from "@/sanity/lib/types"
+import { useEditor, useEditable } from "@/components/admin/editor/editor-context"
+import { useListControls, AddItemButton } from "@/components/admin/editor/editable-list"
+import { EditableText } from "@/components/admin/editor/editable-text"
+import { EditableMedia } from "@/components/admin/editor/editable-media"
 
 // Public base for the homepage media re-hosted on Supabase Storage.
 const SITE_MEDIA = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/site`
@@ -110,19 +114,25 @@ export function Hero({ content }: { content: HeroContent | null }) {
     }
   }, [isMobile, mobileVideoInView])
 
-  const { headline, subheadline, description, ctaText, videoCards } =
-    content ?? FALLBACK
+  const { editing } = useEditor()
+  const { headline, subheadline, description, ctaText, videoCards } = useEditable(
+    "hero",
+    content,
+    FALLBACK
+  )
+  const cardControls = useListControls("hero.videoCards")
   const cards = videoCards?.length > 0 ? videoCards : FALLBACK.videoCards
   const maxStart = Math.max(0, cards.length - VISIBLE)
   const visibleCards = cards.slice(carouselStart, carouselStart + VISIBLE)
 
   useEffect(() => {
+    if (editing) return // hold the carousel still while she edits the cards
     if (isMobile && !mobileVideoInView) return
     const timer = setInterval(() => {
       setCarouselStart((s) => (s >= maxStart ? 0 : s + 1))
     }, isMobile ? 4000 : 3000)
     return () => clearInterval(timer)
-  }, [maxStart, isMobile, mobileVideoInView])
+  }, [editing, maxStart, isMobile, mobileVideoInView])
   const activeCard = activeVideo !== null ? cards[activeVideo] : undefined
   const activeUrl = activeCard?.url
   const activeType = activeCard?.type ?? "video"
@@ -134,18 +144,28 @@ export function Hero({ content }: { content: HeroContent | null }) {
           {/* Hero Content */}
           <div className="flex w-full flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-center lg:gap-16 lg:text-left xl:gap-34">
             <div className="flex max-w-120 flex-col gap-4 md:gap-4 lg:max-w-96 xl:max-w-120">
-              <p className="font-editorial text-6xl leading-[0.95] font-light tracking-[-0.02em] text-voltage-blue sm:text-7xl lg:text-[72px] lg:leading-[0.95] xl:text-[88px] xl:leading-[0.95]">
-                {headline}
-              </p>
-              <p className="font-ease w-fit border-b-[3px] border-lime-brand pb-1 text-xl font-light tracking-[-0.02em] text-voltage-blue lg:text-2xl">
-                {subheadline}
-              </p>
+              <EditableText
+                as="p"
+                path="hero.headline"
+                value={headline}
+                className="font-editorial text-6xl leading-[0.95] font-light tracking-[-0.02em] text-voltage-blue sm:text-7xl lg:text-[72px] lg:leading-[0.95] xl:text-[88px] xl:leading-[0.95]"
+              />
+              <EditableText
+                as="p"
+                path="hero.subheadline"
+                value={subheadline}
+                className="font-ease w-fit border-b-[3px] border-lime-brand pb-1 text-xl font-light tracking-[-0.02em] text-voltage-blue lg:text-2xl"
+              />
             </div>
 
             <div className="flex max-w-160 flex-col gap-8 lg:max-w-120 lg:gap-6 xl:max-w-160">
-              <p className="font-ease text-lg leading-[1.5] font-normal tracking-[-0.02em] text-ink lg:px-0">
-                {description}
-              </p>
+              <EditableText
+                as="p"
+                path="hero.description"
+                value={description}
+                multiline
+                className="font-ease text-lg leading-[1.5] font-normal tracking-[-0.02em] text-ink lg:px-0"
+              />
 
               <div className="flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start lg:gap-5">
                 <Button
@@ -158,12 +178,13 @@ export function Hero({ content }: { content: HeroContent | null }) {
                     href="#contact"
                     onClick={(e) => {
                       e.preventDefault()
-                      document
-                        .getElementById("contact")
-                        ?.scrollIntoView({ behavior: "smooth" })
+                      if (!editing)
+                        document
+                          .getElementById("contact")
+                          ?.scrollIntoView({ behavior: "smooth" })
                     }}
                   >
-                    {ctaText}
+                    <EditableText path="hero.ctaText" value={ctaText} />
                     <ArrowUpRight className="size-4" />
                   </Link>
                 </Button>
@@ -183,27 +204,39 @@ export function Hero({ content }: { content: HeroContent | null }) {
 
             <div className="mx-auto w-full lg:flex lg:max-w-none lg:flex-row lg:justify-center lg:gap-4 lg:px-14">
               {visibleCards.map((card, i) => {
-                const { bg, labelColor } = CARD_STYLES[(carouselStart + i) % CARD_STYLES.length]
+                const absIdx = carouselStart + i
+                const { bg, labelColor } = CARD_STYLES[absIdx % CARD_STYLES.length]
                 if (isMobile && i !== 0) return null
                 const mediaWidth = isMobile ? 480 : 720
                 const aspectClass = "aspect-[4/5]"
                 const mediaFitClass = card.type === "image" ? "object-contain" : "object-cover"
                 return (
                   <div
-                    key={carouselStart + i}
+                    key={absIdx}
                     className={cn(
-                      "group cursor-pointer transition-transform duration-300 hover:-translate-y-2",
+                      "group relative transition-transform duration-300",
                       "animate-in fade-in-0 slide-in-from-right-8 duration-500 ease-out fill-mode-both",
                       i === 0 ? "block w-full" : "hidden",
-                      "lg:block lg:w-auto"
+                      "lg:block lg:w-auto",
+                      editing ? "cursor-default" : "cursor-pointer hover:-translate-y-2"
                     )}
                     style={{ animationDelay: `${i * 80}ms` }}
-                    onClick={() => setActiveVideo(carouselStart + i)}
+                    onClick={editing ? undefined : () => setActiveVideo(absIdx)}
                   >
+                    {editing && (
+                      <button
+                        type="button"
+                        onClick={() => cardControls.remove(absIdx)}
+                        className="absolute -top-2 -right-2 z-50 flex size-7 items-center justify-center rounded-full bg-neutral-900 text-white shadow-lg transition-colors hover:bg-red-600"
+                        aria-label="Remove card"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    )}
                     <div className="mb-3 flex">
                       <span className="font-ease inline-flex items-center gap-1 rounded-none border border-ink bg-lime-brand px-2 py-0.5 text-[9px] font-normal tracking-[-0.02em] text-ink uppercase leading-tight">
                         <Tag className="size-2.5" strokeWidth={2} />
-                        {card.label}
+                        <EditableText path={`hero.videoCards.${absIdx}.label`} value={card.label} />
                       </span>
                     </div>
                     <div
@@ -214,9 +247,20 @@ export function Hero({ content }: { content: HeroContent | null }) {
                         bg
                       )}
                     >
-                      {card.url && (
+                      {(card.url || editing) && (
                         <div className="absolute inset-[6px] overflow-hidden rounded-none">
-                          {card.type === "image" ? (
+                          <EditableMedia
+                            path={`hero.videoCards.${absIdx}.url`}
+                            posterPath={`hero.videoCards.${absIdx}.poster`}
+                            typePath={`hero.videoCards.${absIdx}.type`}
+                            kind="video"
+                            className="absolute inset-0"
+                          >
+                          {!card.url ? (
+                            <div className="flex h-full w-full items-center justify-center bg-cream text-xs tracking-wide text-ink/40 uppercase">
+                              No media
+                            </div>
+                          ) : card.type === "image" ? (
                             <img
                               src={cldImage(card.url, mediaWidth)}
                               alt=""
@@ -253,6 +297,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                               preload="metadata"
                             />
                           )}
+                          </EditableMedia>
                         </div>
                       )}
 
@@ -270,6 +315,17 @@ export function Hero({ content }: { content: HeroContent | null }) {
                 )
               })}
             </div>
+
+            {editing && (
+              <div className="mt-6 flex justify-center">
+                <AddItemButton
+                  label="Add card"
+                  onClick={() =>
+                    cardControls.add({ label: "New card", url: "", poster: "", type: "video" })
+                  }
+                />
+              </div>
+            )}
 
             {/* Right arrow — anchored to the right edge of the hero inner area */}
             <button

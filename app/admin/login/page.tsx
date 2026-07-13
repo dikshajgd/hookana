@@ -21,7 +21,7 @@ export default function LoginPage() {
     })
 
     if (res.ok) {
-      router.push("/newsletter-admin")
+      router.push("/admin")
       router.refresh()
     } else {
       setError("Invalid password")
@@ -37,7 +37,7 @@ export default function LoginPage() {
             HOOKANA
           </span>
           <p className="text-blue-300/60 font-mono text-xs tracking-wider mt-2 uppercase">
-            Newsletter Admin
+            Admin
           </p>
         </div>
 

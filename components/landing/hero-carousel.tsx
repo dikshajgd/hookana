@@ -1,4 +1,11 @@
+"use client"
+
+import { X } from "lucide-react"
 import type { LogoItem } from "@/sanity/lib/types"
+import { useEditor, useEditable } from "@/components/admin/editor/editor-context"
+import { useListControls, AddItemButton } from "@/components/admin/editor/editable-list"
+import { EditableText } from "@/components/admin/editor/editable-text"
+import { EditableMedia } from "@/components/admin/editor/editable-media"
 
 const FALLBACK_LOGOS: LogoItem[] = [
   { alt: "Nutrisense", imageUrl: "/logos/Nutrisense.png" },
@@ -15,7 +22,63 @@ const FALLBACK_LOGOS: LogoItem[] = [
 ]
 
 export function HeroCarousel({ logos }: { logos?: LogoItem[] }) {
-  const items = logos && logos.length > 0 ? logos : FALLBACK_LOGOS
+  const { editing } = useEditor()
+  const section = useEditable("logoTicker", logos ? { logos } : null, { logos: FALLBACK_LOGOS })
+  const items = section.logos && section.logos.length > 0 ? section.logos : FALLBACK_LOGOS
+  const logoControls = useListControls("logoTicker.logos")
+
+  // A moving marquee is impossible to edit; in edit mode swap in a static,
+  // fully-editable panel of the same logos. The public site keeps the marquee.
+  if (editing) {
+    return (
+      <div className="relative z-10 w-full bg-charcoal px-6 py-10">
+        <p className="mb-6 text-center text-xs font-semibold tracking-widest text-white/50 uppercase">
+          Brand logos · shown as a scrolling ticker on the live site
+        </p>
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-5">
+          {items.map((item, idx) => (
+            <div key={idx} className="relative flex flex-col items-center gap-2">
+              <button
+                type="button"
+                onClick={() => logoControls.remove(idx)}
+                className="absolute -top-2 -right-2 z-50 flex size-6 items-center justify-center rounded-full bg-white text-neutral-900 shadow hover:bg-red-500 hover:text-white"
+                aria-label="Remove logo"
+              >
+                <X className="size-3.5" />
+              </button>
+              <EditableMedia
+                path={`logoTicker.logos.${idx}.imageUrl`}
+                kind="image"
+                className="flex h-20 w-36 items-center justify-center rounded-md border border-white/10 bg-white/5"
+              >
+                {item.imageUrl ? (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.alt}
+                    className="h-10 max-w-28 object-contain brightness-0 invert"
+                  />
+                ) : (
+                  <span className="text-[10px] tracking-wide text-white/40 uppercase">No logo</span>
+                )}
+              </EditableMedia>
+              <EditableText
+                path={`logoTicker.logos.${idx}.alt`}
+                value={item.alt}
+                rich={false}
+                className="text-center text-[11px] text-white/60"
+              />
+            </div>
+          ))}
+          <AddItemButton
+            label="Add logo"
+            onClick={() => logoControls.add({ alt: "New logo", imageUrl: "" })}
+            className="border-white/30 text-white/70 hover:border-white hover:text-white"
+          />
+        </div>
+      </div>
+    )
+  }
+
   const repeated = [...items, ...items, ...items, ...items]
 
   return (

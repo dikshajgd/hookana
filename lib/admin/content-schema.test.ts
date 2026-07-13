@@ -44,12 +44,19 @@ describe("content schema integrity", () => {
     }
   })
 
-  it("only defines defaults for keys that exist as fields in the section", () => {
+  // CONTENT_DEFAULTS is the seed for BOTH the field form (this schema) and the
+  // inline site editor, so it may legitimately hold keys the form doesn't expose
+  // (e.g. hero.videoCards, or seed-only sections like logoTicker/testimonial).
+  // The invariant that still matters: every field the form renders has a default
+  // to pre-fill from.
+  it("provides a default value for every field declared in a section", () => {
     for (const section of SECTIONS) {
       const defaults = CONTENT_DEFAULTS[section.key] ?? {}
-      const known = new Set(fieldKeys(section.fields))
-      for (const key of Object.keys(defaults)) {
-        expect(known.has(key), `${section.key} default has unknown field "${key}"`).toBe(true)
+      for (const field of section.fields) {
+        expect(
+          defaults[field.key] !== undefined,
+          `${section.key} is missing a default for field "${field.key}"`
+        ).toBe(true)
       }
     }
   })
