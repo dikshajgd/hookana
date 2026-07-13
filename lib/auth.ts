@@ -12,7 +12,21 @@ export const LOGIN_PATH = "/admin/login"
 export const DEFAULT_ADMIN_PASSWORD = "hookana_admin_2026"
 
 export const PROTECTED_PAGES = ["/admin"]
-export const PROTECTED_APIS = ["/api/upload", "/api/portfolio", "/api/settings", "/api/leads"]
+export const PROTECTED_APIS = [
+  "/api/upload",
+  "/api/portfolio",
+  "/api/settings",
+  "/api/leads",
+  // Admin-only newsletter reads/actions. The PUBLIC ones — /api/newsletter
+  // (subscribe), /api/newsletter/subscribe, /api/newsletter/unsubscribe, and
+  // /api/newsletter/auth (login) — are deliberately absent so they stay open.
+  "/api/newsletter/analytics",
+  "/api/newsletter/stats",
+  "/api/newsletter/daily-stats",
+  "/api/newsletter/generate",
+  "/api/newsletter/subscribers",
+  "/api/newsletter/campaigns",
+]
 
 /** sha256 hex, using Web Crypto so it runs in edge middleware and node/tests. */
 export async function sha256Hex(text: string): Promise<string> {

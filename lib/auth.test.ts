@@ -35,18 +35,32 @@ describe("classifyPath", () => {
     expect(classifyPath("/admin/login").isLoginPath).toBe(true)
   })
 
-  it("flags protected API prefixes (upload/portfolio/settings)", () => {
+  it("flags protected API prefixes (upload/portfolio/settings/leads)", () => {
     expect(classifyPath("/api/upload").isProtectedApi).toBe(true)
     expect(classifyPath("/api/portfolio/123").isProtectedApi).toBe(true)
     expect(classifyPath("/api/settings").isProtectedApi).toBe(true)
+    expect(classifyPath("/api/leads").isProtectedApi).toBe(true)
+  })
+
+  it("gates the admin newsletter reads/actions", () => {
+    expect(classifyPath("/api/newsletter/subscribers").isProtectedApi).toBe(true)
+    expect(classifyPath("/api/newsletter/subscribers/abc").isProtectedApi).toBe(true)
+    expect(classifyPath("/api/newsletter/analytics").isProtectedApi).toBe(true)
+    expect(classifyPath("/api/newsletter/stats").isProtectedApi).toBe(true)
+    expect(classifyPath("/api/newsletter/campaigns/1/send").isProtectedApi).toBe(true)
   })
 
   it("does not flag public routes", () => {
     const c = classifyPath("/portfolio")
     expect(c.isProtectedPage).toBe(false)
     expect(c.isProtectedApi).toBe(false)
-    // A public API like /api/newsletter/subscribe is NOT gated.
+    // Public newsletter endpoints must stay open (subscribe / unsubscribe /
+    // login / the Beehiiv base route). Note "subscribe" must NOT be caught by
+    // the "subscribers" prefix.
+    expect(classifyPath("/api/newsletter").isProtectedApi).toBe(false)
     expect(classifyPath("/api/newsletter/subscribe").isProtectedApi).toBe(false)
+    expect(classifyPath("/api/newsletter/unsubscribe").isProtectedApi).toBe(false)
+    expect(classifyPath("/api/newsletter/auth").isProtectedApi).toBe(false)
   })
 
   it("does not let /adminXYZ masquerade as /admin", () => {

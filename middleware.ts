@@ -34,5 +34,14 @@ export const config = {
     "/api/portfolio/:path*",
     "/api/settings",
     "/api/leads",
+    // Admin newsletter endpoints (subscribe/unsubscribe/auth stay public).
+    "/api/newsletter/analytics",
+    "/api/newsletter/stats",
+    "/api/newsletter/daily-stats",
+    "/api/newsletter/generate",
+    "/api/newsletter/subscribers",
+    "/api/newsletter/subscribers/:path*",
+    "/api/newsletter/campaigns",
+    "/api/newsletter/campaigns/:path*",
   ],
 }

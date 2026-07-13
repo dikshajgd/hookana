@@ -14,6 +14,7 @@ import { StatsMarquee } from "@/components/landing/stats-marquee"
 import { Stats } from "@/components/landing/stats"
 import { Testimonial } from "@/components/landing/testimonial"
 import { WhatWeDo } from "@/components/landing/what-we-do"
+import { ThemeScope } from "@/components/admin/editor/theme-scope"
 
 /**
  * The full homepage composition, shared by the public route
@@ -25,6 +26,7 @@ import { WhatWeDo } from "@/components/landing/what-we-do"
  */
 export function LandingSections({ settings }: { settings: Record<string, any> }) {
   return (
+    <ThemeScope theme={settings.theme}>
     <div className="w-full overflow-x-clip">
       <Hero content={settings.hero ?? null} />
       <HeroCarousel logos={settings.logoTicker?.logos} />
@@ -109,5 +111,6 @@ export function LandingSections({ settings }: { settings: Record<string, any> })
 
       <NewsletterSubscribeBar />
     </div>
+    </ThemeScope>
   )
 }

@@ -10,6 +10,8 @@
  * editor pre-fills with the text that's live today, before anything is saved.
  */
 
+import { THEME_DEFAULT_COLORS } from "./theme-tokens"
+
 export type FieldType = "text" | "textarea" | "list" | "group"
 
 export type Field = {
@@ -450,5 +452,8 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
         ctaText: "GET 2 FREE CONCEPTS",
       },
     ],
+  },
+  theme: {
+    colors: { ...THEME_DEFAULT_COLORS },
   },
 }

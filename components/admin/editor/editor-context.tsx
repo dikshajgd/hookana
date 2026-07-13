@@ -119,9 +119,12 @@ export function EditorProvider({
   const [settings, setSettings] = useState<Settings>(() =>
     editing ? mergeDefaults(defaults, initialSettings) : initialSettings
   )
-  // Mirror of `settings` for reads that must see the very latest value even
-  // before React re-renders — e.g. clicking Save immediately after a blur.
+  // Refs mirror `settings`/`dirty` so a Save fired in the SAME tick as the edit
+  // (blur commits, then the Save click) sees the very latest values — not a
+  // stale React closure. This is what previously let the last-edited section be
+  // silently dropped from a save.
   const settingsRef = useRef<Settings>(settings)
+  const dirtyRef = useRef<Set<string>>(new Set())
   const [dirty, setDirty] = useState<Set<string>>(() => new Set())
   const [status, setStatus] = useState<SaveStatus>("idle")
   const [error, setError] = useState("")
@@ -134,6 +137,7 @@ export function EditorProvider({
       settingsRef.current = next
       return next
     })
+    dirtyRef.current.add(section)
     setDirty((prev) => {
       if (prev.has(section)) return prev
       const next = new Set(prev)
@@ -144,7 +148,7 @@ export function EditorProvider({
   }, [])
 
   const save = useCallback(async () => {
-    const sections = [...dirty]
+    const sections = [...dirtyRef.current]
     if (sections.length === 0) return
     setStatus("saving")
     setError("")
@@ -160,13 +164,16 @@ export function EditorProvider({
           if (!body.success) throw new Error(body.error || `Failed to save "${key}"`)
         })
       )
-      setDirty(new Set())
+      // Only clear the sections we actually saved — edits made mid-save stay dirty.
+      const saved = new Set(sections)
+      sections.forEach((s) => dirtyRef.current.delete(s))
+      setDirty((prev) => new Set([...prev].filter((s) => !saved.has(s))))
       setStatus("saved")
     } catch (e) {
       setStatus("error")
       setError(e instanceof Error ? e.message : String(e))
     }
-  }, [dirty])
+  }, [])
 
   const value = useMemo<EditorContextValue>(
     () => ({

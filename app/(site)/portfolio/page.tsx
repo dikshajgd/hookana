@@ -8,6 +8,9 @@ export const metadata = {
     "A selection of video ads and static creatives produced by Hookana for D2C brands.",
 }
 
+// CMS-driven — render per request so new uploads/reorders appear immediately.
+export const dynamic = "force-dynamic"
+
 export default async function PortfolioPage() {
   const [bundles, settings] = await Promise.all([getPortfolioBundles(), getSiteSettings()])
 

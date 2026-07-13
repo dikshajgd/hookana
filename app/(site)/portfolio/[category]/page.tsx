@@ -3,6 +3,9 @@ import { PortfolioGallery } from "@/components/landing/portfolio-gallery"
 import { PORTFOLIO_BUNDLES_FALLBACK, type PortfolioBundles } from "@/lib/portfolio-media"
 import { getPortfolioBundles } from "@/lib/supabase/queries"
 
+// CMS-driven — render per request so portfolio changes appear immediately.
+export const dynamic = "force-dynamic"
+
 type CategorySlug = "ai" | "statics" | "videos"
 
 const CATEGORY_META: Record<

@@ -2,6 +2,7 @@
 
 import { type ElementType } from "react"
 import { cn } from "@/lib/utils"
+import { sanitizeRichText } from "@/lib/sanitize-html"
 import { useEditor } from "./editor-context"
 
 /**
@@ -11,8 +12,9 @@ import { useEditor } from "./editor-context"
  *  - `rich` (default): the value is a small HTML fragment, so bold / italic /
  *    underline / colour survive (font-family is deliberately left to CSS). It
  *    renders via dangerouslySetInnerHTML and, in edit mode, becomes a
- *    contentEditable that the shared <RichTextToolbar> formats. Values are
- *    authored only by the signed-in admin, so the HTML is trusted.
+ *    contentEditable that the shared <RichTextToolbar> formats. Every value is
+ *    run through an allowlist sanitizer (sanitizeRichText) on both render and
+ *    commit, so no stored HTML can inject scripts/handlers.
  *  - plain (`rich={false}`): single-string content committed as innerText —
  *    right for things that can't hold markup, like image alt text or a
  *    short label.
@@ -22,7 +24,7 @@ import { useEditor } from "./editor-context"
  */
 
 function toHtml(value: string): string {
-  return (value ?? "").replace(/\n/g, "<br>")
+  return sanitizeRichText((value ?? "").replace(/\n/g, "<br>"))
 }
 
 const EDIT_CLASSES =
@@ -64,7 +66,7 @@ export function EditableText({
         data-editable-rich="true"
         dangerouslySetInnerHTML={{ __html: toHtml(value) }}
         onBlur={(e: React.FocusEvent<HTMLElement>) => {
-          const next = e.currentTarget.innerHTML.trim()
+          const next = sanitizeRichText(e.currentTarget.innerHTML).trim()
           if (next !== toHtml(value)) setField(path, next)
         }}
         onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
