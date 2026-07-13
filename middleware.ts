@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { AUTH_COOKIE, LOGIN_PATH, DEFAULT_ADMIN_PASSWORD, authOutcome, sha256Hex } from "@/lib/auth"
 
-// Admin surfaces gated behind the shared newsletter-admin login. The content
-// CMS (/admin) and its mutation APIs use the SAME cookie, so one sign-in covers
-// both the newsletter dashboard and the portfolio/content editor. All the
-// path-matching + decision logic lives in lib/auth.ts (unit-tested).
+// The whole admin lives under /admin behind one login. The pages and their
+// mutation APIs share the SAME cookie, so one sign-in covers the site editor,
+// portfolio, newsletter and leads. All the path-matching + decision logic lives
+// in lib/auth.ts (unit-tested).
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
@@ -27,7 +27,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/newsletter-admin/:path*",
     "/admin",
     "/admin/:path*",
     "/api/upload",

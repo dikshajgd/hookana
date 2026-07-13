@@ -72,7 +72,7 @@ export default function CampaignsPage() {
           </p>
         </div>
         <Link
-          href="/newsletter-admin/campaigns/new"
+          href="/admin/campaigns/new"
           className="flex items-center gap-2 bg-[#0A1628] text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0A1628]/90 transition-colors"
         >
           <Plus className="size-4" />
@@ -97,7 +97,7 @@ export default function CampaignsPage() {
             Create your first newsletter campaign
           </p>
           <Link
-            href="/newsletter-admin/campaigns/new"
+            href="/admin/campaigns/new"
             className="inline-flex items-center gap-2 bg-[#0A1628] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0A1628]/90 transition-colors"
           >
             <Plus className="size-4" /> Create Campaign
@@ -150,7 +150,7 @@ export default function CampaignsPage() {
                   <div className="flex items-center gap-2 shrink-0">
                     {c.status === "draft" && (
                       <Link
-                        href={`/newsletter-admin/campaigns/${c._id}`}
+                        href={`/admin/campaigns/${c._id}`}
                         className="flex items-center gap-1.5 text-xs font-medium text-[#0A1628] border border-[#0A1628]/20 px-3 py-1.5 rounded-lg hover:bg-[#0A1628]/5 transition-colors"
                       >
                         <Send className="size-3.5" />

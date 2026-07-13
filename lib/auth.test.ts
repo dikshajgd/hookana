@@ -29,9 +29,10 @@ describe("classifyPath", () => {
     expect(classifyPath("/admin/anything").isProtectedPage).toBe(true)
   })
 
-  it("treats /newsletter-admin subtree as protected", () => {
-    expect(classifyPath("/newsletter-admin").isProtectedPage).toBe(true)
-    expect(classifyPath("/newsletter-admin/campaigns").isProtectedPage).toBe(true)
+  it("treats /admin subpages as protected, and /admin/login as the login path", () => {
+    expect(classifyPath("/admin/campaigns").isProtectedPage).toBe(true)
+    expect(classifyPath("/admin/subscribers").isProtectedPage).toBe(true)
+    expect(classifyPath("/admin/login").isLoginPath).toBe(true)
   })
 
   it("flags protected API prefixes (upload/portfolio/settings)", () => {
@@ -70,7 +71,7 @@ describe("authOutcome", () => {
 
   it("redirects a protected page to login when the cookie is missing/wrong", () => {
     expect(authOutcome("/admin", undefined, HASH)).toBe("redirect-login")
-    expect(authOutcome("/newsletter-admin", "stale", HASH)).toBe("redirect-login")
+    expect(authOutcome("/admin/campaigns", "stale", HASH)).toBe("redirect-login")
   })
 
   it("returns 401 (unauthorized) for a protected API without a valid cookie", () => {

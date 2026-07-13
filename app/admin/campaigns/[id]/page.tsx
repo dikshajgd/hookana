@@ -10,7 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react"
-import { MacOSEmailPreview } from "@/components/newsletter-admin/MacOSEmailPreview"
+import { MacOSEmailPreview } from "@/components/admin/MacOSEmailPreview"
 
 type Campaign = {
   _id: string
@@ -86,7 +86,7 @@ export default function CampaignDetailPage() {
 
     if (res.ok) {
       setCampaign((c) => c ? { ...c, status: "sent" } : c)
-      setTimeout(() => router.push("/newsletter-admin/campaigns"), 3000)
+      setTimeout(() => router.push("/admin/campaigns"), 3000)
     }
   }
 

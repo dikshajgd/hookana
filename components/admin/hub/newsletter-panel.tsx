@@ -50,19 +50,19 @@ export function NewsletterPanel() {
       {/* Quick actions */}
       <div className="grid gap-4 sm:grid-cols-3">
         <QuickAction
-          href="/newsletter-admin/campaigns/new"
+          href="/admin/campaigns/new"
           icon={<Send className="size-5" />}
           title="Create campaign"
           desc="Write or AI-generate a newsletter and send it"
         />
         <QuickAction
-          href="/newsletter-admin/subscribers"
+          href="/admin/subscribers"
           icon={<Users className="size-5" />}
           title="Subscribers"
           desc="Add, import or review your list"
         />
         <QuickAction
-          href="/newsletter-admin/campaigns"
+          href="/admin/campaigns"
           icon={<Mail className="size-5" />}
           title="Campaigns"
           desc="Drafts and past sends"

@@ -1,17 +1,17 @@
 /**
  * Shared admin-auth primitives for the middleware (and tests).
  *
- * The content CMS (/admin) and the newsletter dashboard (/newsletter-admin)
- * share ONE cookie (`nl_admin_auth`), whose value is the sha256 hex of the
- * admin password. Keeping the path-matching + decision logic pure here makes it
- * unit-testable without constructing NextRequest/NextResponse.
+ * The whole admin — site editor, portfolio, newsletter, leads — lives under
+ * /admin behind ONE cookie (`nl_admin_auth`), whose value is the sha256 hex of
+ * the admin password. Keeping the path-matching + decision logic pure here
+ * makes it unit-testable without constructing NextRequest/NextResponse.
  */
 
 export const AUTH_COOKIE = "nl_admin_auth"
-export const LOGIN_PATH = "/newsletter-admin/login"
+export const LOGIN_PATH = "/admin/login"
 export const DEFAULT_ADMIN_PASSWORD = "hookana_admin_2026"
 
-export const PROTECTED_PAGES = ["/newsletter-admin", "/admin"]
+export const PROTECTED_PAGES = ["/admin"]
 export const PROTECTED_APIS = ["/api/upload", "/api/portfolio", "/api/settings", "/api/leads"]
 
 /** sha256 hex, using Web Crypto so it runs in edge middleware and node/tests. */

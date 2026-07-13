@@ -14,7 +14,7 @@ import {
   Users,
   AlertTriangle,
 } from "lucide-react"
-import { MacOSEmailPreview } from "@/components/newsletter-admin/MacOSEmailPreview"
+import { MacOSEmailPreview } from "@/components/admin/MacOSEmailPreview"
 
 type Mode = "manual" | "generated"
 type RecipientMode = "all" | "custom"
@@ -107,7 +107,7 @@ export default function NewCampaignPage() {
     const json = await res.json()
     setSaving(false)
     if (res.ok) {
-      router.push(`/newsletter-admin/campaigns/${json.campaign._id}`)
+      router.push(`/admin/campaigns/${json.campaign._id}`)
     }
   }
 
@@ -152,7 +152,7 @@ export default function NewCampaignPage() {
     setSending(false)
 
     if (sendRes.ok) {
-      setTimeout(() => router.push("/newsletter-admin/campaigns"), 3000)
+      setTimeout(() => router.push("/admin/campaigns"), 3000)
     }
   }
 
