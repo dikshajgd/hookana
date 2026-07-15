@@ -10,7 +10,7 @@
  * editor pre-fills with the text that's live today, before anything is saved.
  */
 
-import { THEME_DEFAULT_COLORS } from "./theme-tokens"
+import { THEME_DEFAULT_COLORS, THEME_DEFAULT_FONTS } from "./theme-tokens"
 
 export type FieldType = "text" | "textarea" | "list" | "group"
 
@@ -455,5 +455,6 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
   },
   theme: {
     colors: { ...THEME_DEFAULT_COLORS },
+    fonts: { ...THEME_DEFAULT_FONTS },
   },
 }

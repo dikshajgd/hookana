@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono, Lato, Inter, Cormorant } from "next/font/google"
+import { JetBrains_Mono, Lato, Inter, Cormorant, DM_Sans, Staatliches } from "next/font/google"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { cn } from "@/lib/utils"
 import "./globals.css"
@@ -48,6 +48,19 @@ const cormorant = Cormorant({
   variable: "--font-cormorant",
 })
 
+// DM Sans — the site's default heading + body face (fontpair reference).
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+})
+
+// Staatliches — condensed caps display, available as a heading option.
+const staatliches = Staatliches({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-staatliches",
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,7 +70,15 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", lato.variable, fontMono.variable, inter.variable, cormorant.variable)}
+      className={cn(
+        "antialiased",
+        lato.variable,
+        fontMono.variable,
+        inter.variable,
+        cormorant.variable,
+        dmSans.variable,
+        staatliches.variable
+      )}
     >
       <body className="overflow-x-hidden bg-cream font-serif">
         {children}

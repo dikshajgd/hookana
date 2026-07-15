@@ -9,9 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Drive Capital: outlined pill, transparent fill — the outline IS the button.
-        default: "border-voltage-blue bg-transparent text-voltage-blue hover:bg-voltage-blue/5",
+        // Primary CTA: filled lime pill with ink text (the theme "highlight").
+        default: "border-lime-brand bg-lime-brand text-ink hover:bg-lime-brand/85",
         outline: "border-ash bg-transparent text-ink hover:bg-ash/40",
+        // Secondary: outlined pill (the outline IS the button).
         secondary: "border-voltage-blue bg-transparent text-voltage-blue hover:bg-voltage-blue/5",
         ghost: "border-transparent text-voltage-blue hover:bg-voltage-blue/5",
         destructive: "border-voltage-blue bg-transparent text-voltage-blue hover:bg-voltage-blue/5",

@@ -1,22 +1,23 @@
 "use client"
 
-import { Palette, RotateCcw, X, Check } from "lucide-react"
-import { THEME_TOKENS } from "@/lib/admin/theme-tokens"
-import { THEME_PRESETS, matchingPresetId, type ThemePreset } from "@/lib/admin/theme-presets"
+import { Palette, RotateCcw, X } from "lucide-react"
+import {
+  THEME_TOKENS,
+  FONT_OPTIONS,
+  THEME_DEFAULT_FONTS,
+} from "@/lib/admin/theme-tokens"
 import { useEditor } from "./editor-context"
 
 /**
- * Whole-site theme editor. Lead with ready-made PRESETS — click one and the
- * page recolours live (via <ThemeScope>); it only goes live on Publish, so
- * trying looks is fully separate from publishing. Advanced users can fine-tune
- * the individual colours below.
+ * A small "adjust the look" panel: the handful of theme colours + the
+ * heading/body font. Everything writes to `theme.*`, which <ThemeScope> turns
+ * into live CSS-variable overrides — so the page updates as she tweaks. Nothing
+ * reaches visitors until Publish.
  */
 export function ThemePanel({ onClose }: { onClose: () => void }) {
   const { settings, setField } = useEditor()
   const colors: Record<string, string> = settings.theme?.colors ?? {}
-  const activeId = matchingPresetId(colors)
-
-  const applyPreset = (preset: ThemePreset) => setField("theme.colors", { ...preset.colors })
+  const fonts: { heading?: string; body?: string } = settings.theme?.fonts ?? {}
 
   return (
     <div className="fixed top-16 right-4 z-[210] flex max-h-[calc(100vh-5rem)] w-80 flex-col rounded-xl border border-neutral-200 bg-white shadow-2xl">
@@ -35,59 +36,17 @@ export function ThemePanel({ onClose }: { onClose: () => void }) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
-        <p className="mb-3 text-xs text-neutral-400">
-          Pick a look — the site recolours live. Nothing changes for visitors until you Publish.
+      <div className="flex-1 space-y-5 overflow-y-auto p-4">
+        <p className="text-xs text-neutral-400">
+          Tweak the look — updates live. Nothing changes for visitors until you Publish.
         </p>
 
-        <div className="grid grid-cols-2 gap-2">
-          {THEME_PRESETS.map((preset) => {
-            const c = preset.colors
-            const active = activeId === preset.id
-            return (
-              <button
-                key={preset.id}
-                type="button"
-                onClick={() => applyPreset(preset)}
-                className={`rounded-lg border p-2 text-left transition ${
-                  active
-                    ? "border-neutral-900 ring-2 ring-neutral-900"
-                    : "border-neutral-200 hover:border-neutral-400"
-                }`}
-              >
-                <div
-                  className="mb-1.5 flex h-14 w-full flex-col justify-between rounded-md p-1.5"
-                  style={{ backgroundColor: c.background }}
-                >
-                  <div className="flex items-center gap-1">
-                    <span
-                      className="h-3 w-3 rounded-sm"
-                      style={{ backgroundColor: c.cards, boxShadow: `inset 0 0 0 1px ${c.border}` }}
-                    />
-                    <span
-                      className="h-1.5 flex-1 rounded-full"
-                      style={{ backgroundColor: c.brand }}
-                    />
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="h-1.5 w-6 rounded-full" style={{ backgroundColor: c.text }} />
-                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: c.lime }} />
-                  </div>
-                </div>
-                <p className="flex items-center gap-1 truncate text-xs font-medium text-neutral-700">
-                  {active && <Check className="size-3 shrink-0 text-neutral-900" />}
-                  {preset.name}
-                </p>
-              </button>
-            )
-          })}
-        </div>
-
-        <details className="mt-4 rounded-lg border border-neutral-200">
-          <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-neutral-600">
-            Fine-tune colours
-          </summary>
-          <div className="space-y-3 border-t border-neutral-100 p-3">
+        {/* Colours */}
+        <section>
+          <h4 className="mb-2 text-xs font-semibold tracking-wide text-neutral-500 uppercase">
+            Colours
+          </h4>
+          <div className="space-y-3">
             {THEME_TOKENS.map((token) => {
               const value = colors[token.key] ?? token.default
               const changed = value.toLowerCase() !== token.default.toLowerCase()
@@ -107,6 +66,7 @@ export function ThemePanel({ onClose }: { onClose: () => void }) {
                   </label>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-neutral-800">{token.label}</p>
+                    <p className="truncate text-[11px] text-neutral-400">{token.hint}</p>
                   </div>
                   <input
                     type="text"
@@ -127,8 +87,54 @@ export function ThemePanel({ onClose }: { onClose: () => void }) {
               )
             })}
           </div>
-        </details>
+        </section>
+
+        {/* Fonts */}
+        <section>
+          <h4 className="mb-2 text-xs font-semibold tracking-wide text-neutral-500 uppercase">
+            Fonts
+          </h4>
+          <div className="space-y-2.5">
+            <FontRow
+              label="Headings"
+              value={fonts.heading ?? THEME_DEFAULT_FONTS.heading}
+              onChange={(id) => setField("theme.fonts.heading", id)}
+            />
+            <FontRow
+              label="Body"
+              value={fonts.body ?? THEME_DEFAULT_FONTS.body}
+              onChange={(id) => setField("theme.fonts.body", id)}
+            />
+          </div>
+        </section>
       </div>
     </div>
+  )
+}
+
+function FontRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string
+  value: string
+  onChange: (id: string) => void
+}) {
+  return (
+    <label className="flex items-center justify-between gap-3">
+      <span className="text-xs font-medium text-neutral-800">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-40 rounded border border-neutral-200 px-2 py-1.5 text-xs"
+      >
+        {FONT_OPTIONS.map((opt) => (
+          <option key={opt.id} value={opt.id}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </label>
   )
 }
