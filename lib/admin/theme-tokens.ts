@@ -43,16 +43,16 @@ export const THEME_TOKENS: ThemeToken[] = [
   },
   {
     key: "accent",
-    label: "Accent",
-    hint: "Small labels and secondary accents.",
-    vars: ["--color-hot-pink"],
+    label: "Accent text",
+    hint: "Service titles, stat labels, receipt figures.",
+    vars: ["--color-hot-pink", "--color-primary"],
     default: "#3e4600",
   },
   {
     key: "highlight",
     label: "Highlight & buttons",
     hint: "Button fills, underlines and pills.",
-    vars: ["--color-lime-brand", "--color-primary"],
+    vars: ["--color-lime-brand"],
     default: "#eefe90",
   },
   {

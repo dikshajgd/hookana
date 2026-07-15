@@ -64,8 +64,11 @@
   --card-foreground: #161900;
   --popover: #ffffff;
   --popover-foreground: #161900;
-  --primary: #eefe90;
-  --primary-foreground: #161900;
+  /* primary = the dark olive accent used by `text-primary` (service titles,
+     receipt totals, stat labels). Buttons use lime-brand, not primary, so this
+     stays readable on white. */
+  --primary: #3e4600;
+  --primary-foreground: #ffffff;
   --secondary: #ffffff;
   --secondary-foreground: #161900;
   --muted: #f4f6ea;
