@@ -127,7 +127,7 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
     headline: "Creativity at Volume.",
     subheadline: "Without the compromise.",
     description:
-      "D2C brands and performance teams need fresh creatives, fast, on-brand, and at scale. Hookana is the creative production engine that keeps your pipeline full without blowing your budget or burning out your team.",
+      "Ad editing and design for performance teams. Brief in, launch-ready in 48 hours — hook variants included. Out of briefs? We'll pitch you a batch.",
     ctaText: "GET 2 FREE CONCEPTS",
     videoCards: [
       { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-1-neyohx.mp4`, poster: `${SITE_MEDIA}/hero/web-1-neyohx.jpg`, type: "video" },
@@ -158,7 +158,7 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
     subtext:
       "No strings. No credit card. Just tell us about your brand and we'll build two ad concepts on the house.",
     footerText:
-      "We'll review your brand, build 2 sample concepts, and walk you through them on a quick call.",
+      "We'll review your brand, build 2 sample concepts, and send them over with a short Loom walkthrough.",
   },
   faq: {
     heading1: "Got\nquestions?",
@@ -187,6 +187,11 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
         question: "How is Hookana different from a freelancer or agency?",
         answer:
           "Freelancers are unpredictable. Agencies are slow and expensive. Hookana gives you dedicated creative production at agency quality, at a fraction of the cost, and we actually hit deadlines.",
+      },
+      {
+        question: "Do we need to send you briefs?",
+        answer:
+          "No — that's the point. We study your account and pitch concepts; you approve and we produce. Briefed work is welcome too, but never required.",
       },
     ],
   },
@@ -312,11 +317,13 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
   howItWorks: {
     label: "The Hookana Way",
     heading: "Closer than an agency.\nFaster than a team.",
+    subhead: "Ad editing and design for performance teams — right on the first draft.",
     ctaText: "Get 2 Free Concepts",
     steps: [
-      { title: "BRIEF IT.", body: "Drop your brief via Slack, Notion, email. We adapt to your tools.", caption: "Day 0" },
-      { title: "WE BUILD IT.", body: "Our creative team produces ad-ready assets in 48 hours or less.", caption: "24 - 48 hours" },
-      { title: "YOU TEST IT.", body: "Launch, measure, iterate. We keep the creative pipeline flowing.", caption: "Ongoing" },
+      { title: "BRIEF IT.", body: "Send briefs via Slack, Notion, or email — we adapt to your tools.", caption: "Day 0" },
+      { title: "OR DON'T.", body: "Out of briefs? We'll study your account and pitch you a concept batch instead.", caption: "Day 0" },
+      { title: "WE BUILD IT.", body: "Launch-ready assets, hook variants included, in 24–48 hours.", caption: "24–48h" },
+      { title: "YOU TEST IT.", body: "Launch, measure, iterate. We keep the pipeline flowing.", caption: "Ongoing" },
     ],
   },
   services: {
@@ -448,6 +455,7 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
           { label: "Brand", value: "Unlimited" },
           { label: "Support", value: "Dedicated team" },
           { label: "Revisions", value: "Unlimited" },
+          { label: "No-poach guarantee", value: "In writing" },
         ],
         ctaText: "GET 2 FREE CONCEPTS",
       },

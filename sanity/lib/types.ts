@@ -86,6 +86,8 @@ export type Step = { title: string; body: string; caption: string }
 export type HowItWorksContent = {
   label: string
   heading: string
+  /** Line under the heading. Optional — rows saved before it existed lack it. */
+  subhead?: string
   ctaText: string
   steps: Step[]
 }
