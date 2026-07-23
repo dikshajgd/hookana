@@ -260,7 +260,7 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
         className="mt-8 mb-6 -mx-5 scroll-px-5 px-5 lg:hidden"
         slideClassName="w-[88%] sm:w-[80%]"
       >
-        {displayTabs.map((tab) => (
+        {displayTabs.map((tab, i) => (
           <div
             key={tab.value}
             className="h-full w-full rounded-[2rem] border-t border-white/40 bg-lime-200 px-5 pt-8 pb-10 shadow-[0_-8px_30px_-10px_rgba(0,0,0,0.1)] sm:rounded-[3rem] sm:px-8 sm:pt-14 sm:pb-16 md:px-12 md:pt-16"
@@ -270,10 +270,19 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
             </div>
             <div className="flex flex-col gap-6 sm:gap-10">
               <div className="flex flex-col gap-3">
-                <h3 className="type-heading-3 sm:type-heading-2 text-primary">{tab.title}</h3>
-                <p className="type-heading-4 font-semibold text-accent-foreground">
-                  {tab.description}
-                </p>
+                <EditableText
+                  as="h3"
+                  path={`services.tabs.${i}.title`}
+                  value={tab.title}
+                  className="type-heading-3 sm:type-heading-2 text-primary"
+                />
+                <EditableText
+                  as="p"
+                  path={`services.tabs.${i}.description`}
+                  value={tab.description}
+                  multiline
+                  className="type-heading-4 font-semibold text-accent-foreground"
+                />
               </div>
               <ul className="w-full overflow-hidden rounded-md">
                 {tab.deliverables.map((item, index) => (
@@ -282,7 +291,12 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
                     className={`min-h-12 px-5 py-3 sm:px-8 sm:py-4 ${index % 2 === 0 ? "bg-linear-to-r from-background to-lime-500" : "bg-linear-to-r from-lime-500 to-background"}`}
                   >
                     <p className="type-monospaced text-left text-xs leading-snug text-accent-foreground sm:text-sm">
-                      • {item}
+                      •{" "}
+                      <EditableText
+                        path={`services.tabs.${i}.deliverables.${index}`}
+                        value={item}
+                        rich={false}
+                      />
                     </p>
                   </li>
                 ))}
@@ -293,12 +307,19 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
                     key={si}
                     className="flex flex-col gap-2 border-l-8 border-pink-500 bg-background px-5 py-5 [clip-path:polygon(0_0,calc(100%-1rem)_0,100%_12%,calc(100%-1rem)_30%,100%_48%,calc(100%-1rem)_66%,100%_84%,calc(100%-1rem)_100%,0_100%)] sm:border-l-[12px] sm:px-6 sm:py-6"
                   >
-                    <p className="font-mono text-[10px] leading-3 text-primary uppercase sm:text-xs">
-                      {stat.label}
-                    </p>
-                    <p className="type-heading-4 sm:type-heading-3 text-accent-foreground">
-                      {stat.text}
-                    </p>
+                    <EditableText
+                      path={`services.tabs.${i}.stats.${si}.label`}
+                      value={stat.label}
+                      rich={false}
+                      className="font-mono text-[10px] leading-3 text-primary uppercase sm:text-xs"
+                    />
+                    <EditableText
+                      as="p"
+                      path={`services.tabs.${i}.stats.${si}.text`}
+                      value={stat.text}
+                      multiline
+                      className="type-heading-4 sm:type-heading-3 text-accent-foreground"
+                    />
                   </div>
                 ))}
               </div>

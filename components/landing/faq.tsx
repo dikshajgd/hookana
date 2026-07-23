@@ -116,10 +116,19 @@ export function Faq({ content }: { content: FaqContent | null }) {
                   className="border-0 not-last:border-b-0 data-open:bg-transparent"
                 >
                   <AccordionTrigger className="font-ease text-xl sm:text-2xl 2xl:text-[28px] font-normal tracking-[-0.03em] text-left leading-tight px-0 py-2 2xl:py-4 text-ink hover:no-underline **:data-[slot=accordion-trigger-icon]:text-ink">
-                    {item.question}
+                    <EditableText
+                      path={`faq.items.${index}.question`}
+                      value={item.question}
+                    />
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pt-1 pb-4 2xl:pb-0 text-ink">
-                    <p className="font-ease text-sm sm:text-base tracking-[-0.02em] leading-relaxed">{item.answer}</p>
+                    <EditableText
+                      as="p"
+                      path={`faq.items.${index}.answer`}
+                      value={item.answer}
+                      multiline
+                      className="font-ease text-sm sm:text-base tracking-[-0.02em] leading-relaxed"
+                    />
                   </AccordionContent>
                 </AccordionItem>
 

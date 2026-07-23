@@ -271,16 +271,31 @@ export function Problems({ tabs, className }: { tabs: ProblemTab[]; className?: 
             <div className="flex flex-col gap-6 sm:gap-10">
               <div className="flex flex-col gap-4 sm:gap-6">
                 <p className="font-ease text-3xl sm:text-4xl font-normal tracking-[-0.03em] text-ink">
-                  {tab.headlineLine1}
+                  <EditableText
+                    path={`problems.tabs.${i}.headlineLine1`}
+                    value={tab.headlineLine1}
+                  />
                   <br />
-                  {tab.headlineLine2}
+                  <EditableText
+                    path={`problems.tabs.${i}.headlineLine2`}
+                    value={tab.headlineLine2}
+                  />
                 </p>
-                <p className="font-ease text-xl font-normal tracking-[-0.02em] text-ink">
-                  {tab.subheading}
-                </p>
+                <EditableText
+                  as="p"
+                  path={`problems.tabs.${i}.subheading`}
+                  value={tab.subheading}
+                  className="font-ease text-xl font-normal tracking-[-0.02em] text-ink"
+                />
               </div>
               <div className="flex flex-col gap-2 sm:gap-3">
-                <p className="text-sm text-accent-foreground sm:text-base md:text-lg">{tab.body}</p>
+                <EditableText
+                  as="p"
+                  path={`problems.tabs.${i}.body`}
+                  value={tab.body}
+                  multiline
+                  className="text-sm text-accent-foreground sm:text-base md:text-lg"
+                />
               </div>
               <div className="mt-2 flex w-full justify-center sm:mt-4 sm:max-w-lg sm:self-center">
                 <DiagnosticReceipt receipt={tab.receipt} tabIndex={i} />
