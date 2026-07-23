@@ -127,7 +127,7 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
     headline: "Creativity at Volume.",
     subheadline: "Without the compromise.",
     description:
-      "Ad editing and design for performance teams. Brief in, launch-ready in 48 hours — hook variants included. Out of briefs? We'll pitch you a batch.",
+      "Your ad account needs 30+ fresh concepts a month. Hookana studies your winners, pitches the concepts, and produces them — you never write a brief.",
     ctaText: "GET 2 FREE CONCEPTS",
     videoCards: [
       { label: "Brand Films", url: `${SITE_MEDIA}/hero/web-1-neyohx.mp4`, poster: `${SITE_MEDIA}/hero/web-1-neyohx.jpg`, type: "video" },
@@ -317,13 +317,29 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
   howItWorks: {
     label: "The Hookana Way",
     heading: "Closer than an agency.\nFaster than a team.",
-    subhead: "Ad editing and design for performance teams — right on the first draft.",
+    subhead: "Briefs welcome. Never required — we show up with concepts.",
     ctaText: "Get 2 Free Concepts",
     steps: [
-      { title: "BRIEF IT.", body: "Send briefs via Slack, Notion, or email — we adapt to your tools.", caption: "Day 0" },
-      { title: "OR DON'T.", body: "Out of briefs? We'll study your account and pitch you a concept batch instead.", caption: "Day 0" },
-      { title: "WE BUILD IT.", body: "Launch-ready assets, hook variants included, in 24–48 hours.", caption: "24–48h" },
-      { title: "YOU TEST IT.", body: "Launch, measure, iterate. We keep the pipeline flowing.", caption: "Ongoing" },
+      {
+        title: "WE STUDY IT.",
+        body: "We review your ad account, your winners, and your competitors. No brief needed — ever.",
+        caption: "Day 0",
+      },
+      {
+        title: "WE PITCH IT.",
+        body: "You get a concept batch: iterations of what's working + new angles worth testing. Pick your favorites.",
+        caption: "Day 1–2",
+      },
+      {
+        title: "WE BUILD IT.",
+        body: "Ad-ready assets, hook variations included, in 24–48 hours.",
+        caption: "Day 2–4",
+      },
+      {
+        title: "YOU TEST IT.",
+        body: "Launch, measure, tell us what won. Next batch gets smarter.",
+        caption: "Ongoing",
+      },
     ],
   },
   services: {
@@ -404,7 +420,7 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
     stats: [
       { value: "80%", label: "Lower cost vs agencies" },
       { value: "3x", label: "Faster creative output" },
-      { value: "48hr", label: "Average turnaround" },
+      { value: "48-hr", label: "Average turnaround" },
       { value: "10K+", label: "Creatives shipped" },
     ],
     marqueeItems: [

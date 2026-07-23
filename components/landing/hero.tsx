@@ -19,7 +19,7 @@ const FALLBACK: HeroContent = {
   headline: "Creativity at Volume.",
   subheadline: "Without the compromise.",
   description:
-    "Ad editing and design for performance teams. Brief in, launch-ready in 48 hours — hook variants included. Out of briefs? We'll pitch you a batch.",
+    "Your ad account needs 30+ fresh concepts a month. Hookana studies your winners, pitches the concepts, and produces them — you never write a brief.",
   ctaText: "GET 2 FREE CONCEPTS",
   watchReelText: "WATCH THE REEL",
   // Re-hosted on Supabase Storage (migrated off Cloudinary via

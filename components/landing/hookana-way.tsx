@@ -14,7 +14,7 @@ import { EditableText } from "@/components/admin/editor/editable-text"
 
 // `subhead` is optional on the type (rows saved before it existed lack it), so
 // keep the default as its own non-optional const to fall back to.
-const SUBHEAD = "Ad editing and design for performance teams — right on the first draft."
+const SUBHEAD = "Briefs welcome. Never required — we show up with concepts."
 
 const FALLBACK: HowItWorksContent = {
   label: "The Hookana Way",
@@ -23,23 +23,23 @@ const FALLBACK: HowItWorksContent = {
   ctaText: "Get 2 Free Concepts",
   steps: [
     {
-      title: "BRIEF IT.",
-      body: "Send briefs via Slack, Notion, or email — we adapt to your tools.",
+      title: "WE STUDY IT.",
+      body: "We review your ad account, your winners, and your competitors. No brief needed — ever.",
       caption: "Day 0",
     },
     {
-      title: "OR DON'T.",
-      body: "Out of briefs? We'll study your account and pitch you a concept batch instead.",
-      caption: "Day 0",
+      title: "WE PITCH IT.",
+      body: "You get a concept batch: iterations of what's working + new angles worth testing. Pick your favorites.",
+      caption: "Day 1–2",
     },
     {
       title: "WE BUILD IT.",
-      body: "Launch-ready assets, hook variants included, in 24–48 hours.",
-      caption: "24–48h",
+      body: "Ad-ready assets, hook variations included, in 24–48 hours.",
+      caption: "Day 2–4",
     },
     {
       title: "YOU TEST IT.",
-      body: "Launch, measure, iterate. We keep the pipeline flowing.",
+      body: "Launch, measure, tell us what won. Next batch gets smarter.",
       caption: "Ongoing",
     },
   ],

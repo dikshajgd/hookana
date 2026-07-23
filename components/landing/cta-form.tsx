@@ -213,7 +213,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   className="w-full sm:w-auto"
                   disabled={status === "submitting"}
                 >
-                  {status === "submitting" ? "Sending..." : "Send request"}
+                  {status === "submitting" ? "Sending..." : "GET 2 FREE CONCEPTS"}
                 </Button>
               </div>
             </form>

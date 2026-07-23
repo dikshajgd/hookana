@@ -15,7 +15,7 @@ const FALLBACK: StatsContent = {
   stats: [
     { value: "80%", label: "Lower cost vs agencies" },
     { value: "3x", label: "Faster creative output" },
-    { value: "48hr", label: "Average turnaround" },
+    { value: "48-hr", label: "Average turnaround" },
     { value: "10K+", label: "Creatives shipped" },
   ],
   marqueeItems: [],
@@ -60,10 +60,9 @@ export function Stats({ content }: { content: StatsContent | null }) {
                   className="inline-flex items-center border-b-4 border-lime-brand pb-1 font-editorial text-5xl font-light tracking-[-0.02em] text-voltage-blue sm:text-6xl 2xl:text-7xl"
                 />
               ) : (
-                <AnimatedStat
-                  value={item.value}
-                  className="inline-flex items-center border-b-4 border-lime-brand pb-1 font-editorial text-5xl font-light tracking-[-0.02em] text-voltage-blue sm:text-6xl 2xl:text-7xl"
-                />
+                <span className="inline-flex items-center border-b-4 border-lime-brand pb-1 font-editorial text-5xl font-light tracking-[-0.02em] text-voltage-blue sm:text-6xl 2xl:text-7xl">
+                  {item.value}
+                </span>
               )}
               <EditableText
                 as="p"

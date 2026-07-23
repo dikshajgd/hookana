@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import "./globals.css"
 
 const META_DESCRIPTION =
-  "Ad editing and design for performance teams. Launch-ready creative in 24–48 hours, hook variants included."
+  "Hookana studies your winners, pitches concept batches, and produces ad-ready creative in 24–48h. Performance creative for D2C brands & agencies."
 
 export const metadata: Metadata = {
   title: "Hookana - Creative Production for D2C Brands",
