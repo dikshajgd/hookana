@@ -39,6 +39,10 @@ const FALLBACK: FaqContent = {
       question: "How is Hookana different from a freelancer or agency?",
       answer: "Freelancers are unpredictable. Agencies are slow and expensive. Hookana gives you dedicated creative production at agency quality, at a fraction of the cost, and we actually hit deadlines.",
     },
+    {
+      question: "Do we need to send you briefs?",
+      answer: "No — that's the point. We study your account and pitch concepts; you approve and we produce. Briefed work is welcome too, but never required.",
+    },
   ],
 }
 

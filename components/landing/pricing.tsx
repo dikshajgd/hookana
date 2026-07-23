@@ -52,6 +52,7 @@ const FALLBACK: PricingContent = {
         { label: "Brand", value: "Unlimited" },
         { label: "Support", value: "Dedicated team" },
         { label: "Revisions", value: "Unlimited" },
+        { label: "No-poach guarantee", value: "In writing" },
       ],
       ctaText: "GET 2 FREE CONCEPTS",
     },

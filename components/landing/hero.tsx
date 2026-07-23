@@ -19,7 +19,7 @@ const FALLBACK: HeroContent = {
   headline: "Creativity at Volume.",
   subheadline: "Without the compromise.",
   description:
-    "D2C brands and performance teams need fresh creatives, fast, on-brand, and at scale. Hookana is the creative production engine that keeps your pipeline full without blowing your budget or burning out your team.",
+    "Your ad account needs 30+ fresh concepts a month. Hookana studies your winners, pitches the concepts, and produces them — you never write a brief.",
   ctaText: "GET 2 FREE CONCEPTS",
   watchReelText: "WATCH THE REEL",
   // Re-hosted on Supabase Storage (migrated off Cloudinary via
@@ -218,10 +218,12 @@ export function Hero({ content }: { content: HeroContent | null }) {
                       "animate-in fade-in-0 slide-in-from-right-8 duration-500 ease-out fill-mode-both",
                       i === 0 ? "block w-full" : "hidden",
                       "lg:block lg:w-auto",
-                      editing ? "cursor-default" : "cursor-pointer hover:-translate-y-2"
+                      editing || !card.url
+                        ? "cursor-default"
+                        : "cursor-pointer hover:-translate-y-2"
                     )}
                     style={{ animationDelay: `${i * 80}ms` }}
-                    onClick={editing ? undefined : () => setActiveVideo(absIdx)}
+                    onClick={editing || !card.url ? undefined : () => setActiveVideo(absIdx)}
                   >
                     {editing && (
                       <button
@@ -409,16 +411,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                 playsInline
                 preload="metadata"
               />
-            ) : (
-              <div className="flex h-full flex-col items-center justify-center gap-3">
-                <div className="flex size-16 items-center justify-center rounded-full bg-white/10">
-                  <Play className="size-7 fill-white/40 text-white/40" />
-                </div>
-                <p className="type-monospaced text-xs tracking-widest text-white/30 uppercase">
-                  Video coming soon
-                </p>
-              </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

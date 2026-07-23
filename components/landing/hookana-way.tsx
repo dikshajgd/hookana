@@ -12,24 +12,34 @@ import {
 } from "@/components/admin/editor/editable-list"
 import { EditableText } from "@/components/admin/editor/editable-text"
 
+// `subhead` is optional on the type (rows saved before it existed lack it), so
+// keep the default as its own non-optional const to fall back to.
+const SUBHEAD = "Briefs welcome. Never required — we show up with concepts."
+
 const FALLBACK: HowItWorksContent = {
   label: "The Hookana Way",
   heading: "Closer than an agency.\nFaster than a team.",
+  subhead: SUBHEAD,
   ctaText: "Get 2 Free Concepts",
   steps: [
     {
-      title: "BRIEF IT.",
-      body: "Drop your brief via Slack, Notion, email. We adapt to your tools.",
+      title: "WE STUDY IT.",
+      body: "We review your ad account, your winners, and your competitors. No brief needed — ever.",
       caption: "Day 0",
     },
     {
+      title: "WE PITCH IT.",
+      body: "You get a concept batch: iterations of what's working + new angles worth testing. Pick your favorites.",
+      caption: "Day 1–2",
+    },
+    {
       title: "WE BUILD IT.",
-      body: "Our creative team produces ad-ready assets in 48 hours or less.",
-      caption: "24 - 48 hours",
+      body: "Ad-ready assets, hook variations included, in 24–48 hours.",
+      caption: "Day 2–4",
     },
     {
       title: "YOU TEST IT.",
-      body: "Launch, measure, iterate. We keep the creative pipeline flowing.",
+      body: "Launch, measure, tell us what won. Next batch gets smarter.",
       caption: "Ongoing",
     },
   ],
@@ -41,6 +51,7 @@ const STEP_STYLES = [
   { rotate: "md:-rotate-2", bg: "bg-cream" },
   { rotate: "md:rotate-1", bg: "bg-cream" },
   { rotate: "md:-rotate-2", bg: "bg-cream" },
+  { rotate: "md:rotate-1", bg: "bg-cream" },
 ]
 
 function HookanaStepCard({
@@ -86,7 +97,7 @@ function HookanaStepCard({
 
 export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
   const { editing } = useEditor()
-  const { heading, ctaText, steps } = useEditable("howItWorks", content, FALLBACK)
+  const { heading, subhead, ctaText, steps } = useEditable("howItWorks", content, FALLBACK)
   const displaySteps = steps?.length > 0 ? steps : FALLBACK.steps
   const stepControls = useListControls("howItWorks.steps")
 
@@ -101,6 +112,14 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
           className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] md:text-[64px] md:leading-[0.95]"
         />
 
+        <EditableText
+          as="p"
+          path="howItWorks.subhead"
+          value={subhead ?? SUBHEAD}
+          multiline
+          className="font-ease max-w-160 text-base leading-snug tracking-[-0.02em] text-ink md:text-lg"
+        />
+
         <ContactLink disabled={editing}>
           <Button size="lg" variant="secondary" className="px-6">
             <EditableText path="howItWorks.ctaText" value={ctaText} />
@@ -109,7 +128,7 @@ export function HookanaWay({ content }: { content: HowItWorksContent | null }) {
         </ContactLink>
       </div>
 
-      <div className="mx-auto mt-12 grid max-w-237.5 gap-4 md:mt-24 md:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-300 gap-4 sm:grid-cols-2 md:mt-24 lg:grid-cols-4">
         {displaySteps.map((step, i) => (
           <div key={i} className="relative">
             {editing && (

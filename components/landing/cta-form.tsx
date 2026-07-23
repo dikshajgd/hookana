@@ -12,7 +12,7 @@ const FALLBACK: Pick<ContactContent, "heading" | "subtext" | "footerText"> = {
   subtext:
     "No strings. No credit card. Just tell us about your brand and we'll build two ad concepts on the house.",
   footerText:
-    "We'll review your brand, build 2 sample concepts, and walk you through them on a quick call.",
+    "We'll review your brand, build 2 sample concepts, and send them over with a short Loom walkthrough.",
 }
 
 type FormState = {
@@ -22,11 +22,6 @@ type FormState = {
   email: string
   ongoingSupport: string
   budget: string
-  productDescription: string
-  brief: string
-  brandAssets: string
-  adSpend: string
-  deliveryEmail: string
 }
 
 const INITIAL: FormState = {
@@ -36,11 +31,6 @@ const INITIAL: FormState = {
   email: "",
   ongoingSupport: "",
   budget: "",
-  productDescription: "",
-  brief: "",
-  brandAssets: "",
-  adSpend: "",
-  deliveryEmail: "",
 }
 
 type Status = "idle" | "submitting" | "success" | "error"
@@ -207,58 +197,10 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                 />
               </Field>
 
-              <Field label="Product Description">
-                <Textarea
-                  value={values.productDescription}
-                  onChange={update("productDescription")}
-                  rows={3}
-                  placeholder="What you sell, who it's for, and what makes it different"
-                />
-              </Field>
-
-              <Field label="Brief/Concept you would like us to produce (LINKS ONLY)">
-                <Textarea
-                  value={values.brief}
-                  onChange={update("brief")}
-                  rows={2}
-                  placeholder="Paste links to references, briefs, or boards (Drive, Notion, Figma, etc.)"
-                />
-              </Field>
-
-              <Field
-                label="Brand Assets — Product, UGC Footages, Brand Guide (LINKS ONLY)"
-                required
-              >
-                <Textarea
-                  required
-                  value={values.brandAssets}
-                  onChange={update("brandAssets")}
-                  rows={2}
-                  placeholder="Drive / Dropbox / Notion links to product shots, UGC, brand guide"
-                />
-              </Field>
-
-              <Field label="Current Monthly Ad Spend">
-                <Input
-                  value={values.adSpend}
-                  onChange={update("adSpend")}
-                  placeholder="e.g. $10k / month on Meta + Snap"
-                  className="rounded-none border-ash bg-paper-white text-ink placeholder:text-fog"
-                />
-              </Field>
-
-              <Field label="Where should we send your concepts?">
-                <Input
-                  type="email"
-                  value={values.deliveryEmail}
-                  onChange={update("deliveryEmail")}
-                  placeholder="best email to receive the concepts"
-                  className="rounded-none border-ash bg-paper-white text-ink placeholder:text-fog"
-                />
-                <p className="mt-1 text-xs text-muted-foreground">
-                  We usually deliver within 2&ndash;4 business days if selected.
-                </p>
-              </Field>
+              <p className="font-ease text-sm leading-relaxed tracking-[-0.02em] text-ink/70">
+                That&rsquo;s all we need. We&rsquo;ll study your site, your ad library, and
+                your competitors &mdash; and send 2 concepts within 2&ndash;4 business days.
+              </p>
 
               {status === "error" && (
                 <p className="font-mono text-xs text-red-600">{errorMsg}</p>
@@ -271,7 +213,7 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   className="w-full sm:w-auto"
                   disabled={status === "submitting"}
                 >
-                  {status === "submitting" ? "Sending..." : "Send request"}
+                  {status === "submitting" ? "Sending..." : "GET 2 FREE CONCEPTS"}
                 </Button>
               </div>
             </form>
@@ -324,18 +266,5 @@ function Field({
       </label>
       {children}
     </div>
-  )
-}
-
-function Textarea(props: React.ComponentProps<"textarea">) {
-  const { className, ...rest } = props
-  return (
-    <textarea
-      {...rest}
-      className={
-        "w-full min-w-0 rounded-none border border-ash bg-paper-white px-3 py-2 text-base text-ink transition-[color,box-shadow,background-color] outline-none placeholder:text-fog focus-visible:ring-2 focus-visible:ring-ink/30 md:text-sm " +
-        (className ?? "")
-      }
-    />
   )
 }
