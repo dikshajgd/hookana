@@ -53,7 +53,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
   const itemControls = useListControls("faq.items")
 
   return (
-    <section className="mx-auto w-full px-5 py-14 sm:py-20 md:px-12 lg:px-20 2xl:py-52 2xl:px-36">
+    <section className="mx-auto w-full px-5 pt-14 pb-10 sm:pt-20 sm:pb-12 md:px-12 lg:px-20 2xl:pt-52 2xl:pb-16 2xl:px-36">
       <div className="flex flex-col gap-10 sm:gap-14 2xl:grid 2xl:grid-cols-[500px_800px] 2xl:justify-between 2xl:gap-0">
         <div className="flex flex-col gap-3 sm:gap-6 2xl:gap-15">
           <EditableText

@@ -433,7 +433,7 @@ export const CONTENT_DEFAULTS: Record<string, any> = {
   },
   pricing: {
     label: "Simple Pricing",
-    heading: "Plans that grow with\nyou.",
+    heading: "Plans that grow with you.",
     tiers: [
       {
         id: "starter",

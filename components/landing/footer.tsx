@@ -24,7 +24,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
   const socialControls = useListControls("footer.socials")
 
   return (
-    <footer className="type-monospaced flex flex-col items-center justify-center gap-4 py-14 text-primary-foreground uppercase md:py-30">
+    <footer className="type-monospaced flex flex-col items-center justify-center gap-2 py-6 text-primary-foreground uppercase md:py-5">
       <EditableText
         as="p"
         path="footer.tagline"

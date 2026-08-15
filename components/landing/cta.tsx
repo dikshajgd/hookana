@@ -18,7 +18,7 @@ export function Cta({ content }: { content: CtaContent | null }) {
   const { heading, description, ctaText } = useEditable("cta", content, FALLBACK)
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-20 text-center md:pt-36 md:pb-65">
+    <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-12 text-center md:py-24">
       <EditableText
         as="h2"
         path="cta.heading"

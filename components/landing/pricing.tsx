@@ -14,7 +14,7 @@ import { EditableText } from "@/components/admin/editor/editable-text"
 
 const FALLBACK: PricingContent = {
   label: "Simple Pricing",
-  heading: "Plans that grow with\nyou.",
+  heading: "Plans that grow with you.",
   tiers: [
     {
       id: "starter",
@@ -178,9 +178,12 @@ export function Pricing({ content }: { content: PricingContent | null }) {
   const tierControls = useListControls("pricing.tiers")
 
   return (
-    <div className="overflow-hidden py-20 md:py-40">
+    <div className="overflow-hidden pt-20 pb-10 md:pt-40 md:pb-16">
       <div className="mx-auto flex flex-col items-center gap-12 2xl:gap-20">
-        <div className="flex max-w-142 flex-col items-center gap-6 px-5 text-center md:px-36">
+        {/* No md:px-* here: this box is already max-w constrained, so side
+            padding would eat the line and stack the heading word-per-word.
+            Width is set to hold the heading on one line at md:text-[64px]. */}
+        <div className="flex max-w-142 flex-col items-center gap-6 px-5 text-center md:max-w-200">
           <EditableText
             as="h2"
             path="pricing.heading"
