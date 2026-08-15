@@ -44,7 +44,7 @@ export function Newsletter() {
 
   return (
     <section className="bg-warm-linen">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-20 text-center md:py-32">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 py-14 text-center md:py-32">
         <h2 className="font-editorial font-light text-[40px] leading-[0.95] tracking-[-0.02em] text-voltage-blue break-words sm:text-[52px] sm:leading-[0.95] md:max-w-187.5 md:text-[80px] md:leading-[0.95]">
           {lines.map((line, i) => (
             <span key={i}>

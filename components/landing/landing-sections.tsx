@@ -6,7 +6,6 @@ import { Hero } from "@/components/landing/hero"
 import { HeroCarousel } from "@/components/landing/hero-carousel"
 import { HookanaWay } from "@/components/landing/hookana-way"
 import { Newsletter } from "@/components/landing/newsletter"
-import { NewsletterSubscribeBar } from "@/components/landing/newsletter-subscribe-bar"
 import { Pricing } from "@/components/landing/pricing"
 import { Problems } from "@/components/landing/problems"
 // import { Roles } from "@/components/landing/roles"
@@ -52,7 +51,9 @@ export function LandingSections({ settings }: { settings: Record<string, any> })
               <div className="relative z-10">
                 <CtaForm content={settings.contact ?? null} />
               </div>
-              <div className="mt-12 flex items-end justify-center gap-12 px-5 pb-20 2xl:hidden">
+              {/* Illustrations only exist from md up; hide the whole row below
+                  that so it doesn't leave empty padding on phones. */}
+              <div className="mt-12 hidden items-end justify-center gap-12 px-5 pb-20 md:flex 2xl:hidden">
                 <img
                   src="/svg/guy.svg"
                   alt=""
@@ -108,8 +109,6 @@ export function LandingSections({ settings }: { settings: Record<string, any> })
       <section className="bg-charcoal">
         <Footer content={settings.footer ?? null} />
       </section>
-
-      <NewsletterSubscribeBar />
     </div>
     </ThemeScope>
   )
