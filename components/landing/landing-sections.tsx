@@ -26,7 +26,7 @@ import { ThemeScope } from "@/components/admin/editor/theme-scope"
 export function LandingSections({ settings }: { settings: Record<string, any> }) {
   return (
     <ThemeScope theme={settings.theme}>
-    <div className="w-full overflow-x-clip">
+    <main id="main" className="w-full overflow-x-clip">
       <Hero content={settings.hero ?? null} />
       <HeroCarousel logos={settings.logoTicker?.logos} />
 
@@ -109,7 +109,7 @@ export function LandingSections({ settings }: { settings: Record<string, any> })
       <section className="bg-charcoal">
         <Footer content={settings.footer ?? null} />
       </section>
-    </div>
+    </main>
     </ThemeScope>
   )
 }

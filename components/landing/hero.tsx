@@ -265,7 +265,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                           ) : card.type === "image" ? (
                             <img
                               src={cldImage(card.url, mediaWidth)}
-                              alt=""
+                              alt={card.label || "Ad creative example"}
                               loading="lazy"
                               decoding="async"
                               className={cn("h-full w-full", mediaFitClass)}
@@ -273,7 +273,8 @@ export function Hero({ content }: { content: HeroContent | null }) {
                             />
                           ) : card.type === "youtube" ? (
                             <iframe
-                              src={`https://www.youtube.com/embed/${ytId(card.url)}?autoplay=1&mute=1&loop=1&playlist=${ytId(card.url)}&controls=0&rel=0&playsinline=1`}
+                              src={`https://www.youtube-nocookie.com/embed/${ytId(card.url)}?autoplay=1&mute=1&loop=1&playlist=${ytId(card.url)}&controls=0&rel=0&playsinline=1`}
+                              title={card.label || "Ad creative video"}
                               className="pointer-events-none absolute top-1/2 left-0 h-[177.78%] w-full -translate-y-1/2"
                               allow="autoplay; encrypted-media"
                               loading="lazy"
@@ -281,7 +282,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
                           ) : !mounted || (isMobile && !mobileVideoInView) ? (
                             <img
                               src={card.poster ?? cldPoster(card.url, mediaWidth)}
-                              alt=""
+                              alt={card.label || "Ad creative example"}
                               loading="lazy"
                               decoding="async"
                               className={cn("pointer-events-none h-full w-full", mediaFitClass)}
@@ -389,13 +390,14 @@ export function Hero({ content }: { content: HeroContent | null }) {
               <img
                 key={activeVideo}
                 src={cldImage(activeUrl, 1400)}
-                alt=""
+                alt={activeCard?.label || "Ad creative example"}
                 className="block max-h-[85vh] max-w-[90vw] object-contain"
               />
             ) : activeUrl && activeType === "youtube" ? (
               <iframe
                 key={activeVideo}
-                src={`https://www.youtube.com/embed/${ytId(activeUrl)}?autoplay=1&rel=0`}
+                src={`https://www.youtube-nocookie.com/embed/${ytId(activeUrl)}?autoplay=1&rel=0`}
+                title={activeCard?.label || "Ad creative video"}
                 className="h-full w-full"
                 allow="autoplay; encrypted-media; fullscreen"
                 allowFullScreen

@@ -278,7 +278,7 @@ function Lightbox({
           <img
             key={item.id}
             src={item.full}
-            alt=""
+            alt="Ad creative from Hookana's portfolio"
             className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
           />
         )}

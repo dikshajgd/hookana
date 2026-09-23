@@ -29,7 +29,7 @@ export default async function PortfolioPage() {
   }
 
   return (
-    <div className="mt-4 w-full overflow-x-clip bg-warm-linen pt-28 pb-20 lg:pt-24">
+    <main id="main" className="mt-4 w-full overflow-x-clip bg-warm-linen pt-28 pb-20 lg:pt-24">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-6">
         <div className="flex flex-col gap-4">
           <h1 className="font-editorial font-light text-4xl leading-[0.95] tracking-[-0.02em] text-voltage-blue sm:text-[42px] md:text-[64px] md:leading-[0.95]">
@@ -40,6 +40,6 @@ export default async function PortfolioPage() {
 
         <PortfolioGallery bundles={finalBundles} />
       </div>
-    </div>
+    </main>
   )
 }

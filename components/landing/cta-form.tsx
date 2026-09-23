@@ -216,6 +216,10 @@ export function CtaForm({ content }: { content: ContactContent | null }) {
                   {status === "submitting" ? "Sending..." : "GET 2 FREE CONCEPTS"}
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground">
+                We&rsquo;ll use these details to reply and prepare your concepts. See our{" "}
+                <a href="/privacy" className="underline underline-offset-4">Privacy Policy</a>.
+              </p>
             </form>
             )}
           </div>

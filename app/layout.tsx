@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { JetBrains_Mono, Lato, Inter, Cormorant, DM_Sans, Staatliches } from "next/font/google"
-import { GoogleAnalytics } from "@next/third-parties/google"
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
@@ -83,7 +82,6 @@ export default function RootLayout({
       <body className="overflow-x-hidden bg-cream font-serif">
         {children}
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-929LX8S0BB"} />
     </html>
   )
 }

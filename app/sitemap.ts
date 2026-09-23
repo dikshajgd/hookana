@@ -8,5 +8,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    ...["privacy", "terms", "refunds"].map((page) => ({
+      url: `https://hookana.com/${page}`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.2,
+    })),
   ]
 }

@@ -468,3 +468,15 @@ body::-webkit-scrollbar,
 
   --color-yellow-600: #3e4600;
 }
+
+/* Respect "reduce motion": stop the logo/stats marquees and other looping animations. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

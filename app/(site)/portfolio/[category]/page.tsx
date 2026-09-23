@@ -73,7 +73,7 @@ export default async function CategoryPortfolioPage({
   }
 
   return (
-    <div className="mt-4 w-full overflow-x-clip bg-blue-50 pt-28 pb-20 lg:pt-24">
+    <main id="main" className="mt-4 w-full overflow-x-clip bg-blue-50 pt-28 pb-20 lg:pt-24">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-6">
         <div className="flex flex-col gap-5 pb-2">
           <p className="font-mono text-2xl font-semibold tracking-tight text-pink-500 sm:text-3xl 2xl:text-4xl">
@@ -96,6 +96,6 @@ export default async function CategoryPortfolioPage({
           showFilters={false}
         />
       </div>
-    </div>
+    </main>
   )
 }

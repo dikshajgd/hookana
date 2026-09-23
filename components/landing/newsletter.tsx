@@ -91,6 +91,13 @@ export function Newsletter() {
           </form>
         )}
 
+        {status !== "success" && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Newsletter only, unsubscribe anytime. See our{" "}
+            <a href="/privacy" className="underline underline-offset-4">Privacy Policy</a>.
+          </p>
+        )}
+
         {status === "error" && (
           <p className="font-mono text-xs text-red-600">{errorMsg}</p>
         )}
