@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { LegalPage, Detail } from "@/components/legal/legal-page"
+import { LegalPage } from "@/components/legal/legal-page"
 import { CookieSettingsLink } from "@/components/consent/analytics-consent"
 import { legal } from "@/lib/legal"
 
@@ -15,15 +15,9 @@ export default function PrivacyPage() {
     <LegalPage title="Privacy Policy">
       <section>
         <p>
-          This page explains what information Hookana collects when you use this website, why we
+          This page explains what information Hookana (&ldquo;we&rdquo;) collects when you use this website, why we
           collect it, who helps us handle it, and what you can ask us to do with it.
         </p>
-        <Detail value={legal.businessName}>
-          <p className="mt-3">
-            The website is run by {legal.businessName}
-            <Detail value={legal.address}>, {legal.address}</Detail>.
-          </p>
-        </Detail>
       </section>
 
       <section>
@@ -81,9 +75,7 @@ export default function PrivacyPage() {
       <section>
         <h2>How long we keep it</h2>
         <ul>
-          <Detail value={legal.leadRetention}>
-            <li>Free-concepts requests: {legal.leadRetention}.</li>
-          </Detail>
+          <li>Free-concepts requests: {legal.leadRetention}.</li>
           <li>Newsletter: until you unsubscribe.</li>
           <li>Analytics: Google Analytics keeps usage data for up to 14 months.</li>
         </ul>

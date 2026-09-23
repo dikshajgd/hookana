@@ -7,7 +7,6 @@ import { useEditor, useEditable } from "@/components/admin/editor/editor-context
 import { useListControls, AddItemButton } from "@/components/admin/editor/editable-list"
 import { EditableText } from "@/components/admin/editor/editable-text"
 import { CookieSettingsLink } from "@/components/consent/analytics-consent"
-import { legal } from "@/lib/legal"
 
 const FALLBACK: FooterContent = {
   tagline: "CREATIVE PRODUCTION FOR PERFORMANCE MARKETERS WHO REFUSE TO COMPROMISE.",
@@ -82,16 +81,8 @@ export function Footer({ content }: { content: FooterContent | null }) {
       <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
         <a href="/privacy" className="underline decoration-dotted underline-offset-4">Privacy</a>
         <a href="/terms" className="underline decoration-dotted underline-offset-4">Terms</a>
-        <a href="/refunds" className="underline decoration-dotted underline-offset-4">Refunds</a>
         <CookieSettingsLink className="uppercase underline decoration-dotted underline-offset-4" />
       </nav>
-      {legal.businessName !== "PENDING" && (
-        <p className="text-center text-[10px] opacity-70">
-          {legal.businessName}
-          {legal.address !== "PENDING" && ` · ${legal.address}`}
-          {legal.gstin && ` · GSTIN ${legal.gstin}`}
-        </p>
-      )}
     </footer>
   )
 }

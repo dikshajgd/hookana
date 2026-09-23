@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...["privacy", "terms", "refunds"].map((page) => ({
+    ...["privacy", "terms"].map((page) => ({
       url: `https://hookana.com/${page}`,
       lastModified: new Date(),
       changeFrequency: "yearly" as const,

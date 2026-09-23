@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { LegalPage, Detail } from "@/components/legal/legal-page"
+import { LegalPage } from "@/components/legal/legal-page"
 import { legal } from "@/lib/legal"
 
 export const metadata: Metadata = {
@@ -16,14 +15,6 @@ export default function TermsPage() {
           These terms cover your use of this website and any creative work you order from Hookana.
           By using the site or working with us, you agree to them.
         </p>
-        <Detail value={legal.businessName}>
-          <p className="mt-3">
-            Hookana is run by {legal.businessName}
-            <Detail value={legal.businessType}> ({legal.businessType})</Detail>
-            <Detail value={legal.address}>, {legal.address}</Detail>
-            <Detail value={legal.gstin}>. GSTIN: {legal.gstin}</Detail>.
-          </p>
-        </Detail>
       </section>
 
       <section>
@@ -56,10 +47,10 @@ export default function TermsPage() {
       </section>
 
       <section>
-        <h2>Payments, cancellation and refunds</h2>
+        <h2>Payments and cancellation</h2>
         <p>
-          See our <Link href="/refunds">Refunds &amp; Cancellation</Link> page for how plans are
-          billed, how to cancel, and when refunds apply.
+          Fees, payment timing and how either side can end the work are set out in the written
+          agreement for each project. Nothing on this website is a price list or an offer to sell.
         </p>
       </section>
 
