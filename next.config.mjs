@@ -10,6 +10,10 @@ const nextConfig = {
         source: '/videos',
         destination: '/portfolio/videos',
       },
+      {
+        source: '/ai',
+        destination: '/portfolio/ai',
+      },
     ];
   },
 };
