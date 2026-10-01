@@ -25,10 +25,14 @@ export function rowToMediaItem(row: PortfolioRow): MediaItem {
 
 /** Split a flat item list into the four gallery tabs. Pure + testable. */
 export function bundleItems(items: MediaItem[]): PortfolioBundles {
+  const statics = items.filter((i) => i.category === "static")
+  const videos = items.filter((i) => i.category === "video")
+  const ais = items.filter((i) => i.category === "ai")
+
   return {
-    all: items,
-    ai: items.filter((i) => i.category === "ai"),
-    static: items.filter((i) => i.category === "static"),
-    video: items.filter((i) => i.category === "video"),
+    all: [...statics, ...videos, ...ais],
+    ai: ais,
+    static: statics,
+    video: videos,
   }
 }

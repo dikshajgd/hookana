@@ -195,11 +195,11 @@ export const PORTFOLIO_AI: MediaItem[] = AI_URLS.map((u) => video(u, "ai"))
 export const PORTFOLIO_IMAGES: MediaItem[] = IMAGE_URLS.map(image)
 export const PORTFOLIO_VIDEOS: MediaItem[] = VIDEO_URLS.map((u) => video(u, "video"))
 
-// Default "All work" ordering when the CMS hasn't set one: AI → Static → Videos.
+// Default "All work" ordering when the CMS hasn't set one: Static → Videos → AI.
 export const PORTFOLIO_MEDIA: MediaItem[] = [
-  ...PORTFOLIO_AI,
   ...PORTFOLIO_IMAGES,
   ...PORTFOLIO_VIDEOS,
+  ...PORTFOLIO_AI,
 ]
 
 /** Bundled fallback used when the CMS document is empty. */
