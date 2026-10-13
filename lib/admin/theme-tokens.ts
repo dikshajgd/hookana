@@ -45,7 +45,7 @@ export const THEME_TOKENS: ThemeToken[] = [
     key: "accent",
     label: "Accent text",
     hint: "Service titles, stat labels, receipt figures.",
-    vars: ["--color-hot-pink", "--color-primary"],
+    vars: ["--color-primary"],
     default: "#3e4600",
   },
   {

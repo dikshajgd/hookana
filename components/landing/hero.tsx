@@ -352,7 +352,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
             }
             className="absolute bottom-8 left-8 z-20 flex size-11 items-center justify-center rounded-full border border-voltage-blue bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5"
           >
-            <ArrowDown className="size-5 animate-bounce" />
+            <ArrowDown className="size-5 animate-nudge" />
           </button>
         </div>
       </div>

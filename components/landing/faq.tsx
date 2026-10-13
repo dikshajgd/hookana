@@ -68,7 +68,7 @@ export function Faq({ content }: { content: FaqContent | null }) {
             path="faq.heading2"
             value={heading2}
             multiline
-            className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-hot-pink"
+            className="font-editorial font-light text-4xl sm:text-5xl md:text-6xl 2xl:text-[96px] leading-[0.95] 2xl:leading-[0.95] tracking-[-0.02em] text-primary"
           />
         </div>
 
