@@ -32,7 +32,7 @@ export function HeroCarousel({ logos }: { logos?: LogoItem[] }) {
   if (editing) {
     return (
       <div className="relative z-10 w-full bg-charcoal px-6 py-10">
-        <p className="mb-6 text-center text-xs font-semibold tracking-widest text-white/50 uppercase">
+        <p className="mb-6 text-center text-xs font-semibold tracking-widest text-fog uppercase">
           Brand logos · shown as a scrolling ticker on the live site
         </p>
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-5">
@@ -49,30 +49,30 @@ export function HeroCarousel({ logos }: { logos?: LogoItem[] }) {
               <EditableMedia
                 path={`logoTicker.logos.${idx}.imageUrl`}
                 kind="image"
-                className="flex h-20 w-36 items-center justify-center rounded-md border border-white/10 bg-white/5"
+                className="flex h-20 w-36 items-center justify-center rounded-md border border-ash bg-muted"
               >
                 {item.imageUrl ? (
                   <img
                     src={item.imageUrl}
                     alt={item.alt}
-                    className="h-10 max-w-28 object-contain brightness-0 invert"
+                    className="h-10 max-w-28 object-contain brightness-0"
                   />
                 ) : (
-                  <span className="text-[10px] tracking-wide text-white/40 uppercase">No logo</span>
+                  <span className="text-[10px] tracking-wide text-fog uppercase">No logo</span>
                 )}
               </EditableMedia>
               <EditableText
                 path={`logoTicker.logos.${idx}.alt`}
                 value={item.alt}
                 rich={false}
-                className="text-center text-[11px] text-white/60"
+                className="text-center text-[11px] text-fog"
               />
             </div>
           ))}
           <AddItemButton
             label="Add logo"
             onClick={() => logoControls.add({ alt: "New logo", imageUrl: "" })}
-            className="border-white/30 text-white/70 hover:border-white hover:text-white"
+            className="border-ash text-fog hover:border-ink hover:text-ink"
           />
         </div>
       </div>
