@@ -178,7 +178,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
               <button
-                className="flex size-9 items-center justify-center rounded-full border border-voltage-blue bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5"
+                className="flex size-11 items-center justify-center rounded-full border border-voltage-blue bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5"
                 aria-label="Open menu"
               >
                 <Menu className="size-4" />
@@ -203,7 +203,7 @@ export function Navbar({ content }: { content: NavbarContent | null }) {
                   </Link>
                   <SheetClose asChild>
                     <button
-                      className="flex size-9 items-center justify-center rounded-full border border-ash bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5 sm:mt-2 sm:size-10"
+                      className="flex size-11 items-center justify-center rounded-full border border-ash bg-cream text-voltage-blue transition-colors hover:bg-voltage-blue/5 sm:mt-2"
                       aria-label="Close menu"
                     >
                       <X className="size-4 sm:size-5" />

@@ -469,14 +469,21 @@ body::-webkit-scrollbar,
   --color-yellow-600: #3e4600;
 }
 
-/* Respect "reduce motion": stop the logo/stats marquees and other looping animations. */
+/* Respect "reduce motion": stop the decorative looping animations (marquees, scroll
+   cues, bouncing/pinging indicators). Ordinary hover/focus/menu transitions are left
+   alone so state changes still give feedback. Loading spinners and skeleton pulses are
+   status indicators, so they keep running. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  .animate-marquee,
+  .animate-marquee-stats,
+  .animate-scroll,
+  .animate-bounce,
+  .animate-ping {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+  }
+
+  html {
     scroll-behavior: auto !important;
   }
 }

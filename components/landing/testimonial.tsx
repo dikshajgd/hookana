@@ -72,7 +72,12 @@ export function Testimonial({ content }: { content: TestimonialContent | null })
       ref={sectionRef}
       className="mx-auto mt-8 2xl:mt-15 w-fit max-w-full overflow-hidden rounded-none border border-ash bg-cream p-2.5"
     >
-      <div className="group relative cursor-pointer" onClick={editing ? undefined : togglePlay}>
+      <button
+        type="button"
+        className="group relative block cursor-pointer rounded-sm focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none"
+        onClick={editing ? undefined : togglePlay}
+        aria-label={paused ? "Play testimonial video" : "Pause testimonial video"}
+      >
         <EditableMedia
           path="testimonial.videoUrl"
           posterPath="testimonial.posterUrl"
@@ -102,7 +107,7 @@ export function Testimonial({ content }: { content: TestimonialContent | null })
             <Play className="size-8 fill-white text-white" />
           </div>
         </div>
-      </div>
+      </button>
     </section>
   )
 }

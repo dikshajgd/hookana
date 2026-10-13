@@ -145,7 +145,7 @@ export function Hero({ content }: { content: HeroContent | null }) {
           <div className="flex w-full flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-center lg:gap-16 lg:text-left xl:gap-34">
             <div className="flex max-w-120 flex-col gap-4 md:gap-4 lg:max-w-96 xl:max-w-120">
               <EditableText
-                as="p"
+                as="h1"
                 path="hero.headline"
                 value={headline}
                 className="font-editorial text-6xl leading-[0.95] font-light tracking-[-0.02em] text-voltage-blue sm:text-7xl lg:text-[72px] lg:leading-[0.95] xl:text-[88px] xl:leading-[0.95]"
