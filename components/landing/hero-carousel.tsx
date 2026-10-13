@@ -58,7 +58,7 @@ export function HeroCarousel({ logos }: { logos?: LogoItem[] }) {
                     className="h-10 max-w-28 object-contain brightness-0"
                   />
                 ) : (
-                  <span className="text-[10px] tracking-wide text-fog uppercase">No logo</span>
+                  <span className="text-[10px] tracking-wide text-ink uppercase">No logo</span>
                 )}
               </EditableMedia>
               <EditableText

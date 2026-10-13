@@ -488,7 +488,6 @@ body::-webkit-scrollbar,
   .animate-marquee-stats,
   .animate-scroll,
   .animate-nudge,
-  .animate-bounce,
   .animate-ping {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
