@@ -18,8 +18,12 @@ export default async function SiteLayout({
       >
         Skip to content
       </a>
-      <Navbar content={settings?.navbar ?? null} />
-      {children}
+      {/* Page frame: content stops at 1600px and centres on big screens, with side
+          room that grows from 1280px up (0 on phones and tablets, 56px max). Sections keep their own gutters. */}
+      <div className="mx-auto w-full max-w-[1600px] md:px-[clamp(0px,calc((100vw-1280px)/8),56px)]">
+        <Navbar content={settings?.navbar ?? null} />
+        {children}
+      </div>
       {/* Google Analytics only loads after the visitor allows it in the banner. */}
       <AnalyticsConsent gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-929LX8S0BB"} />
     </ThemeProvider>
