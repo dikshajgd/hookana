@@ -44,7 +44,7 @@ export function Newsletter() {
 
   return (
     <section className="bg-warm-linen">
-      {/* Asymmetric on purpose: the charcoal footer below brings its own
+      {/* Asymmetric on purpose: the footer below brings its own
           generous top padding, so a full py-* here just doubles the gap. */}
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-5 pt-14 pb-4 text-center md:pt-24 md:pb-6">
         <h2 className="font-editorial font-light text-[40px] leading-[0.95] tracking-[-0.02em] text-voltage-blue break-words sm:text-[52px] sm:leading-[0.95] md:max-w-187.5 md:text-[80px] md:leading-[0.95]">

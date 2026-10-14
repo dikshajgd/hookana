@@ -187,7 +187,7 @@ function WhatWeDoPanel({ tab, index }: { tab: ServiceTab; index: number }) {
         {tab.stats.map((stat, si) => (
           <div
             key={si}
-            className="relative flex flex-col gap-3 border-l-10 border-pink-500 bg-background px-6 py-6 [clip-path:polygon(0_0,calc(100%-1.5rem)_0,100%_12%,calc(100%-1.5rem)_30%,100%_48%,calc(100%-1.5rem)_66%,100%_84%,calc(100%-1.5rem)_100%,0_100%)] 2xl:border-l-20 2xl:px-8 2xl:py-7"
+            className="relative flex flex-col gap-3 border-l-4 border-pink-500 bg-background px-6 py-6 [clip-path:polygon(0_0,calc(100%-1.5rem)_0,100%_12%,calc(100%-1.5rem)_30%,100%_48%,calc(100%-1.5rem)_66%,100%_84%,calc(100%-1.5rem)_100%,0_100%)] 2xl:border-l-[6px] 2xl:px-8 2xl:py-7"
           >
             {editing && (
               <button
@@ -243,7 +243,7 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
           as="p"
           path="services.label"
           value={label}
-          className="font-ease text-xl font-normal tracking-[-0.02em] text-hot-pink sm:text-2xl"
+          className="font-ease text-xl font-normal tracking-[-0.02em] text-primary sm:text-2xl"
         />
         <EditableText
           as="h2"
@@ -305,7 +305,7 @@ export function WhatWeDo({ content }: { content: ServicesContent | null }) {
                 {tab.stats.map((stat, si) => (
                   <div
                     key={si}
-                    className="flex flex-col gap-2 border-l-8 border-pink-500 bg-background px-5 py-5 [clip-path:polygon(0_0,calc(100%-1rem)_0,100%_12%,calc(100%-1rem)_30%,100%_48%,calc(100%-1rem)_66%,100%_84%,calc(100%-1rem)_100%,0_100%)] sm:border-l-[12px] sm:px-6 sm:py-6"
+                    className="flex flex-col gap-2 border-l-4 border-pink-500 bg-background px-5 py-5 [clip-path:polygon(0_0,calc(100%-1rem)_0,100%_12%,calc(100%-1rem)_30%,100%_48%,calc(100%-1rem)_66%,100%_84%,calc(100%-1rem)_100%,0_100%)] sm:border-l-[6px] sm:px-6 sm:py-6"
                   >
                     <EditableText
                       path={`services.tabs.${i}.stats.${si}.label`}

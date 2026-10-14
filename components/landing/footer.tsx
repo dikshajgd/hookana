@@ -25,7 +25,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
   const socialControls = useListControls("footer.socials")
 
   return (
-    <footer className="type-monospaced flex flex-col items-center justify-center gap-2 py-6 text-primary-foreground uppercase md:py-5">
+    <footer className="type-monospaced flex flex-col items-center justify-center gap-2 py-6 border-t border-ash text-ink uppercase md:py-5">
       <EditableText
         as="p"
         path="footer.tagline"
@@ -58,7 +58,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
                   <button
                     type="button"
                     onClick={() => socialControls.remove(i)}
-                    className="text-primary-foreground/50 hover:text-red-400"
+                    className="text-fog hover:text-red-600"
                     aria-label="Remove link"
                   >
                     <X className="size-3" />
@@ -73,7 +73,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
         <AddItemButton
           label="Add link"
           onClick={() => socialControls.add({ label: "NEW LINK", href: "https://" })}
-          className="border-white/30 text-white/70 hover:border-white hover:text-white"
+          className="border-ash text-fog hover:border-ink hover:text-ink"
         />
       )}
       <EditableText as="p" path="footer.copyright" value={copyright} />

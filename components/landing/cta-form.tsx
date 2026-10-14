@@ -266,7 +266,7 @@ function Field({
     <div className="flex flex-col gap-1.5">
       <label className="font-ease text-sm font-normal tracking-[-0.02em] text-ink">
         {label}
-        {required && <span className="ml-0.5 text-hot-pink">*</span>}
+        {required && <span className="ml-0.5 text-primary">*</span>}
       </label>
       {children}
     </div>

@@ -268,12 +268,6 @@
   --color-charcoal: #ffffff;
   --color-sand: #ffffff;
   --color-stone: #e2e8f0;
-  --color-sun-yellow: #3e4600;
-  --color-hot-pink: #3e4600;
-  --color-lime-burst: #3e4600;
-  --color-periwinkle: #3e4600;
-  --color-spring-green: #3e4600;
-  --color-bubblegum: #3e4600;
 
   /* DM Sans headings + body; the theme editor can swap in Staatliches etc. */
   --font-editorial: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
@@ -422,6 +416,22 @@ body::-webkit-scrollbar,
     animation: scroll 20s linear infinite;
   }
 
+  /* Scroll-cue bounce: a single ease-out bob. The stock animate-bounce keyframes
+     carry their own per-keyframe easing, which overrides any animation-timing-function. */
+  .animate-nudge {
+    animation: nudge 1.6s ease-out infinite;
+  }
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-25%);
+    }
+  }
+
   @keyframes scroll {
     to {
       transform: translateX(-50%);
@@ -469,14 +479,21 @@ body::-webkit-scrollbar,
   --color-yellow-600: #3e4600;
 }
 
-/* Respect "reduce motion": stop the logo/stats marquees and other looping animations. */
+/* Respect "reduce motion": stop the decorative looping animations (marquees, scroll
+   cues, bouncing/pinging indicators). Ordinary hover/focus/menu transitions are left
+   alone so state changes still give feedback. Loading spinners and skeleton pulses are
+   status indicators, so they keep running. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  .animate-marquee,
+  .animate-marquee-stats,
+  .animate-scroll,
+  .animate-nudge,
+  .animate-ping {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+  }
+
+  html {
     scroll-behavior: auto !important;
   }
 }
