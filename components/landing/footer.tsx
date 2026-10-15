@@ -76,7 +76,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
           className="border-ash text-fog hover:border-ink hover:text-ink"
         />
       )}
-      <EditableText as="p" path="footer.copyright" value={copyright} />
+      <EditableText as="p" path="footer.copyright" value={copyright} className="text-fog" />
       {/* Fixed legal links: deliberately not editable so they can't be removed by accident. */}
       <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
         <a href="/privacy" className="underline decoration-dotted underline-offset-4">Privacy</a>
