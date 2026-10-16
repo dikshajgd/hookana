@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
+import { rateLimit, clientIp } from "@/lib/rate-limit"
 
 export async function POST(req: NextRequest) {
+  // Public endpoint that sends an email on every call: throttle hard per IP so
+  // it cannot be used to email-bomb the leads inbox. 3 per 10 minutes.
+  const limit = rateLimit(`contact:${clientIp(req)}`, 3, 600_000)
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests, please slow down." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } }
+    )
+  }
+
   const { name, email, brand, website, message } = await req.json()
 
   if (!name || !email) {

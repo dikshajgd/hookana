@@ -9,7 +9,11 @@
 
 export const AUTH_COOKIE = "nl_admin_auth"
 export const LOGIN_PATH = "/admin/login"
-export const DEFAULT_ADMIN_PASSWORD = "hookana_admin_2026"
+// The admin password comes ONLY from the NEWSLETTER_ADMIN_PASSWORD env var.
+// There is deliberately no baked-in fallback: if it is unset, nothing can
+// authenticate (see authOutcome) rather than the whole admin falling open on
+// a shared, guessable default.
+export const ADMIN_PASSWORD_ENV = "NEWSLETTER_ADMIN_PASSWORD"
 
 export const PROTECTED_PAGES = ["/admin"]
 export const PROTECTED_APIS = [
@@ -55,18 +59,22 @@ export type AuthOutcome = "allow" | "redirect-login" | "unauthorized"
 /**
  * Decide what the middleware should do for a request. Pure: given the path, the
  * presented cookie value, and the expected hash, returns the action to take.
+ *
+ * `expectedHash` is null when no admin password is configured. In that case we
+ * fail closed: every protected route is denied, because there is no valid
+ * cookie value anyone could present.
  */
 export function authOutcome(
   pathname: string,
   cookieValue: string | undefined,
-  expectedHash: string
+  expectedHash: string | null
 ): AuthOutcome {
   const { isLoginPath, isProtectedPage, isProtectedApi } = classifyPath(pathname)
 
   if (isLoginPath) return "allow"
   if (!isProtectedPage && !isProtectedApi) return "allow"
 
-  if (cookieValue === expectedHash) return "allow"
+  if (expectedHash && cookieValue === expectedHash) return "allow"
 
   return isProtectedApi ? "unauthorized" : "redirect-login"
 }

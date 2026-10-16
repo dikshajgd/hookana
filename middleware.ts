@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { AUTH_COOKIE, LOGIN_PATH, DEFAULT_ADMIN_PASSWORD, authOutcome, sha256Hex } from "@/lib/auth"
+import { AUTH_COOKIE, LOGIN_PATH, authOutcome, sha256Hex } from "@/lib/auth"
 
 // The whole admin lives under /admin behind one login. The pages and their
 // mutation APIs share the SAME cookie, so one sign-in covers the site editor,
@@ -8,8 +8,11 @@ import { AUTH_COOKIE, LOGIN_PATH, DEFAULT_ADMIN_PASSWORD, authOutcome, sha256Hex
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  const adminPassword = process.env.NEWSLETTER_ADMIN_PASSWORD ?? DEFAULT_ADMIN_PASSWORD
-  const expectedHash = await sha256Hex(adminPassword)
+  // Fail closed: with no admin password configured, expectedHash is null and
+  // authOutcome denies every protected route rather than falling back to a
+  // shared default.
+  const adminPassword = process.env.NEWSLETTER_ADMIN_PASSWORD
+  const expectedHash = adminPassword ? await sha256Hex(adminPassword) : null
   const cookieValue = req.cookies.get(AUTH_COOKIE)?.value
 
   switch (authOutcome(pathname, cookieValue, expectedHash)) {

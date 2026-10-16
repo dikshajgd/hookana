@@ -96,4 +96,13 @@ describe("authOutcome", () => {
   it("allows a protected API when the cookie matches", () => {
     expect(authOutcome("/api/settings", HASH, HASH)).toBe("allow")
   })
+
+  it("fails closed when no password is configured (expectedHash null)", () => {
+    // The login page itself stays reachable so the site is not bricked.
+    expect(authOutcome(LOGIN_PATH, undefined, null)).toBe("allow")
+    // Everything protected is denied, even with a cookie present, because no
+    // value can be the "right" one.
+    expect(authOutcome("/admin", HASH, null)).toBe("redirect-login")
+    expect(authOutcome("/api/upload", HASH, null)).toBe("unauthorized")
+  })
 })

@@ -4,8 +4,15 @@ import { createHash } from "crypto"
 export async function POST(req: NextRequest) {
   const { password } = await req.json().catch(() => ({}))
 
-  const adminPassword =
-    process.env.NEWSLETTER_ADMIN_PASSWORD ?? "hookana_admin_2026"
+  // No baked-in fallback: if the password is not configured, login is disabled
+  // rather than accepting a shared default.
+  const adminPassword = process.env.NEWSLETTER_ADMIN_PASSWORD
+  if (!adminPassword) {
+    return NextResponse.json(
+      { error: "Admin login is not configured" },
+      { status: 503 }
+    )
+  }
 
   if (!password || password !== adminPassword) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 })
